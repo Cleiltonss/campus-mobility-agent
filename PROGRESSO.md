@@ -10,8 +10,18 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
-- **NULL em FK dentro de JOIN** — achou que a linha "é considerada 0". Ela some,
-  e o relatório fica errado sem erro. Revisar com exemplo concreto.
+- **NULL em FK dentro de JOIN** — derivado por inteiro na sessão 5, mas o ponto
+  de partida continua errado: chutou 65 (soma tudo) antes de rodar o JOIN. Sabe
+  derivar, não sabe de cara. Testar de novo daqui a duas sessões, sem andaime.
+- **Responder contra o que acabou de derivar** — sessão 5, duas vezes seguidas:
+  disse que `0 = 0` é verdadeiro e que a linha entra no SUM, e no passo seguinte
+  respondeu que a soma continuava 35. Não é desconhecimento, é não reler a
+  própria resposta de duas linhas acima. Mesma raiz de "não olhar a tela".
+- **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
+  de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
+  unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
+  `linhas`. Regra fixada por ele: número entra na conta com o rótulo colado; se
+  não souber escrever o rótulo, não pode usar o número ainda.
 - **Julgar número antes de calcular** — disse "é um número muito alto" antes de
   dividir 5.000.000 por 730. Deu 6.849, que é uma empresa média.
 - **Chutar premissa em vez de derivar** — sessão 4: inventou "1 a 2
@@ -267,3 +277,57 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
   2. Decidir `data_fim`/`hora_fim`.
   3. Escrever o star schema completo em arquivo versionado do repositório.
      Primeiro artefato do projeto. **Sem começar sessão nova antes disso.**
+
+### Sessão 5 — 2026-09-14
+- Fase: 1, semana 1 — modelagem dimensional e star schema
+- Feito:
+  - **Diagnóstico dos erros de conta fechado, e por dedução dele.** Partiu de
+    "erros de unidade" (que é o sintoma) e chegou em "levei só o número" (que é
+    o mecanismo) depois de tentar converter 7 km/dia em litros e ver que não
+    existe fator. Regra que saiu disso está nos pontos frágeis.
+  - **FK NULL num JOIN derivado até o fim, com exemplo de 3 linhas.** Rodou o
+    JOIN na mão: NULL não casa com nada, a linha não entra, `SUM` devolve 35 e
+    o total real é 65. Depois fechou o contraste: query que estoura é barata,
+    query que devolve número errado sem reclamar roda seis meses.
+  - **Nome do modo de falha aprendido: falha silenciosa.**
+  - **Membro "Não se aplica" validado no mesmo exemplo.** Com `origem_id = 0` e
+    a linha `0 | Não se aplica` na dimensão, `0 = 0` casa, a linha sobrevive e
+    o relatório volta a 65. A FK sem NULL deixou de ser regra decorada.
+  - **Tela A vs Tela B.** Confusão legítima, e o enunciado era meu: separar a
+    tabela crua (que o professor mostra) do relatório agregado (que o analista
+    recebe). Ele estava certo sobre o que via.
+  - Zero linha de código. **Pela quinta vez — e dessa vez não está correto.**
+- Quebrou:
+  - Chutou 65 antes de rodar o JOIN, e chutou "erro" no caso da chave 0. Nos
+    dois, a derivação passo a passo consertou em 3 perguntas.
+  - "N sei" antes de tentar, na pergunta sobre o uso de `hora_fim`. Com o
+    problema reduzido ("que horas o aluno chega"), respondeu certo na hora.
+  - Respondeu contra a própria derivação, 2 vezes.
+- Ponto levantado por ele, e procedente:
+  - **"Por que não avançamos pros códigos?"** O diagnóstico dele ("estudo
+    superficial em conceito") está errado — o conceito é que estava sendo
+    testado, e ele errou 35 vs 65. Mas a cobrança está certa: 5 sessões, 4
+    markdowns de processo, nenhum artefato do projeto no repositório.
+  - **Falha do professor: sequenciamento.** O item 3 da sessão 4 já era escrever
+    o schema em arquivo, marcado "sem começar sessão nova antes disso", e a
+    sessão 5 abriu com revisão em vez do arquivo. A revisão valia — mas devia
+    ter sido 15 minutos, não a sessão inteira.
+  - **Regra nova: nenhuma sessão da fase 1 termina sem arquivo novo ou arquivo
+    alterado no repositório.** Markdown de processo não conta.
+- Aberto (decidir na próxima):
+  - `data_fim_id` / `hora_fim_id` ficam ou saem. Chegou até "a coluna é útil, a
+    reitoria precisa da hora de chegada" e até "dá pra calcular de
+    `hora_inicio + duracao`". Faltou o último passo: o que se ganha guardando,
+    em 5 milhões de linhas, contra o risco de os três campos discordarem.
+  - Formato do artefato: `schema.md` ou `schema.sql`. Recomendação minha é
+    `.sql` — é código real, é o que o entrevistador abre, e ele escreve.
+  - Nomear a universidade e declarar as premissas do gerador por escrito.
+- Retomo em:
+  1. **Escrever o schema em arquivo versionado. Primeiro item da sessão, antes
+     de qualquer revisão.** `fato_transporte` com as 9 chaves e 3 métricas, mais
+     as dimensões: `dim_local`, `dim_data`, `dim_hora`, `dim_modal`,
+     `dim_categoria`, `dim_usuario`.
+  2. Fechar `data_fim`/`hora_fim` enquanto escreve — a decisão vira ou não vira
+     coluna no arquivo.
+  3. Revisão hostil do que ele escreveu: tipo, PK, FK, membro 0 em cada
+     dimensão.
