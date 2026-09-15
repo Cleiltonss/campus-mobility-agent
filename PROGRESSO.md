@@ -4,13 +4,27 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
 
 ## Pontos frágeis (revisar)
 
+- **Não olhar a tela** — respondeu "n sei"/"n lembro" 4 vezes na sessão 4 para
+  informação escrita 2-3 mensagens acima. Não é memória, é não reler. Antes de
+  aceitar "n lembro", mandar ele olhar.
+- **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
+  (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
+  valor" é o caso que importa: é ele que gera NULL em FK.
+- **NULL em FK dentro de JOIN** — achou que a linha "é considerada 0". Ela some,
+  e o relatório fica errado sem erro. Revisar com exemplo concreto.
+- **Julgar número antes de calcular** — disse "é um número muito alto" antes de
+  dividir 5.000.000 por 730. Deu 6.849, que é uma empresa média.
+- **Chutar premissa em vez de derivar** — sessão 4: inventou "1 a 2
+  abastecimentos por semana" e reaproveitou o 7 de "7 km/dia" como capacidade de
+  tanque (7 L). Dado sintético exige premissa com fonte, não número de cabeça.
 - **"Métrica" como palavra** — sabe o conceito (aponta R$ 138 como métrica na
   hora), mas erra a frase "métrica mora no fato" toda vez que a pergunta é
   abstrata. Quarta inversão na sessão 3. Só acerta quando ancorado num exemplo
   concreto. Perguntar sempre com exemplo junto, nunca no abstrato.
 - **Nome de tabela carregando fornecedor** — propôs `fato_uber`, depois
-  `tabela_uber`, depois `dim_carro`. Três vezes o mesmo erro: o nome não
-  comporta o segundo caso (ônibus, metrô). Consumiu ~10 rodadas.
+  `tabela_uber`, depois `dim_carro`. Na sessão 4 reincidiu duas vezes: chamou o
+  fato de "tabela de corridas de uber" e escreveu "uber" dentro do próprio grão.
+  Cinco vezes o mesmo erro: o nome não comporta o segundo caso (ônibus, metrô).
 - **Prefixo `fato_` / `dim_`** — não viu que prefixo igual em todas as tabelas
   não carrega informação. Convenção entregue pronta, não deduzida.
 - **Grão com valor específico** — escreve o grão colando um valor concreto
@@ -151,3 +165,105 @@ Rendimento subiu na hora.
   2. Fechar o star schema: `fato_transporte` + todas as dimensões nomeadas,
      com origem e destino apontando para a mesma `dim_local`.
   3. Decidir a estratégia de volume do gerador sintético.
+
+### Sessão 4 — 2026-09-14
+- Fase: 1, semana 1 — modelagem dimensional e star schema
+- Feito:
+  - **`fato_transporte` fechado.** 7 colunas de chave e 3 métricas:
+    - chaves: `origem_id`, `destino_id` (role-playing sobre `dim_local`),
+      `data_inicio_id`, `data_fim_id` (role-playing sobre `dim_data`),
+      `modal_id`, `categoria_id`, `usuario_id`
+    - métricas: `distancia`, `duracao`, `valor`
+  - **Grão travado:** "uma linha de `fato_transporte` é um deslocamento de um
+    ponto a outro em um único modal." Derivado pelo teste metrô + Uber = duas
+    linhas, não uma. Ele acertou o teste antes de saber escrever a frase.
+  - **Role-playing generalizado por ele.** Aplicou o conceito a `dim_data`
+    (saída/chegada) sem ser pedido, depois de derivar em `dim_local`.
+  - **Regra fixada:** role-playing = uma tabela de dimensão, várias colunas de
+    chave no fato. Uma tabela não é uma coluna.
+  - **`dim_categoria` descoberta.** Viu que UberX/Comfort/Black não são modais:
+    "são categorias de uber". Modal é o meio; categoria é o nível de serviço.
+  - **FK de fato não aceita NULL.** Dimensão ganha membro "Não se aplica" com
+    chave conhecida (0 ou -1). Ele respondeu `0` — resposta padrão, e foi dele.
+  - **Estratégia de volume decidida:** população simulada. 730 linhas/ano × N
+    pessoas. 5.000.000 / 730 = 6.849 pessoas. `dim_usuario` entra no schema.
+  - Zero linha de código. Correto para a etapa.
+- Quebrou:
+  - **Lacuna de 5 dias = perda total de contexto.** Abriu a sessão com "lembro
+    nada". Não recuperou nada da sessão 3 sem andaime.
+  - **Nome carregando fornecedor: 4ª e 5ª vez.** Chamou o fato de "tabela de
+    corridas de uber"; mais tarde escreveu "uber" dentro do próprio grão.
+  - **Número chutado.** Disse 730 abastecimentos/ano ("1 a 2 por semana") sem
+    derivar — e o número contradizia a própria conclusão dele.
+  - **Número contaminado.** Usou 7 L como capacidade de tanque, reaproveitando
+    o 7 de "7 km/dia" que estava na tela.
+  - **Unidade trocada.** Pedido litro, respondeu R$ 270.
+  - **"n sei / n lembro" para informação visível na tela**, 4 vezes. Não era
+    memória: era não olhar.
+  - **Inventou valor pra não deixar coluna vazia, 2 vezes** (número da linha do
+    metrô, "híbrido ou não" no ônibus). Fugiu do caso "não existe valor".
+  - **Achou que NULL em JOIN vira 0.** Vira linha sumida — e relatório errado
+    sem erro nenhum. Modo de falha silencioso.
+  - **Chutou "é um número muito alto" antes de dividir.** A conta deu 6.849,
+    que é uma empresa média. A aritmética derrubou o palpite em 5 segundos.
+- Método:
+  - Pediu duas vezes pra seguir depois do ponto de fadiga, contra recomendação
+    explícita. Rendimento da segunda metade foi baixo: passo mínimo, muita
+    repetição, respostas de uma palavra. A sessão 3 foi encerrada nesse mesmo
+    sinal e rendeu mais.
+  - Sessão encerrada por estouro de tempo dele, sem as 3 frases de consolidação.
+- Aberto (decidir na próxima):
+  - `dim_hora` (tarifa dinâmica) foi levantada na sessão 3 e não entrou no
+    schema. Decidir se entra ou se vira atributo de `dim_data`.
+  - `data_fim_id` é derivável de `data_inicio` + `duracao`. Decidir se fica.
+    Coluna redundante pode ficar inconsistente.
+  - Nomear o grupo real de ~7.000 pessoas. Premissa declarada, não número solto.
+- Retomo em:
+  1. Revisão com exemplo concreto: FK NULL num JOIN — o que acontece com a linha.
+  2. Fechar os 3 itens em aberto acima.
+  3. Escrever o star schema completo em um arquivo do repositório. Primeiro
+     artefato versionado do projeto.
+
+### Sessão 4 — continuação (mesmo dia, 2026-09-14)
+Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
+
+- Feito:
+  - **Premissa de volume fechada, com dono e decisão.** Universidade de ~7.000
+    alunos; a reitoria decide frota e rotas de fretado. Saiu de "7.000 pessoas"
+    solto para premissa defensável em entrevista.
+  - **Furo achado e consertado.** A decisão que ele propôs primeiro ("quantos
+    ônibus comportam 7.000 alunos") é uma divisão, não precisa de histórico
+    nenhum. As decisões que exigem o fato são **onde** fica o ponto de embarque
+    (agrupar por bairro de origem, `dim_local`) e **que horas** o fretado sai.
+  - **Item em aberto nº 1 fechado, por argumento dele:** `dim_hora` separada,
+    24 linhas, congelada pra sempre; `dim_data` continua 365/ano. O desenho
+    fundido (8.640 linhas/ano) não economiza nada, porque a coluna `hora` tem
+    que existir nos dois desenhos. Ele escolheu fundido primeiro e virou sozinho
+    quando viu isso.
+  - **Role-playing aplicado pela terceira vez, sem ajuda:** `hora_inicio_id` e
+    `hora_fim_id`. Fato vai a **9 colunas de chave** e 3 métricas.
+  - **Redundância identificada:** `data_fim`/`hora_fim` são deriváveis de início
+    + `duracao`. Numa linha com início 7h00, duração 30min e fim 9h00, ele viu
+    que não há como saber qual dos três está errado.
+- Quebrou:
+  - **Aritmética contaminada, 2 vezes.** `8640*365*24` (8.640 já era horas/ano,
+    contou três vezes) e `24*12*265` para uma tabela que tem 24 linhas. Mesmo
+    padrão do tanque de 7 L: número da tela entra na conta sem checar unidade.
+  - **"n sei"/"n lembro" para coisas triviais** — inclusive "quantas vezes as 7h
+    acontecem num ano".
+- Falha do professor (minha, não dele):
+  - Entreguei resposta pronta pelo menos 3 vezes no fim (`365`, `hora`, `24`)
+    em vez de fazer pergunta. Ele apontou isso sozinho e estava certo.
+  - Causa: sessão esticada muito além do sinal de fadiga. Ele pediu pra seguir
+    3 vezes; eu segui. A sessão 3 foi cortada no mesmo sinal e rendeu mais.
+  - **Regra nova: quando eu começar a entregar resposta, a sessão acabou.**
+    Esse é o sinal objetivo, não o cansaço declarado.
+- Aberto (decidir na próxima):
+  - `data_fim`/`hora_fim` ficam ou saem? Redundância que pode ficar
+    inconsistente contra 4 colunas a menos e cálculo em query time.
+  - Nomear a universidade e declarar as premissas do gerador por escrito.
+- Retomo em:
+  1. Revisão com exemplo concreto: FK NULL num JOIN — o que acontece com a linha.
+  2. Decidir `data_fim`/`hora_fim`.
+  3. Escrever o star schema completo em arquivo versionado do repositório.
+     Primeiro artefato do projeto. **Sem começar sessão nova antes disso.**
