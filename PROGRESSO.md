@@ -5,23 +5,34 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
 ## Pontos frágeis (revisar)
 
 - **Não olhar a tela** — respondeu "n sei"/"n lembro" 4 vezes na sessão 4 para
-  informação escrita 2-3 mensagens acima. Não é memória, é não reler. Antes de
-  aceitar "n lembro", mandar ele olhar.
+  informação escrita 2-3 mensagens acima. Não é memória, é não reler. Reincidiu
+  na sessão 6 na forma mais crua possível: respondeu "3" três vezes seguidas
+  para uma contagem cuja resposta era 1, com as duas tabelas desenhadas na tela.
+  **Antídoto que funcionou, e é ferramenta padrão a partir de agora: mandar ele
+  copiar e colar as linhas em vez de contar de cabeça.** Resolveu em uma
+  tentativa o que três perguntas não resolveram.
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
-- **NULL em FK dentro de JOIN** — derivado por inteiro na sessão 5, mas o ponto
-  de partida continua errado: chutou 65 (soma tudo) antes de rodar o JOIN. Sabe
-  derivar, não sabe de cara. Testar de novo daqui a duas sessões, sem andaime.
 - **Responder contra o que acabou de derivar** — sessão 5, duas vezes seguidas:
   disse que `0 = 0` é verdadeiro e que a linha entra no SUM, e no passo seguinte
   respondeu que a soma continuava 35. Não é desconhecimento, é não reler a
   própria resposta de duas linhas acima. Mesma raiz de "não olhar a tela".
+  Sessão 6, três vezes na mesma tabela: concluiu "`hora_id` pode ser a própria
+  hora" e colou `dim_hora` com `hora_dia` junto, duas vezes depois de apontado.
 - **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
   de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
   unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
   `linhas`. Regra fixada por ele: número entra na conta com o rótulo colado; se
-  não souber escrever o rótulo, não pode usar o número ainda.
+  não souber escrever o rótulo, não pode usar o número ainda. Reincidiu na
+  sessão 6: perguntado **em quantas linhas** um texto aparecia, montou
+  `2.000.000 × 12 ÷ 25` com os bytes do exercício anterior, que já tinha
+  acabado. A unidade até fechava em `linhas` — respondia outra pergunta. Sinal
+  novo: número que sobrou na tela é matéria-prima de conta inventada.
+- **Vírgula sobrando antes do fecha-parêntese** — quatro vezes na sessão 6,
+  em três tabelas. Mecânico, não conceitual, mas para o arquivo inteiro. Ele
+  ainda não rodou o SQL em banco nenhum — é erro que sumiria sozinho no
+  primeiro `psql`.
 - **Julgar número antes de calcular** — disse "é um número muito alto" antes de
   dividir 5.000.000 por 730. Deu 6.849, que é uma empresa média.
 - **Chutar premissa em vez de derivar** — sessão 4: inventou "1 a 2
@@ -54,6 +65,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   iniciais corrigidos por dedução, não por dica.
 - **Hábito de olhar o dado** (sessão 2) — abriu a fatura, trouxe o inteiro (3) e
   descreveu as três linhas com estabelecimento, valor e data.
+- **NULL em FK dentro de JOIN** (sessão 6) — o teste marcado na sessão 5
+  ("daqui a duas sessões, sem andaime") foi aplicado uma sessão depois e passou
+  frio: NULL não casa com nada, a linha não aparece no INNER JOIN, o `SUM` não
+  soma o valor dela e o número chega errado no relatório **sem erro nenhum**.
+  Três perguntas, três acertos, zero andaime.
 - **Separar métrica de dimensão ao escrever** (sessão 3) — colapsou tudo em
   "métricas" na primeira tentativa; separou correto na segunda, aplicando a
   própria régua item por item.
@@ -331,3 +347,77 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
      coluna no arquivo.
   3. Revisão hostil do que ele escreveu: tipo, PK, FK, membro 0 em cada
      dimensão.
+
+### Sessão 6 — 2026-09-15
+- Fase: 1, semana 1 — modelagem dimensional e star schema
+- Feito:
+  - **`modelo/schema.sql` existe. Primeiro artefato de código do projeto**, na
+    sexta sessão. Três dimensões escritas por ele, linha por linha:
+    `dim_modal`, `dim_categoria`, `dim_hora`. SQL válido.
+  - **FK NULL em JOIN: aprovado sem andaime.** Ver "Resolvido".
+  - **Defesa da chave substituta derivada inteira, nas duas pernas.**
+    Espaço: 25 bytes de texto contra 4 de inteiro = 21 bytes/linha ×
+    5.000.000 de linhas = 105 MB, por coluna, e o fato tem 9 colunas de chave.
+    Manutenção: renomear um modal é `UPDATE` em **1** linha contra
+    **2.000.000**. Terceira perna entregue por mim: enquanto 2.000.000 são
+    reescritas, o relatório mostra dois modais onde existe um.
+  - **`UNIQUE` em coluna de nome.** Viu que `PRIMARY KEY` protege só o id e que
+    `NOT NULL` não impede repetição — `1│ônibus` e `7│ônibus` passam, e o
+    relatório mostra dois ônibus com metade do gasto cada. Mesmo estrago do
+    rename pela metade, por outra porta, de novo silencioso.
+  - **Régua fixada: `UNIQUE` vai na coluna que identifica a linha, não na que
+    agrupa linhas.** Derivada por teste concreto: com `UNIQUE` em `periodo_dia`,
+    `dim_hora` nunca passaria de ~5 linhas, e precisa de 24.
+  - **Chave natural × chave substituta.** Escolheu `hora_id` = a própria hora
+    (0–23) em vez de id inventado, pelos dois motivos certos: a hora já é única
+    e nunca muda de nome. Modal muda de nome, hora não.
+  - **Membro "Não se aplica" mudou de `0` para `-1`**, proposta dele. O
+    argumento ele não achou sozinho (perguntado qual dimensão tem `0` como valor
+    real, respondeu `dim_usuario`), mas fechou depois: `hora_id = 0` é
+    meia-noite, hora real e cara. Regra uniformizada: `-1` em todas as
+    dimensões.
+  - **Dimensão de rótulo.** Viu que `dim_hora` só com `hora_id` não serve pra
+    nada, porque a reitoria não pergunta "quantas viagens às 7h", pergunta
+    "quantas no pico da manhã". `periodo_dia` entrou por isso.
+  - **Convenção de nome fechada: sufixo `_id`**, e ele deu a razão certa — a
+    parte antes do `_id` nomeia o **papel**, não a tabela. É o que faz
+    `origem_id` e `destino_id` conviverem apontando pra `dim_local`.
+  - **Ordem das tabelas no arquivo: dimensões primeiro.** Chegou na ordem certa
+    pela razão errada ("servem de filtro" — isso é tempo de query). A razão é
+    tempo de criação: a FK do fato referencia uma tabela que precisa já existir.
+  - **Role-playing: errou e se corrigiu sozinho.** Escreveu `dim_hora` com
+    `hora_partida` e `hora_chegada` dentro — os papéis dentro da dimensão.
+    Lembrado da própria frase da sessão 4 ("uma tabela não é uma coluna"),
+    consertou sem eu dar a resposta.
+- Quebrou:
+  - **Contagem de 5 linhas errada três vezes seguidas.** Ver "Não olhar a tela".
+  - **Conta inventada com bytes** numa pergunta que era de contagem. Ver
+    "Número sem rótulo".
+  - **`hora_dia` mantida três vezes** depois de concluir que era redundante.
+  - **Off-by-one nos valores da hora:** 7 da manhã → escreveu 6; 23h → 22.
+    Levou a posição na lista em vez do valor. Mesmo mecanismo, outra roupa.
+  - **"n sei" antes de tentar, 2 vezes** — inclusive para "quais são os 24
+    valores de uma tabela de horas".
+  - Vírgula sobrando antes do `)`, 4 vezes.
+  - Não percebeu que o arquivo não tinha sido salvo; colava do buffer.
+- Método:
+  - **Encolher o problema funcionou de novo.** 5.000.000 de linhas → 5 linhas
+    na tela, e o raciocínio destravou na hora.
+  - **Copiar e colar em vez de contar de cabeça** é a descoberta de método da
+    sessão. Adotar sempre que vier resposta contra o que está escrito na tela.
+  - Ele pediu a sintaxe de `CREATE TABLE` ("não conheço"). Entregue como
+    gramática + exemplo de um domínio que não é o dele (`dim_cor`). Decisão
+    correta: sintaxe é conhecimento, modelagem é raciocínio.
+- Aberto (decidir na próxima):
+  - **`CHECK` em `dim_hora`** para travar `hora_id` entre 0 e 23. Deixado como
+    isca para abrir a sessão 7 — ele foi avisado.
+  - `INSERT` do membro `-1` em cada dimensão. Nenhum foi escrito ainda.
+  - Faltam `dim_local`, `dim_data`, `dim_usuario` e `fato_transporte`.
+  - **`data_fim_id` / `hora_fim_id` ficam ou saem — terceira sessão em aberto.**
+    Decidir quando escrever o fato, não antes.
+  - Nomear a universidade e declarar as premissas do gerador por escrito.
+- Retomo em:
+  1. `CHECK` em `dim_hora`: qual restrição impede `hora_id = 99`.
+  2. Escrever `dim_usuario` e `dim_local` — e `dim_local` levanta pergunta nova:
+     o que é uma linha dela, um endereço ou um bairro?
+  3. Os `INSERT`s do membro `-1`.
