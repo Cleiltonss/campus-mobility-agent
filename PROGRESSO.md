@@ -10,7 +10,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   para uma contagem cuja resposta era 1, com as duas tabelas desenhadas na tela.
   **Antídoto que funcionou, e é ferramenta padrão a partir de agora: mandar ele
   copiar e colar as linhas em vez de contar de cabeça.** Resolveu em uma
-  tentativa o que três perguntas não resolveram.
+  tentativa o que três perguntas não resolveram. Sessão 7, três vezes: respondeu
+  `dim_local` a uma pergunta sobre hora; escreveu chave `2` nos três `INSERT`
+  de uma seção intitulada "os `INSERT` do membro `-1`"; inventou a coluna
+  `periodo` com `periodo_dia` escrita duas linhas abaixo na tela. **E duas
+  vezes respondeu de cabeça depois de mandado escrever a lista** — o antídoto
+  só funciona se ele de fato escrever.
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -20,6 +25,8 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   própria resposta de duas linhas acima. Mesma raiz de "não olhar a tela".
   Sessão 6, três vezes na mesma tabela: concluiu "`hora_id` pode ser a própria
   hora" e colou `dim_hora` com `hora_dia` junto, duas vezes depois de apontado.
+  Sessão 7: afirmou "não existe" caso de `-1` em `dim_hora` e, dois passos
+  depois, deu `-1` para a viagem de metrô sem registro de saída.
 - **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
   de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
   unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
@@ -28,11 +35,25 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   sessão 6: perguntado **em quantas linhas** um texto aparecia, montou
   `2.000.000 × 12 ÷ 25` com os bytes do exercício anterior, que já tinha
   acabado. A unidade até fechava em `linhas` — respondia outra pergunta. Sinal
-  novo: número que sobrou na tela é matéria-prima de conta inventada.
+  novo: número que sobrou na tela é matéria-prima de conta inventada. Sessão 7: pedido
+  o resultado no formato `nome_modal | soma`, respondeu `10`.
 - **Vírgula sobrando antes do fecha-parêntese** — quatro vezes na sessão 6,
   em três tabelas. Mecânico, não conceitual, mas para o arquivo inteiro. Ele
   ainda não rodou o SQL em banco nenhum — é erro que sumiria sozinho no
   primeiro `psql`.
+  Sessão 7, mais três da mesma família: `==` em vez de `=`, `;` faltando nos
+  três `INSERT`, nome de coluna inventado. **Sétima sessão sem rodar nada.**
+- **Número lido como posição, não como valor** — sessão 7: disse que
+  `hora_id = 99` era "posição 100", numa tabela vazia. `PRIMARY KEY` não
+  numera posição e não sabe quantas linhas existem. Mesma raiz do off-by-one da
+  sessão 6 (7h → 6), e reincidiu na mesma troca: respondeu "0 a 23" e "24
+  valores" certo, e logo depois que `24` estava entre os válidos.
+- **Arquivo não salvo** — sessão 6 e sessão 7 (2 vezes). Cola do buffer e diz
+  que está pronto. Verificar no disco antes de aceitar, sempre.
+- **Fecha a sessão em sintaxe, não em mecanismo** — as 3 frases da sessão 7
+  foram todas forma (`CHECK` valida, `-1` é não se aplica, `INSERT INTO` é
+  assim). O porquê que ele tinha derivado 20 min antes não voltou nem na
+  segunda tentativa. Sinal de que o raciocínio da sessão não virou memória.
 - **Julgar número antes de calcular** — disse "é um número muito alto" antes de
   dividir 5.000.000 por 730. Deu 6.849, que é uma empresa média.
 - **Chutar premissa em vez de derivar** — sessão 4: inventou "1 a 2
@@ -421,3 +442,98 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
   2. Escrever `dim_usuario` e `dim_local` — e `dim_local` levanta pergunta nova:
      o que é uma linha dela, um endereço ou um bairro?
   3. Os `INSERT`s do membro `-1`.
+
+### Sessão 7 — 2026-09-16
+- Fase: 1, semana 1 — modelagem dimensional e star schema
+- Feito:
+  - **Primeiro `CHECK` do projeto**, escrito e defendido por ele:
+    `CHECK (hora_id BETWEEN 0 AND 23 OR hora_id = -1)`.
+  - **`CHECK` descreve o válido, não o proibido.** Derivado por contagem: 24
+    valores válidos contra lista infinita de inválidos nos dois sentidos
+    (`24, 25, …` e `-1, -2, …`). Proibido não se lista.
+  - **Conflito entre duas decisões dele mesmo, achado e resolvido.** O
+    `CHECK (hora_id >= 0 AND hora_id <= 23)` bloqueava o membro `-1` decidido
+    na sessão 6. Ele afirmou "não existe caso de -1 na dim_hora" e dois passos
+    depois, diante do caso concreto (catraca do metrô registra entrada e não
+    registra saída), respondeu `-1` sem hesitar.
+  - **Escolheu a versão B do `CHECK` com argumento próprio.** Entre
+    `>= -1 AND <= 23` e `BETWEEN 0 AND 23 OR = -1` — que aceitam e recusam
+    exatamente os mesmos valores — escolheu a segunda ao ver que a primeira faz
+    o `-1` parecer hora legítima. Reconheceu o schema como documentação.
+  - **Três `INSERT` do membro `-1` escritos e salvos.**
+  - **Rótulo do membro `-1` corrigido por ele.** Escreveu primeiro
+    `(-1, 'onibus')`; levado ao significado da linha, viu que ela dizia "quando
+    não sei o modal, o modal é ônibus", e que isso soma viagem desconhecida
+    dentro do ônibus no relatório da reitoria, sem erro nenhum.
+  - `modelo/schema.sql` alterado e salvo. Regra da sessão 5 cumprida.
+- Quebrou:
+  - **Role-playing: lembrou o resultado, não o mecanismo.** Sabia QUAIS colunas
+    tinha tirado da `dim_hora` (`hora_partida`, `hora_chegada`); as duas razões
+    que deu estavam erradas (meia-noite 0/24; "reitor só quer o período" — essa
+    é a razão de `periodo_dia` entrar, não das outras saírem). Precisou de 5
+    perguntas até "uma linha dessa tabela descreve um deslocamento", e ainda
+    assim não nomeou o que a tabela virava: um segundo fato.
+  - **`dim_local` como resposta a uma pergunta sobre hora**, com
+    `fato_transporte` colado por ele três mensagens acima.
+  - **Chave `2` nos três `INSERT`**, numa seção cujo título era "os `INSERT` do
+    membro `-1`". Copiou a forma do exemplo e perdeu o enunciado.
+  - **Número lido como posição.** Disse que `hora_id = 99` era "posição 100",
+    em tabela vazia. Mesma raiz do off-by-one de ontem: número como lugar numa
+    lista, não como valor. `PRIMARY KEY` não numera posição.
+  - **Off-by-one na mesma troca.** Respondeu "0 a 23" e "24 valores"
+    corretamente, e em seguida afirmou que `24` está entre os válidos.
+  - **Não escreveu a lista quando mandado, 2 vezes.** Respondeu de cabeça o que
+    devia ter copiado. O antídoto da sessão 6 só funciona se ele escrever.
+  - **Número sem rótulo.** Pedido o resultado no formato `nome_modal | soma`,
+    respondeu `10`.
+  - **Arquivo não salvo, 2 vezes.** Reincidência direta da sessão 6.
+  - **Sintaxe:** `==` em vez de `=`; `;` faltando nos três `INSERT`; nome de
+    coluna inventado (`periodo` em vez de `periodo_dia`, com a coluna certa
+    duas linhas abaixo na tela). Tudo sumiria no primeiro `psql`.
+  - **As 3 frases de fechamento saíram todas em sintaxe.** "CHECK é um
+    validador de condicional" é decoreba; o porquê (lista infinita de
+    inválidos) ele tinha derivado 20 minutos antes e não recuperou, nem na
+    segunda tentativa.
+- Método:
+  - **Travou de verdade uma vez** ("não to entendendo porra alguma"), quando
+    empilhei duas tabelas + JOIN + agregação numa pergunta só. O que destravou
+    foi **remover o JOIN**, não reduzir linhas: voltar a uma tabela e perguntar
+    o que a linha `-1` significa. Encolher não é só diminuir o número de
+    linhas — é tirar uma operação inteira. Falha do enunciado, minha.
+  - Isca plantada para a sessão 8, e ele foi avisado: "Não se aplica" e
+    "Desconhecido" não são a mesma coisa. Metrô não tem categoria de serviço
+    (não se aplica); a hora de saída do metrô existe e não foi registrada
+    (desconhecida). Se as duas caem em `-1`, a diferença some.
+- Aberto (decidir na próxima):
+  - `-1` é um membro só ou dois ("Não se aplica" × "Desconhecido")?
+  - Faltam `dim_local`, `dim_data`, `dim_usuario` e `fato_transporte`.
+    `dim_local` levanta pergunta nova: uma linha dela é um endereço ou um
+    bairro?
+  - **`data_fim_id` / `hora_fim_id` ficam ou saem — quarta sessão em aberto.**
+    Argumento novo de hoje: o caso do metrô mostra que a hora de fim pode ser
+    desconhecida já no dado de origem.
+  - Nomear a universidade e declarar as premissas do gerador por escrito.
+  - **Rodar o `schema.sql` num Postgres.** Sete sessões, zero execução. Metade
+    dos erros de hoje morreria sozinha no primeiro `psql`.
+- Falha do professor (minha, segunda vez; ele me pegou nas duas):
+  - Decidido que o banco sobe em Docker (**argumento dele**: "configura o
+    projeto, não só a minha máquina" — reprodutibilidade). Eu então **escrevi o
+    `docker-compose.yml` inteiro por ele**, apoiado na exceção de "YAML de
+    infra". Ele cortou na hora: "n mano, vc n ia me ensinar?". Certo. A exceção
+    existe para poupar burocracia, não para tirar dele algo que ele quer
+    aprender — e código que ele não escreveu é código que ele não defende.
+    Arquivo apagado. **Ele escreve na sessão 8.**
+  - Mesmo sinal da sessão 4: comecei a entregar resposta pronta → sessão já
+    tinha acabado. A regra existe e eu não a apliquei.
+  - Antes disso ele fez duas perguntas que valeram mais que meia sessão:
+    "em prod não é tudo Docker?" (derrubou meu plano de `brew install`) e
+    "ou é feito mais pelo VS mesmo?" (confusão cliente × servidor, mesma
+    família do Cloud Run × warehouse da sessão 1 — corrigida na hora).
+- Retomo em:
+  1. **Ele escreve o `docker-compose.yml`** e sobe o Postgres. Defender: por que
+     volume nomeado, por que healthcheck, por que a imagem `pgvector` e não a
+     `postgres` pura.
+  2. `psql -f modelo/schema.sql` — ler os erros do banco e consertar sozinho.
+  3. Revisão sem andaime: por que o `CHECK` descreve o válido e não o proibido.
+  4. `-1`: um membro ou dois.
+  5. `dim_local` — o que é uma linha dela.
