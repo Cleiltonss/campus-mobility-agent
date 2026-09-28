@@ -1,0 +1,12 @@
+services:
+  <nome_do_servico>:
+  image: postgres:latest
+  ports:
+    - "5432:5432"
+  environment:
+    <nome_da_variavel>: <valor>
+  volumes:
+    - <nome_vol>:<caminho>
+
+volumes:
+  <nome_vol>

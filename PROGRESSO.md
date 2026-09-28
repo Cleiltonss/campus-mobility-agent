@@ -16,6 +16,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   `periodo` com `periodo_dia` escrita duas linhas abaixo na tela. **E duas
   vezes respondeu de cabeça depois de mandado escrever a lista** — o antídoto
   só funciona se ele de fato escrever.
+  Sessão 8: perguntou "onde eu checo a porta?" com `5432` na primeira linha
+  da minha mensagem anterior; não achou a aba Docker Hub que aparecia no
+  próprio print; disse "n sei" para o nome do serviço que ele mesmo tinha
+  respondido duas mensagens antes ("banco"). Colou quando mandado (o
+  `CREATE TABLE`) — e aí acertou.
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -27,6 +32,10 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   hora" e colou `dim_hora` com `hora_dia` junto, duas vezes depois de apontado.
   Sessão 7: afirmou "não existe" caso de `-1` em `dim_hora` e, dois passos
   depois, deu `-1` para a viagem de metrô sem registro de saída.
+  Sessão 8, versão arquivo: derivou `postgres:18` contra `latest` com o
+  argumento certo, e no disco ficou `postgres:latest`. Decidiu `banco` como
+  nome do serviço, e no disco ficou `<nome_do_servico>`. **Decisão tomada no
+  chat que não chega ao arquivo.**
 - **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
   de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
   unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
@@ -49,11 +58,22 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   sessão 6 (7h → 6), e reincidiu na mesma troca: respondeu "0 a 23" e "24
   valores" certo, e logo depois que `24` estava entre os válidos.
 - **Arquivo não salvo** — sessão 6 e sessão 7 (2 vezes). Cola do buffer e diz
-  que está pronto. Verificar no disco antes de aceitar, sempre.
+  que está pronto. Verificar no disco antes de aceitar, sempre. Sessão 8:
+  salvou nas duas vezes pedidas. Melhorou — mas ver "decisão que não chega ao
+  arquivo" em "Responder contra o que acabou de derivar".
+- **Servidor × esquema** — sessão 8: derivou sozinho que o servidor sobe
+  antes das tabelas e existe sem elas. Mesmo assim pôs as tabelas dentro do
+  `docker-compose.yml` três vezes (na mensagem ao colega, em "o que precisa
+  conter no servidor", em "monta toda a estrutura de banco"). Compose sobe
+  servidor vazio; `schema.sql` cria as tabelas.
 - **Fecha a sessão em sintaxe, não em mecanismo** — as 3 frases da sessão 7
   foram todas forma (`CHECK` valida, `-1` é não se aplica, `INSERT INTO` é
   assim). O porquê que ele tinha derivado 20 min antes não voltou nem na
   segunda tentativa. Sinal de que o raciocínio da sessão não virou memória.
+  Sessão 8: 1 de 3 com mecanismo (servidor antes das tabelas, "pois sem
+  banco não dá pra criar tabelas"). As outras duas foram estrutura e fato. O
+  melhor da sessão — reprodutibilidade, `18` × `latest`, imagem × container —
+  não apareceu em nenhuma.
 - **Julgar número antes de calcular** — disse "é um número muito alto" antes de
   dividir 5.000.000 por 730. Deu 6.849, que é uma empresa média.
 - **Chutar premissa em vez de derivar** — sessão 4: inventou "1 a 2
@@ -537,3 +557,78 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
   3. Revisão sem andaime: por que o `CHECK` descreve o válido e não o proibido.
   4. `-1`: um membro ou dois.
   5. `dim_local` — o que é uma linha dela.
+
+### Sessão 8 — 2026-09-27
+- Fase: 1, semana 1 — Postgres local em Docker
+- Contexto: 11 dias sem sessão. Abriu com "lembro de nada"; com uma pista
+  ("n mano, vc n ia me ensinar?") recuperou que eu tinha gerado o `.yml`.
+- Feito:
+  - **Docker × `brew install`, fechado com evidência.** Partiu de "simular
+    produção" (vago). Rodou `git ls-files`: o Postgres do `brew` não está no
+    repositório; o que viaja no clone é o `docker-compose.yml`. Frase dele:
+    "a própria receita em código do banco". Palavra entregue:
+    reprodutibilidade.
+  - **Servidor antes das tabelas, com a assimetria, sozinho:** "sem banco não
+    dá pra criar tabelas, mas sem tabelas o banco ativo ainda pode existir."
+    Mesma lógica das dimensões antes do fato (sessão 6).
+  - **Receita em 4 itens, derivada por ele:** porta (chamou de "rota"),
+    usuário/senha, versão (chegou por "a data" → atualização de app no
+    celular), volume (chegou por "localhost": ideia certa — fora do container
+    —, palavra errada). "Container é descartável" entregue como fato.
+  - **Imagem × container** pela analogia `class Carro` / `meu_carro =
+    Carro()`. O print do Desktop não destravou; Python destravou em 2
+    perguntas.
+  - **`postgres:18` e não `latest`:** "latest é sempre a versão mais
+    atualizada" → o mesmo arquivo sobe Postgres diferente conforme o dia.
+    Descartou `19beta4` sozinho ao traduzir "beta" = teste.
+  - **Nome do serviço pelo papel.** Propôs `Transportation_Services`; o teste
+    do segundo caso (Airflow e API também são do projeto) derrubou. Chegou em
+    `banco` pelo papel: "airflow são os fluxos de trabalho".
+  - **Porta do host é escolha, não fato da máquina.** Achava que existia "o
+    número da minha máquina". Escolheu `5432:5432` — "é mais fácil pra
+    lembrar".
+  - `modelo/docker-compose.yml` criado e salvo, parcial.
+- Quebrou:
+  - **Clicou Run no Docker Desktop duas vezes**, a segunda logo depois de
+    avisado. Container `Engenheiro_IA` nasceu do clique e morreu sem senha.
+    O erro foi aproveitado: leu o log e apontou `password` como o item da
+    receita que faltou.
+  - `latest` lido como nome da imagem.
+  - Tabelas dentro do compose, 3 vezes. Ver "Servidor × esquema".
+  - "n sei" 5 vezes na segunda metade.
+  - `postgres:latest` e `<nome_do_servico>` no disco na hora das 3 frases,
+    contra as próprias decisões.
+- Falha do professor:
+  - **Mandei caçar a porta na documentação**, no navegador e depois no
+    Docker Desktop, cuja página da imagem é truncada (a nota no topo avisa).
+    ~20 min de fricção, frustração ("para de me mandar pro navegador, vai ser
+    tudo desktop"), e os dois cliques em Run aconteceram no meio da caça.
+    Porta, nome de variável e caminho são fato de documentação: entregar em
+    uma linha e guardar as perguntas para as decisões.
+  - A mensagem com os três fatos tinha 4 parágrafos + lista. Ele não leu a
+    primeira linha dela. "Uma pergunta por vez" vale para instrução também.
+- Método:
+  - **Analogia com código que ele já escreve** destrava conceito de infra.
+  - Sessão encerrada na sequência de "n sei", antes de eu entregar resposta.
+- Calendário (fato, não decisão): 8 sessões desde 2026-09-08, 11 dias
+  parado entre a 7 e a 8. O conteúdo ainda é de semana 1; pelo README a fase
+  1 vai até a semana 4 (~2026-10-05). Conversar na sessão 9 — sem mudar de
+  fase.
+- Aberto:
+  - Preencher `environment` (`POSTGRES_USER`, `POSTGRES_PASSWORD`,
+    `POSTGRES_DB`) e `volumes` (caminho `/var/lib/postgresql` no 18). Nome do
+    volume é decisão dele — e há um volume anônimo de hash para mostrar por
+    que nomear.
+  - **Senha em texto puro num arquivo que vai para o GitHub.** Ainda não
+    levantado. Isca da revisão hostil.
+  - Há um erro estrutural no arquivo que não apontei de propósito: o
+    `docker compose up` vai acusar, e ele lê o erro.
+  - Arquivo em `modelo/`; foi pedido na raiz. Ele defende onde fica.
+  - Quando não usar `5432` do lado do Mac.
+  - Herdados: `-1` um membro ou dois; `dim_local`; `data_fim_id` /
+    `hora_fim_id` (quinta sessão em aberto); nomear a universidade.
+- Retomo em:
+  1. Revisão sem andaime, com exemplo: por que `postgres:18` e não
+     `postgres:latest`.
+  2. Variáveis e volume, `docker compose up`, ler o erro sozinho.
+  3. `schema.sql` rodando dentro do banco. Oito sessões, zero execução.
