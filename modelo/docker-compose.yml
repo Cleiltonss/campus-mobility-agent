@@ -1,10 +1,12 @@
 services:
-  <nome_do_servico>:
-  image: postgres:latest
+  database:
+  image: postgres:18
   ports:
     - "5432:5432"
   environment:
-    <nome_da_variavel>: <valor>
+    POSTGRES_USER: alfred
+    POSTGRES_PASSWORD: 12345
+    POSTGRES_DB: transportes
   volumes:
     - <nome_vol>:<caminho>
 

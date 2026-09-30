@@ -21,6 +21,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   próprio print; disse "n sei" para o nome do serviço que ele mesmo tinha
   respondido duas mensagens antes ("banco"). Colou quando mandado (o
   `CREATE TABLE`) — e aí acertou.
+  Sessão 9: escreveu `USER`, `PASSWORD`, `DB` no arquivo com
+  `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` em negrito na minha
+  mensagem anterior. Mandado copiar os três nomes, copiou certo na primeira.
+  Mandado copiar a linha `image:` do disco, copiou certo. **O antídoto
+  funcionou nas duas vezes em que ele de fato colou.**
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -36,6 +41,9 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   argumento certo, e no disco ficou `postgres:latest`. Decidiu `banco` como
   nome do serviço, e no disco ficou `<nome_do_servico>`. **Decisão tomada no
   chat que não chega ao arquivo.**
+  Sessão 9: os dois consertados no disco. Mas do nome do serviço não lembrava
+  nem o valor nem o critério ("zero ideia"); rederivou pelo teste do segundo
+  caso (Airflow e API no mesmo compose) e chegou em `database`.
 - **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
   de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
   unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
@@ -61,6 +69,8 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   que está pronto. Verificar no disco antes de aceitar, sempre. Sessão 8:
   salvou nas duas vezes pedidas. Melhorou — mas ver "decisão que não chega ao
   arquivo" em "Responder contra o que acabou de derivar".
+  Sessão 9: 1 vez em 6 ("pronto" com `postgres:latest` ainda no disco). A
+  pista da bolinha na aba do VS Code resolveu na segunda.
 - **Servidor × esquema** — sessão 8: derivou sozinho que o servidor sobe
   antes das tabelas e existe sem elas. Mesmo assim pôs as tabelas dentro do
   `docker-compose.yml` três vezes (na mensagem ao colega, em "o que precisa
@@ -74,6 +84,27 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   banco não dá pra criar tabelas"). As outras duas foram estrutura e fato. O
   melhor da sessão — reprodutibilidade, `18` × `latest`, imagem × container —
   não apareceu em nenhuma.
+  Sessão 9: de novo 1 de 3 com mecanismo (`latest`: "não saberia o que o
+  colega está tendo de problema"), e com a palavra trocada: "reversibilidade"
+  no lugar de reprodutibilidade. As outras duas foram fato: "postgres é
+  armazenamento" sem o porquê (RAM some com o processo, disco não) e "prefixo
+  `POSTGRES_`" sem o porquê (a imagem ignora, calada, nome que não reconhece).
+  Chamou a imagem de "postgres desktop".
+- **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
+  ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
+  a diferença de versão e tratando o problema como "o meu está
+  desatualizado". "Não sei" para "por que você não consegue descobrir o erro
+  do colega". Com o problema diminuído (o erro acontece na sua máquina? o que é
+  diferente? o arquivo diz que é o 19?) chegou em "eu não sei qual versão ele
+  está" e no contrafactual com `postgres:18`. Mecanismo alcançado com
+  andaime, então ainda está frágil. Revisar sem andaime.
+- **Para que serve um banco (memória × persistência)** — sessão 9. Deu como
+  papel do Postgres "documentar" e depois "reflete o valor". Previu que uma
+  lista Python sobrevive ao fim do script ("salvou as informações"). Rodou
+  `python3 -c` duas vezes, viu `NameError`, e ainda leu "not defined" ao pé
+  da letra ("não foi definida?"). Chegou em "gerado sem armazenamento" e
+  então em "armazenamento". É a base de tudo o que ele está construindo:
+  revisar com o mesmo experimento, sem eu rodar a conta por ele.
 - **Julgar número antes de calcular** — disse "é um número muito alto" antes de
   dividir 5.000.000 por 730. Deu 6.849, que é uma empresa média.
 - **Chutar premissa em vez de derivar** — sessão 4: inventou "1 a 2
@@ -87,6 +118,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   `tabela_uber`, depois `dim_carro`. Na sessão 4 reincidiu duas vezes: chamou o
   fato de "tabela de corridas de uber" e escreveu "uber" dentro do próprio grão.
   Cinco vezes o mesmo erro: o nome não comporta o segundo caso (ônibus, metrô).
+  Sessão 9, sexta e sétima vez: `POSTGRES_DB: Subway` (metrô), e depois
+  `Modal`, que é o nome de uma dimensão só, para um banco que guarda alunos e
+  bairros também. Chegou em `transportes` com a dica de `fato_uber` →
+  `fato_transporte`. O teste do segundo caso ele aplica quando mandado, mas
+  ainda não sozinho.
 - **Prefixo `fato_` / `dim_`** — não viu que prefixo igual em todas as tabelas
   não carrega informação. Convenção entregue pronta, não deduzida.
 - **Grão com valor específico** — escreve o grão colando um valor concreto
@@ -632,3 +668,62 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
      `postgres:latest`.
   2. Variáveis e volume, `docker compose up`, ler o erro sozinho.
   3. `schema.sql` rodando dentro do banco. Oito sessões, zero execução.
+
+### Sessão 9 — 2026-09-29
+- Fase: 1, semana 1 — Postgres local em Docker
+- Feito:
+  - **Revisão `postgres:18` × `latest`**, com andaime. Ver pontos frágeis.
+    Mecanismo final, dele: "eu não sei qual versão ele está", e com `18` no
+    arquivo, "agora eu sei". Palavra: reprodutibilidade.
+  - **Primeira execução do projeto** (não do schema): `python3 -c` duas vezes
+    para testar se uma lista sobrevive ao fim do processo. Previu que sim,
+    rodou, leu o `NameError`. Memória (RAM) × disco saiu da execução, não da
+    minha explicação.
+  - **Papel do Postgres derivado:** "armazenamento". Daí o nome do serviço,
+    rederivado pelo teste do segundo caso: `database`.
+  - **`docker-compose.yml` no disco com as decisões dele:** `postgres:18`,
+    serviço `database`, `POSTGRES_USER: alfred`, `POSTGRES_DB: transportes`,
+    tudo em minúsculo (fato entregue: Postgres converte para minúsculo o nome
+    sem aspas em SQL).
+- Quebrou:
+  - "Não sei" em 2 das 4 perguntas da revisão, antes de diminuir o problema.
+  - Papel do Postgres: "documentar", "reflete o valor".
+  - Variáveis sem o prefixo `POSTGRES_`, com os nomes na tela.
+  - Nome do banco: `Subway`, depois `Modal`. Ver pontos frágeis.
+  - Nome do serviço: não lembrava nem o valor nem o critério da sessão 8.
+- Método:
+  - **Prever e rodar.** Três tentativas verbais erradas sobre o papel do
+    Postgres; um experimento de dois comandos, com previsão escrita antes,
+    destravou. Ele errou a previsão, e isso foi o que ensinou. Usar sempre
+    que a dúvida puder ser rodada em menos de 1 minuto.
+  - Copiar e colar funcionou nas duas vezes em que ele colou.
+- Falha do professor:
+  - Expliquei o que acontece com `PASSWORD` sem prefixo (a imagem ignora e
+    o container morre sem senha) em vez de deixar o `docker compose up`
+    mostrar. Eu tinha acabado de descobrir que prever e rodar funciona, e não
+    usei.
+  - A conversa de calendário prevista para esta sessão não aconteceu.
+- Aberto:
+  - **`POSTGRES_PASSWORD: 12345` em texto puro, num repositório que é
+    portfólio.** A pergunta "quem consegue ler essa senha depois do push?"
+    ficou sem resposta: ele encerrou a sessão nela. Se o commit de hoje levar
+    a senha, `git log -p` mostra que ela fica no histórico mesmo depois de
+    apagada do arquivo: usar isso como exemplo concreto.
+  - Erro estrutural no arquivo, ainda não apontado: `image`, `ports`,
+    `environment` e `volumes` estão no mesmo nível de `database:`, não
+    dentro dele. O `docker compose up` vai acusar, e ele lê o erro.
+  - Volume: nome é decisão dele; caminho é fato (`/var/lib/postgresql` no
+    18). O `<nome_vol>` do bloco `volumes:` do fim também está sem `:`.
+  - Arquivo em `modelo/`, e não na raiz. Ele defende onde fica.
+  - **Calendário:** fase 1 vai até a semana 4 (~2026-10-05) pelo README. O
+    conteúdo ainda é de semana 1, e o `schema.sql` nunca rodou. Conversar na
+    sessão 10, sem mudar de fase.
+  - Herdados: `-1` um membro ou dois; `dim_local`; `data_fim_id` /
+    `hora_fim_id` (sexta sessão em aberto); nomear a universidade.
+- Retomo em:
+  1. Revisão sem andaime, com o mesmo experimento: o que acontece com uma
+     lista Python quando o script termina, e por que o Postgres existe.
+  2. A senha na linha 8: quem lê depois do push, e onde ela deveria morar.
+  3. Volume, `docker compose up`, ler o erro estrutural sozinho.
+  4. `schema.sql` rodando dentro do banco. Nove sessões, zero execução.
+  5. Conversa de calendário.

@@ -3,7 +3,6 @@ CREATE TABLE dim_modal (
     nome_modal TEXT NOT NULL UNIQUE
 );
 
-
 CREATE TABLE dim_categoria (
     categoria_id INTEGER PRIMARY KEY,
     nome_categoria TEXT NOT NULL UNIQUE
