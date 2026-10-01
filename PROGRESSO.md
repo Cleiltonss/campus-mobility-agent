@@ -108,6 +108,7 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   minhas tabelas"), mas sem dizer onde o volume mora. As outras duas foram
   estrutura ("services é a hierarquia pai") e descrição de comando. RAM ×
   disco, que abriu a sessão, não apareceu.
+  Sessão 11: recusou as 3 frases ("to mt cansado").
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -116,6 +117,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   diferente? o arquivo diz que é o 19?) chegou em "eu não sei qual versão ele
   está" e no contrafactual com `postgres:18`. Mecanismo alcançado com
   andaime, então ainda está frágil. Revisar sem andaime.
+  Sessão 11, sem andaime: as duas primeiras certas de primeira (o arquivo
+  igual sobe Postgres diferente; "a da versão que ele está utilizando").
+  A terceira parou no meio ("agora eu sei em que versão ele está"), "n
+  lembro" para a consequência, e com uma pergunta de sim/não chegou em "a
+  versão não pode ser a culpada". Melhorou muito. Falta dizer sozinho o
+  último passo: fixar a versão tira um suspeito da investigação.
 - **Para que serve um banco (memória × persistência)** — sessão 9. Deu como
   papel do Postgres "documentar" e depois "reflete o valor". Previu que uma
   lista Python sobrevive ao fim do script ("salvou as informações"). Rodou
@@ -138,6 +145,10 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
 - **Chutar premissa em vez de derivar** — sessão 4: inventou "1 a 2
   abastecimentos por semana" e reaproveitou o 7 de "7 km/dia" como capacidade de
   tanque (7 L). Dado sintético exige premissa com fonte, não número de cabeça.
+  Sessão 11, versão calendário: "estender o projeto até dezembro", depois
+  "31 de dezembro", sem conta. A data ficava 4 dias **antes** do fim
+  original (4/jan/2027): uma extensão que encurtava. Mandado escrever a
+  conta, mandou só a data; no passo seguinte pediu para eu redefinir.
 - **"Métrica" como palavra** — sabe o conceito (aponta R$ 138 como métrica na
   hora), mas erra a frase "métrica mora no fato" toda vez que a pergunta é
   abstrata. Quarta inversão na sessão 3. Só acerta quando ancorado num exemplo
@@ -848,3 +859,54 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
   4. `modelo_database`: de onde veio esse nome, e onde o compose deveria
      ficar.
   5. `dim_local`: o que é uma linha dela.
+
+### Sessão 11 — 2026-09-30
+- Fase: 1, semana 4 de 8 (calendário redefinido nesta sessão)
+- Feito:
+  - **A sessão 10 tinha terminado sem commit.** Ele confirmou ("n"). Não
+    lembrava `git add` / `git commit` (entregues como fato). Commit
+    `7ce6491`, com a mensagem `sessao10`, que não diz nada.
+  - **Revisão `latest` × `18`**: 2 de 3 sem andaime, e a 3ª com um passo.
+    Ver pontos frágeis. Melhor resultado de revisão até aqui.
+  - **Calendário, finalmente (estava adiado havia 3 sessões).** Números
+    mostrados: semana 4 de 4, 0 de 10 itens do CURRICULO marcados, 10
+    sessões. Ele escolheu estender, com motivo próprio: tem emprego, não tem
+    prazo forçado, quer "aprender de fato". Argumento meu, que ele não usou:
+    a fase 1 é a #1 do ranking de vagas. Furo apontado: "aprender de fato"
+    não tem fim. Decisão final: **+4 semanas na fase 1, até 2026-11-02;
+    projeto com 21 semanas, até ~2027-01-31; reavaliar em 2026-11-02 com o
+    ritmo medido.** README atualizado (tabela de fases, GCP na semana 12).
+- Quebrou:
+  - "31 de dezembro" chutado. Ver "Chutar premissa".
+  - **Senha:** "vamos deixar o repositório privado". Privado resolve hoje.
+    O furo é que o README diz que o repo existe para ser aberto em
+    entrevista. Perguntado se o entrevistador acharia `12345` depois de a
+    linha ser apagada, respondeu "ignora, vamos seguir com a sessão".
+  - Disse "localhost" querendo dizer "local" (máquina × endereço de rede).
+  - Recusou as 3 frases. **Zero artefato: regra da sessão 5 quebrada.**
+  - Disse ele mesmo, e está certo: "n teve nenhuma evolução do projeto".
+- Falha do professor:
+  - **Sessão inteira em meta:** commit, push, senha, calendário. O
+    calendário era obrigatório, mas ocupou o lugar do artefato.
+  - **Conta do calendário em passos** ("17 semanas são quantos dias?") com
+    ele já frustrado. Calendário não é matéria da fase. Devia ter entregue a
+    conta direto, como fato de documentação. Ele cortou ("redefine o tempo
+    baseado na data que passei"), e a conta direta + 3 opções resolveu em
+    uma troca.
+  - Abri com enigma ("prevê a mensagem do último commit") → "que?". A
+    versão sim/não funcionou na hora.
+- Aberto:
+  - **Senha `12345` no histórico** (`efbe161`, `7ce6491`). Sem remote; ele
+    quer subir para o GitHub, como privado, para contar os commits.
+    Resolver antes de o repo ficar visível para qualquer pessoa.
+  - **`dim_local`, pergunta já feita e sem resposta:** Rua A, 120, Pinheiros
+    e Rua B, 45, Pinheiros: uma linha ou duas?
+  - Herdados: `-1` um membro ou dois; `data_fim_id` / `hora_fim_id`
+    (oitava sessão em aberto); nomear a universidade; `modelo_database` e
+    onde o compose deveria ficar.
+- Retomo em:
+  1. Revisão curta, no máximo 15 min, 3 perguntas.
+  2. **`dim_local`: a pergunta das duas ruas em Pinheiros.** Depois disso,
+     a tabela escrita no `schema.sql` e rodada no banco **na mesma sessão**.
+     Duas sessões seguidas sem artefato não podem acontecer.
+  3. `dim_usuario` e `dim_data`, se der tempo.
