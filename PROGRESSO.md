@@ -26,6 +26,10 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   mensagem anterior. Mandado copiar os três nomes, copiou certo na primeira.
   Mandado copiar a linha `image:` do disco, copiou certo. **O antídoto
   funcionou nas duas vezes em que ele de fato colou.**
+  Sessão 10: respondeu `Postgres` para "o dono que aparece na linha 2", com
+  `database:` colado por ele duas mensagens antes. Pedido o endereço do erro,
+  copiou o caminho do arquivo. Colou quando mandado (linhas 2, 7, 9, os dois
+  endereços lado a lado) e acertou em todas.
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -44,6 +48,13 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   Sessão 9: os dois consertados no disco. Mas do nome do serviço não lembrava
   nem o valor nem o critério ("zero ideia"); rederivou pelo teste do segundo
   caso (Airflow e API no mesmo compose) e chegou em `database`.
+  Sessão 10, duas vezes: completou `services.database.volumes` para a linha
+  10 e respondeu "linha 10" logo depois, duas vezes, para um erro cujo
+  endereço era só `volumes`. E a mais cara: concluiu na revisão que o dado
+  tem que ficar "fora" do container, escreveu o volume, e apostou que as
+  tabelas **não** sobreviveriam ao `down`/`up`. Versão arquivo, de novo: na
+  linha 13 aplicou a primeira resposta dele ("valor na mesma linha"), que
+  estava errada, e não a segunda (os dois-pontos), que estava certa.
 - **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
   de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
   unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
@@ -71,6 +82,8 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   arquivo" em "Responder contra o que acabou de derivar".
   Sessão 9: 1 vez em 6 ("pronto" com `postgres:latest` ainda no disco). A
   pista da bolinha na aba do VS Code resolveu na segunda.
+  Sessão 10: 1 vez (colou `- Airflow:database` do buffer; o disco ainda tinha
+  `<nome_vol>:<caminho>`). Nas outras quatro, salvou.
 - **Servidor × esquema** — sessão 8: derivou sozinho que o servidor sobe
   antes das tabelas e existe sem elas. Mesmo assim pôs as tabelas dentro do
   `docker-compose.yml` três vezes (na mensagem ao colega, em "o que precisa
@@ -90,6 +103,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   armazenamento" sem o porquê (RAM some com o processo, disco não) e "prefixo
   `POSTGRES_`" sem o porquê (a imagem ignora, calada, nome que não reconhece).
   Chamou a imagem de "postgres desktop".
+  Sessão 10: 1 de 3 pela terceira sessão seguida. A com mecanismo é a melhor
+  das três sessões ("por conter o mesmo volume com endereço, eu recupero
+  minhas tabelas"), mas sem dizer onde o volume mora. As outras duas foram
+  estrutura ("services é a hierarquia pai") e descrição de comando. RAM ×
+  disco, que abriu a sessão, não apareceu.
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -105,6 +123,16 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   da letra ("não foi definida?"). Chegou em "gerado sem armazenamento" e
   então em "armazenamento". É a base de tudo o que ele está construindo:
   revisar com o mesmo experimento, sem eu rodar a conta por ele.
+  Revisão da sessão 10: previu o `NameError` certo pelo motivo errado ("não
+  houve armazenamento na memória"; houve). Achava que a RAM guarda o valor
+  depois do fim do processo ("reativar o python3 para resgatar", "está
+  armazenada em outro lugar?", "na memória ram"). **Fato entregue: processo
+  termina → o sistema operacional toma a RAM de volta.** Ideia errada nova:
+  "o Postgres salva as informações na nuvem". Disco saiu com andaime ("um
+  arquivo?" → "HD?"). A 3ª pergunta (container apagado leva o disco de
+  dentro junto) saiu certa sem andaime. **E depois rodou o experimento real:
+  `down`/`up`, apostou que as tabelas sumiriam, viu as três no `\dt`.**
+  Continua frágil, mas agora tem uma evidência que ele mesmo produziu.
 - **Julgar número antes de calcular** — disse "é um número muito alto" antes de
   dividir 5.000.000 por 730. Deu 6.849, que é uma empresa média.
 - **Chutar premissa em vez de derivar** — sessão 4: inventou "1 a 2
@@ -125,6 +153,23 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   ainda não sozinho.
 - **Prefixo `fato_` / `dim_`** — não viu que prefixo igual em todas as tabelas
   não carrega informação. Convenção entregue pronta, não deduzida.
+  Sessão 10, **primeira vez deduzido por ele**: propôs `HD_externo` para o
+  volume (nome pelo mecanismo, não pelo dono); o teste do segundo caso
+  (volume do Airflow) gerou `HD_Airflow`; perguntado o que `HD_` diz se está
+  em todos, respondeu "é redundante". Depois disso: "n sei" para o nome e
+  `Airflow` escrito no volume do Postgres. Chegou em `database` copiando a
+  linha 2.
+- **Botão Run do Docker Desktop** — 3 vezes (duas na sessão 8, uma na 10). Na
+  10, deduziu pela evidência que o Run não lê o compose: `docker ps -a`
+  mostrou `IMAGE postgres:latest` contra `18` no arquivo, e erro de senha com
+  senha na linha 8. Frase dele: "ele não rodou meu compose". Regra fixada:
+  **Docker Desktop é só para olhar; quem lê o arquivo é `docker compose`.**
+- **Ler mensagem de erro** — sessão 10. Leu `services.ports must be a
+  mapping` respondendo "mapping?"; tomou o caminho do arquivo pelo endereço;
+  a palavra "endereço" colidiu com caminho de disco. Destravou com lacuna
+  (`_____._____.volumes`) e com a pergunta reduzida ("que palavra vem antes do
+  ponto?"). Mas, entendida a hierarquia, **consertou a indentação no arquivo
+  antes de responder**, e explicou certo depois. Habilidade nova, frágil.
 - **Grão com valor específico** — escreve o grão colando um valor concreto
   dentro dele. Errou duas vezes na sessão 2, corrigiu nas duas.
 - **Teste de unicidade do grão** — chegou na conclusão certa pelo raciocínio
@@ -727,3 +772,79 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
   3. Volume, `docker compose up`, ler o erro estrutural sozinho.
   4. `schema.sql` rodando dentro do banco. Nove sessões, zero execução.
   5. Conversa de calendário.
+
+### Sessão 10 — 2026-09-30
+- Fase: 1, semana 1 — Postgres local em Docker
+- Feito:
+  - **Revisão memória × persistência**, 3 perguntas. Ver pontos frágeis.
+  - **Volume nomeado escrito por ele:** `database:/var/lib/postgresql`, nome
+    pelo dono, com o bloco `volumes:` de fora declarando o volume. Deduziu
+    sozinho que o prefixo `HD_` seria redundante.
+  - **Run do Docker Desktop desmontado com evidência.** Ver pontos frágeis.
+  - **Primeiro erro de compose lido e consertado por ele.**
+    `services.ports must be a mapping` → hierarquia por indentação (frase
+    dele: "services > database > componentes"). Depois `volumes must be a
+    mapping` → linha 13 → faltavam os dois-pontos (mapping = dicionário
+    Python).
+  - **Primeiro `docker compose up` do projeto:** `postgres:18`, volume
+    `modelo_database`, "ready to accept connections".
+  - **Primeira execução do `schema.sql`, dez sessões depois.** 3 `CREATE
+    TABLE`, 3 `INSERT`, zero erro. Corrigiu `exce` → `exec` sozinho.
+  - **Experimento `down`/`up`:** apostou que as tabelas sumiriam. Container
+    novo (conferido pela data de criação), `\dt` mostrou as três. Explicou
+    pela linha 11; com andaime chegou em "o container novo foi ligado ao
+    mesmo volume".
+  - `modelo/docker-compose.yml` completo e válido (`docker compose config`).
+- Quebrou:
+  - Revisão: RAM persistindo depois do processo; "Postgres salva na nuvem".
+  - "Linha 10" duas vezes contra a própria derivação; aposta do `down`/`up`
+    contra a própria revisão. Ver pontos frágeis.
+  - Nome do volume: `HD_externo`, `HD_Airflow`, "n sei", `Airflow`,
+    `Postgres`, até `database`.
+  - **Não sabia o que é `cd`** ("como eu dei cd modelo? onde tá criado?").
+    Terminal básico ainda não é chão firme.
+  - "n sei" 4 vezes; no fim, "diminui mais". Pedir menor em vez de travar é
+    melhor que "n sei", mas foi o sinal para fechar.
+  - 3 frases: 1 com mecanismo. Ver pontos frágeis.
+- Método:
+  - **Prever e rodar, 3 vezes.** "vai dar certo" (errou: erro de
+    indentação), "sobe" (errou: erro dos dois-pontos), "roda" (acertou),
+    "não vão estar" (errou, e foi o melhor momento da sessão).
+  - **Lacuna em vez de palavra ambígua.** "Endereço" virou caminho de disco
+    na cabeça dele; `_____._____.volumes` resolveu na hora.
+  - Copiar e colar: funcionou nas quatro vezes em que ele colou.
+  - Ele perguntou se eu o fiz errar de propósito. Resposta dada: os erros já
+    estavam no arquivo desde a sessão 8; o que eu fiz de propósito foi não
+    apontar, para a mensagem de erro apontar.
+- Falha do professor:
+  - **Mensagem do `schema.sql` com quatro coisas** (segundo terminal, `cd`,
+    comando, lacunas) → "entendi nada da pergunta". Mesmo erro da sessão 8.
+    Uma coisa por mensagem vale para instrução, não só para pergunta.
+  - Frase confusa ("o `HD_` está sendo o `fato_uber` desta sessão ao
+    contrário") logo antes de um "n sei". Analogia que precisa ser decifrada
+    não ajuda.
+  - **Conversa de calendário não aconteceu pela segunda sessão seguida.**
+- Aberto:
+  - **Senha `12345` em texto puro.** Já está no histórico (commit `efbe161`
+    e o de hoje). Não há remote: nada vazou ainda. **Resolver antes do
+    primeiro push**, com `git log -p` como exemplo concreto do histórico.
+  - **Nome do projeto no compose é `modelo`**, o nome da pasta: daí
+    `modelo_database` e `modelo-database-1`. Gancho concreto para decidir se
+    o compose fica em `modelo/` ou na raiz.
+  - `\dt` mostra 3 tabelas. Faltam `dim_local`, `dim_data`, `dim_usuario` e
+    `fato_transporte`.
+  - O Postgres ficou rodando em segundo plano (`up -d`).
+  - Herdados: `-1` um membro ou dois; `dim_local`; `data_fim_id` /
+    `hora_fim_id` (sétima sessão em aberto); nomear a universidade.
+  - **Calendário:** fase 1 termina ~2026-10-05 pelo README. Nenhum item do
+    CURRICULO da fase 1 marcado. O conteúdo ainda é star schema + Postgres
+    local.
+- Retomo em:
+  1. Revisão sem andaime: `latest` × `18`. Ele mesmo nomeou como o que
+     quebrou na sessão 9.
+  2. **Conversa de calendário, antes de qualquer código.** Terceira vez
+     adiada.
+  3. A senha: quem lê depois do push, e onde ela deveria morar.
+  4. `modelo_database`: de onde veio esse nome, e onde o compose deveria
+     ficar.
+  5. `dim_local`: o que é uma linha dela.
