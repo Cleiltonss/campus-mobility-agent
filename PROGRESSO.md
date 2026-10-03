@@ -30,6 +30,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   `database:` colado por ele duas mensagens antes. Pedido o endereço do erro,
   copiou o caminho do arquivo. Colou quando mandado (linhas 2, 7, 9, os dois
   endereços lado a lado) e acertou em todas.
+  Sessão 12: respondeu sobre a sessão 10 quando a pergunta era a 11; fez a
+  revisão do `CHECK` com o `schema.sql` aberto e a linha 12 (a do `CHECK`)
+  selecionada; escreveu `check_id` para a coluna `hora_id`; "onde que ta?"
+  para dois cabeçalhos de tabela três mensagens acima. Com os dois cabeçalhos
+  repostos lado a lado, acertou na hora.
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -55,6 +60,10 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   tabelas **não** sobreviveriam ao `down`/`up`. Versão arquivo, de novo: na
   linha 13 aplicou a primeira resposta dele ("valor na mesma linha"), que
   estava errada, e não a segunda (os dois-pontos), que estava certa.
+  Sessão 12, duas vezes: respondeu "não" (a rua não volta) e "sim" (o
+  endereço chega no bairro) e, na pergunta seguinte, escolheu bairro. E
+  defendeu `UNIQUE` em `bairro` com a frase "mais de um endereço pode
+  existir em um bairro", que é o argumento contra.
 - **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
   de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
   unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
@@ -71,6 +80,9 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   primeiro `psql`.
   Sessão 7, mais três da mesma família: `==` em vez de `=`, `;` faltando nos
   três `INSERT`, nome de coluna inventado. **Sétima sessão sem rodar nada.**
+  Sessão 12: duas vírgulas faltando na `dim_local`, e 2 valores para 4
+  colunas no `INSERT` do `-1`. Previu "passa" nas duas; o banco pegou as
+  duas e ele consertou sozinho. Rodando, esse item deixa de ser problema.
 - **Número lido como posição, não como valor** — sessão 7: disse que
   `hora_id = 99` era "posição 100", numa tabela vazia. `PRIMARY KEY` não
   numera posição e não sabe quantas linhas existem. Mesma raiz do off-by-one da
@@ -84,6 +96,8 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   pista da bolinha na aba do VS Code resolveu na segunda.
   Sessão 10: 1 vez (colou `- Airflow:database` do buffer; o disco ainda tinha
   `<nome_vol>:<caminho>`). Nas outras quatro, salvou.
+  Sessão 12: 1 vez. O `INSERT` do `-1` certo no editor e no banco, e o disco
+  com a versão de 2 valores. Salvou ao ser avisado. Nas outras três, salvou.
 - **Servidor × esquema** — sessão 8: derivou sozinho que o servidor sobe
   antes das tabelas e existe sem elas. Mesmo assim pôs as tabelas dentro do
   `docker-compose.yml` três vezes (na mensagem ao colega, em "o que precisa
@@ -109,6 +123,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   estrutura ("services é a hierarquia pai") e descrição de comando. RAM ×
   disco, que abriu a sessão, não apareceu.
   Sessão 11: recusou as 3 frases ("to mt cansado").
+  Sessão 12: 0 de 3 na primeira tentativa (sintaxe do `UNIQUE` composto,
+  "4 colunas = 4 valores", "só o conjunto é único"). Com uma pergunta ("por
+  que nenhuma das três pode ser `UNIQUE` sozinha?") a terceira saiu com
+  mecanismo e exemplo próprio: Rua X 13 em duas cidades é outro lugar, e o
+  `UNIQUE` sozinho barraria. Endereço × bairro e válido × proibido não
+  apareceram.
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -181,6 +201,31 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   (`_____._____.volumes`) e com a pergunta reduzida ("que palavra vem antes do
   ponto?"). Mas, entendida a hierarquia, **consertou a indentação no arquivo
   antes de responder**, e explicou certo depois. Habilidade nova, frágil.
+  Sessão 12, melhorou: leu sozinho "Cannot connect to the Docker daemon"
+  ("docker n está ativo"); consertou sozinho o `syntax error at or near
+  "bairro"` e disse que a vírgula faltava na linha de cima; leu "more
+  target columns than expressions" com só as duas palavras traduzidas.
+  Regra entregue: **o erro aponta onde o banco percebeu, não onde o erro
+  está; se a palavra apontada parece certa, olhar a linha de cima.**
+- **`CHECK`: lista do válido × lista do proibido** — revisão da sessão 12.
+  Pergunta 1 certa (o banco recusa; disse "tabela" querendo dizer linha).
+  Pergunta 2 com andaime: em vez do porquê, escreveu a versão proibida como
+  `check_id < 0 AND check_id > 23`, um `AND` que nenhum número satisfaz.
+  Testando com 99, viu que essa lista não proíbe nada, que o 99 entra e que o
+  banco não avisa ("erro silencioso", palavra dele). Fechou com lacuna:
+  **a lista do proibido erra calada, a do válido erra fazendo barulho.**
+  Argumento melhor que o da sessão 7 (lista infinita). Pergunta 3 certa sem
+  andaime: na versão B o `-1` aparece como caso à parte para quem lê depois;
+  na A fica "inibido" no intervalo (schema é documentação).
+- **Grão da dimensão: guardar o mais fino** — sessão 12, `dim_local`.
+  Escolheu bairro, "não sei defender", "n sei" para a rua do ponto de
+  embarque. Destravou com as duas versões desenhadas: na de bairro, "Rua A"
+  não aparece em linha nenhuma; na de endereço, o `GROUP BY bairro` ainda
+  funciona. Escolheu bairro de novo, com "serve de filtro", argumento que
+  vale para as duas versões. Chegou em endereço com "eu sei o local exato e
+  o bairro". Regra entregue: **guarda o grão mais fino que você tem; o fino
+  sobe com `GROUP BY`, o grosso nunca desce.** Revisar sem andaime em outra
+  dimensão (`dim_data`).
 - **Grão com valor específico** — escreve o grão colando um valor concreto
   dentro dele. Errou duas vezes na sessão 2, corrigiu nas duas.
 - **Teste de unicidade do grão** — chegou na conclusão certa pelo raciocínio
@@ -910,3 +955,69 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
      a tabela escrita no `schema.sql` e rodada no banco **na mesma sessão**.
      Duas sessões seguidas sem artefato não podem acontecer.
   3. `dim_usuario` e `dim_data`, se der tempo.
+
+### Sessão 12 — 2026-10-02
+- Fase: 1, semana 4 de 8 — modelagem dimensional, `dim_local`
+- Feito:
+  - **O que quebrou na 11**, nas palavras dele: "só definimos datas". Mais a
+    reclamação procedente da conta de calendário em passos (falha minha, já
+    registrada).
+  - **Revisão do `CHECK` da `dim_hora`**: 1 e 3 certas, 2 com andaime. Ver
+    pontos frágeis. Saiu um argumento novo e melhor: o proibido erra calado,
+    o válido erra fazendo barulho.
+  - **`dim_local` decidida, escrita e rodada no banco.** Primeiro artefato
+    desde a sessão 10.
+    - Grão: **uma linha por endereço**, com `bairro` e `cidade` como colunas.
+      Defesa: endereço responde rua e bairro; bairro responde só bairro.
+    - `cidade` entrou pelo furo dos dois Centros (São Paulo e Osasco): sem
+      ela, o `GROUP BY bairro` soma as duas cidades numa linha só, sem erro.
+      Propôs `estado` primeiro; preenchendo a tabelinha, viu que é SP nas duas.
+    - **`UNIQUE` composto `(endereco, bairro, cidade)`**, derivado por três
+      testes: `endereco` sozinho barra a Rua X de Osasco; `bairro + cidade`
+      barra a Rua B de Pinheiros; `endereco + cidade` barra a Rua X de outro
+      bairro de SP. Separou sozinho `UNIQUE` em cada coluna (A) de um
+      `UNIQUE` sobre as três (B). Sintaxe entregue com exemplo de fora
+      (`chamada`, `turma + numero`).
+    - Tirou o `UNIQUE` da linha do `endereco` sem eu pedir.
+    - Membro `-1` com `'Não se aplica'` nas três colunas de texto.
+  - **Prever e rodar, duas vezes, duas previsões erradas** ("passa sim"), as
+    duas pegas pelo banco e consertadas por ele.
+  - **Arquivo × banco**: perguntado qual `dim_local` estava no banco depois
+    de mudar o arquivo, respondeu "velha" na hora. `DROP TABLE` + `CREATE`
+    de novo (tabela vazia), conferido com `\d dim_local`.
+  - `\dt` agora com 4 tabelas.
+- Quebrou:
+  - "n sei" 4 vezes (defender bairro, rua do ponto, quantos Centros,
+    combinação do `UNIQUE`). Todas destravaram encolhendo o exemplo.
+  - Escolheu bairro contra as próprias respostas. Ver pontos frágeis.
+  - "fica tudo em osasco" para o estado das duas cidades; lacuna resolveu.
+  - 3 frases: zero de três com mecanismo na primeira. Ver pontos frágeis.
+- Método:
+  - **Tabela de 2 linhas desenhada** destravou todos os "n sei" da sessão.
+    Melhor que qualquer pergunta abstrata.
+  - **Rodar só o bloco novo no `psql` interativo**, para o erro não se
+    misturar com "already exists" das tabelas antigas.
+  - Previsão sim/não antes de rodar, mesmo quando ele acerta pouco: as duas
+    erradas foram as duas lições de sintaxe que mais pegaram.
+- Aberto:
+  - **O `schema.sql` não roda duas vezes.** Rodado inteiro hoje, daria
+    "already exists" nas 4 tabelas e chave duplicada nos 4 `-1`. Gancho para
+    idempotência (CURRICULO, item do Airflow) e para migração (o `DROP` só
+    serviu porque a tabela estava vazia).
+  - **Endereço de casa de 7.000 alunos.** Dado pessoal. A reitoria precisa
+    do número da casa para escolher o ponto de embarque? Isca de revisão
+    hostil, não levantada.
+  - **"Rua X, 10" × "R. X, 10" × "rua x 10"**: o `UNIQUE` composto não pega
+    o mesmo lugar escrito de dois jeitos. Gancho para dado sujo.
+  - `-1`: um membro ou dois. Agora com caso forte na `dim_local`: o destino
+    do metrô sem registro de saída é **desconhecido**, não "não se aplica".
+  - Faltam `dim_data`, `dim_usuario` e `fato_transporte`.
+  - Herdados: `data_fim_id` / `hora_fim_id` (nona sessão em aberto); nomear a
+    universidade; senha `12345` no histórico antes de qualquer push;
+    `modelo_database` e onde o compose deveria ficar.
+- Retomo em:
+  1. Revisão curta, sem andaime, e já em outra dimensão: **`dim_data`, uma
+     linha por dia ou por mês?** Testa se a regra do grão mais fino virou
+     dele.
+  2. `dim_data` escrita e rodada no banco na mesma sessão.
+  3. `dim_usuario`, se der tempo.
