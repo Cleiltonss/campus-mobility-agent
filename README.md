@@ -59,5 +59,5 @@ fases 3 e 6. Fora dessa janela, cluster local (kind/k3d).
 ## Estado atual
 
 Fase 1, semana 4 de 8. Postgres 18 local via `modelo/docker-compose.yml`;
-`modelo/schema.sql` com 3 dimensões (`dim_modal`, `dim_categoria`,
-`dim_hora`) rodando no banco.
+`modelo/schema.sql` com 5 dimensões (`dim_modal`, `dim_categoria`,
+`dim_hora`, `dim_local`, `dim_data`) rodando no banco.

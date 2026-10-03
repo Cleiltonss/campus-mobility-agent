@@ -35,9 +35,21 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   selecionada; escreveu `check_id` para a coluna `hora_id`; "onde que ta?"
   para dois cabeçalhos de tabela três mensagens acima. Com os dois cabeçalhos
   repostos lado a lado, acertou na hora.
+  Sessão 13, quatro vezes: "pegaria sábado da coluna `dia`" com `dia = 15`
+  desenhado na tela; "20032026 é menor" que 15042026, de cabeça; "tem sim"
+  para o `CHECK` estar no banco (não estava); procurou o `LINE 2` do erro no
+  arquivo em vez do terminal. **Colando, acertou nas três vezes em que
+  colou** (o `15`, os dois números um embaixo do outro, o `\d`). Uma vez
+  recusou colar ("puxe vc"): repus as duas frases lado a lado e ele achou
+  o comum na hora.
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
+  Sessão 13, **o inverso: inventou ausência para um valor que existe.**
+  Perguntado que valor 15/07 (quarta de férias) recebe na coluna "é
+  feriado?", respondeu `NULL` e depois `-1`. O valor é **não**, e é
+  conhecido. Perguntado "15/07 é feriado?" em sim/não, respondeu "n" na hora.
+  `NULL` e `-1` são para quando a informação falta.
 - **Responder contra o que acabou de derivar** — sessão 5, duas vezes seguidas:
   disse que `0 = 0` é verdadeiro e que a linha entra no SUM, e no passo seguinte
   respondeu que a soma continuava 35. Não é desconhecimento, é não reler a
@@ -64,6 +76,10 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   endereço chega no bairro) e, na pergunta seguinte, escolheu bairro. E
   defendeu `UNIQUE` em `bairro` com a frase "mais de um endereço pode
   existir em um bairro", que é o argumento contra.
+  Sessão 13: respondeu "15/07 não é feriado" e, duas mensagens depois,
+  propôs como pergunta da coluna "esses dias são feriado?". Disse "eu já
+  rodei e passou" para um `INSERT` que nunca chegou ao banco (0 linhas): não
+  conferiu, e a tela não tinha dado nem erro nem `INSERT 0 1`.
 - **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
   de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
   unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
@@ -83,6 +99,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   Sessão 12: duas vírgulas faltando na `dim_local`, e 2 valores para 4
   colunas no `INSERT` do `-1`. Previu "passa" nas duas; o banco pegou as
   duas e ele consertou sozinho. Rodando, esse item deixa de ser problema.
+  Sessão 13: `;` faltando duas vezes (`DROP`, `INSERT`), `INSERT INT`,
+  `INTEGER TEXT`. Leu e consertou os quatro. **Novo e mais caro:** no `psql`
+  interativo, comando sem `;` não dá erro; o prompt vira `transportes-#` e
+  fica esperando. Ele tomou o silêncio por sucesso. Regra entregue: **`-#`
+  = nada foi para o banco.**
 - **Número lido como posição, não como valor** — sessão 7: disse que
   `hora_id = 99` era "posição 100", numa tabela vazia. `PRIMARY KEY` não
   numera posição e não sabe quantas linhas existem. Mesma raiz do off-by-one da
@@ -98,6 +119,8 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   `<nome_vol>:<caminho>`). Nas outras quatro, salvou.
   Sessão 12: 1 vez. O `INSERT` do `-1` certo no editor e no banco, e o disco
   com a versão de 2 valores. Salvou ao ser avisado. Nas outras três, salvou.
+  Sessão 13: **zero.** Conferido no disco seis vezes, salvo nas seis.
+  Primeira sessão limpa. Continuar conferindo.
 - **Servidor × esquema** — sessão 8: derivou sozinho que o servidor sobe
   antes das tabelas e existe sem elas. Mesmo assim pôs as tabelas dentro do
   `docker-compose.yml` três vezes (na mensagem ao colega, em "o que precisa
@@ -129,6 +152,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   mecanismo e exemplo próprio: Rua X 13 em duas cidades é outro lugar, e o
   `UNIQUE` sozinho barraria. Endereço × bairro e válido × proibido não
   apareceram.
+  Sessão 13: 1 de 3 com o "para quê" (`nome_dia`: a reitoria vê o sábado).
+  As outras duas, fato ("'10' fica entre '1' e '3'") e repetição da 12
+  (`UNIQUE` composto). Com uma pergunta, a consequência saiu certa (março
+  pedido, outros meses entram), mas o mecanismo saiu errado: "porque '0' é
+  menor que '1'". Ver "Ordem de texto × ordem de número". Chave
+  `AAAAMMDD`, `feriado` × `tem_aula` e o `-#` do `psql` não apareceram.
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -162,6 +191,9 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   Continua frágil, mas agora tem uma evidência que ele mesmo produziu.
 - **Julgar número antes de calcular** — disse "é um número muito alto" antes de
   dividir 5.000.000 por 730. Deu 6.849, que é uma empresa média.
+  Sessão 13: "20032026 é menor" que 15042026, sem comparar. Escrevendo um
+  embaixo do outro e olhando o primeiro dígito, acertou na hora (e xingou o
+  trabalho de escrever, mas foi o escrever que achou o erro).
 - **Chutar premissa em vez de derivar** — sessão 4: inventou "1 a 2
   abastecimentos por semana" e reaproveitou o 7 de "7 km/dia" como capacidade de
   tanque (7 L). Dado sintético exige premissa com fonte, não número de cabeça.
@@ -169,6 +201,9 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   "31 de dezembro", sem conta. A data ficava 4 dias **antes** do fim
   original (4/jan/2027): uma extensão que encurtava. Mandado escrever a
   conta, mandou só a data; no passo seguinte pediu para eu redefinir.
+  Sessão 13: "março tem 30 dias" (tem 31), usado como base da query de
+  março. Daí saiu a melhor pergunta da revisão: com 30, as viagens do dia 31
+  somem sem erro.
 - **"Métrica" como palavra** — sabe o conceito (aponta R$ 138 como métrica na
   hora), mas erra a frase "métrica mora no fato" toda vez que a pergunta é
   abstrata. Quarta inversão na sessão 3. Só acerta quando ancorado num exemplo
@@ -226,6 +261,27 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   o bairro". Regra entregue: **guarda o grão mais fino que você tem; o fino
   sobe com `GROUP BY`, o grosso nunca desce.** Revisar sem andaime em outra
   dimensão (`dim_data`).
+  Revisão da sessão 13, `dim_data`: **escolheu dia de primeira, sem
+  andaime.** O motivo veio furado ("uma viagem é feita em um determinado
+  dia", que vale também para mês, o mesmo defeito do "serve de filtro").
+  Pergunta 2 certa. Pergunta 3 (março com tabela por dia): direção certa,
+  fato errado (30 dias), e chegou em "a linha precisa ter o mês" com um
+  passo. A escolha virou dele; a defesa ainda não.
+- **Ordem de texto × ordem de número** — sessão 13. Previu que `'10'` não
+  entra em `BETWEEN '1' AND '3'` (achava que `BETWEEN` em texto testa
+  igualdade com os valores do intervalo). Rodou: `t`. Leu `t`/`f` como "dois
+  erros". Chegou em "prioriza o primeiro caractere" e em `'1' < '10' < '3'`,
+  mas nas 3 frases o porquê virou "porque '0' é menor que '1'". **Parte disso
+  é culpa minha** (ver falha do professor da sessão 13). Nunca respondeu o
+  contraexemplo `'9'` × `'10'`. Revisar com previsão e execução:
+  `SELECT '9' < '10';`.
+- **Copiar a forma da solução e perder o significado** — sessão 7 (chave `2`
+  nos `INSERT` do `-1`). Sessão 13, duas vezes: `data_id = 15` (a regra da
+  `dim_hora`, "a chave é o próprio valor", sem testar o segundo dia 15); e
+  `OR tem_aula = -1`, copiado da linha 12, numa coluna de texto cuja linha
+  `-1` diz `'Não se aplica'`. E, para fazer a regra errada passar, **trocou o
+  dado** (`tem_aula = -1` no `INSERT`) em vez da regra. O relatório da
+  reitoria com uma linha `-1` resolveu: "nada".
 - **Grão com valor específico** — escreve o grão colando um valor concreto
   dentro dele. Errou duas vezes na sessão 2, corrigiu nas duas.
 - **Teste de unicidade do grão** — chegou na conclusão certa pelo raciocínio
@@ -1021,3 +1077,124 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
      dele.
   2. `dim_data` escrita e rodada no banco na mesma sessão.
   3. `dim_usuario`, se der tempo.
+
+### Sessão 13 — 2026-10-03
+- Fase: 1, semana 4 de 8 — modelagem dimensional, `dim_data`
+- Feito:
+  - **O que quebrou na 12**, nas palavras dele: `UNIQUE` separado ×
+    composto. O que estava marcado como frágil era o grão (bairro ×
+    endereço).
+  - **Revisão sem andaime, em outra dimensão: escolheu dia de primeira.**
+    Ver "Grão da dimensão". Melhor que a 12.
+  - **Colunas pela regra "cada coluna responde uma pergunta da reitoria"**,
+    dele na hora de listar:
+    - `ano` entrou pelo teste de 15/03/2026 × 15/03/2027 (mesmo `dia` e
+      `mes`). Mesmo furo dos dois Centros.
+    - `nome_dia` entrou pela decisão do fretado no sábado. Ele queria tirar
+      o sábado da coluna `dia`; colou o valor (`15`) e viu que o
+      `GROUP BY dia` junta os dias 15.
+    - `dia` ficou por outro motivo: a pergunta dele para a coluna era
+      "quantas viagens todo dia 15", que ninguém faz; sem ela, 15/03/2026
+      não tem resposta. **Coluna que só serve junto com outras.**
+    - **`tem_aula`, pelo segundo caso.** Propôs `feriado` para 21/04
+      (Tiradentes). 15/07 (quarta de férias) não é feriado e entra na média
+      do fretado. Com as duas frases lado a lado: "não tem aula nas duas".
+      Nome dele.
+  - **Chave `AAAAMMDD` derivada por ele.** `15` (regra da `dim_hora`) →
+    colide com 15/04. "Difícil" → encolhido para "escreva sem as barras" →
+    `15032026` ("AHHHHHH"). Teste de ordem: `01042026` é menor que
+    `15032026`. Culpou o zero; o contraexemplo sem zero (20/03 × 15/04)
+    mostrou que o culpado é o dia vir primeiro. "Ano, mês e dia" →
+    `20260315`. Ganho: `BETWEEN 20260301 AND 20260331` pega março, porque a
+    ordem do número é a do calendário.
+  - **`UNIQUE (dia, mes, ano)` sem eu pedir.** A sessão 12 virou dele.
+  - **`TEXT` × `INTEGER`, previsto e rodado.** Previu que `'10'` não entra
+    em `BETWEEN '1' AND '3'`; `SELECT` deu `t`. Trocou para `INTEGER` antes
+    de saber defender; a defesa veio depois. Ver "Ordem de texto × ordem de
+    número".
+  - **`tem_aula` com `CHECK`.** Viu os 3 grupos de `'sim'`/`'Sim'`/`'s'`.
+    Escolheu o `CHECK` sozinho, mas com `BETWEEN 'SIM' AND 'NÃO'` (intervalo
+    de dicionário: `pato` passaria). Sintaxe do `IN` entregue com exemplo de
+    fora (`tamanho`). Final:
+    `CHECK (tem_aula IN ('Sim', 'Não') OR tem_aula = 'Não se aplica')`,
+    no mesmo formato da linha 12.
+  - **Membro `-1`:** `-1` em `dia`/`mes`/`ano` (propôs "qualquer coisa acima
+    de 31, de 12, abaixo de zero"; critério certo, três regras; chegou em
+    `-1`); `'Não se aplica'` nas de texto, pelo relatório da reitoria
+    (uma linha `-1` no `GROUP BY tem_aula` "não diz nada").
+  - Leu sozinho: `no configuration file provided` (resolveu com `cd modelo`;
+    na sessão 10 não sabia o que era `cd`), o erro de `INTEGER` no `INSERT`,
+    a violação de `CHECK`, e achou o `;` faltando no `DROP`.
+  - **Disco = banco**, conferido: `dim_data` com `CHECK` e a linha `-1`.
+    `\dt` com **5 tabelas**.
+- Quebrou:
+  - Ver pontos frágeis: não olhar a tela (4), inventar ausência (`NULL`/`-1`
+    para um "não"), responder contra o que derivou, `20032026` de cabeça,
+    "março tem 30 dias", copiar a forma (`15`, `OR tem_aula = -1`) e
+    **trocar o dado para caber na regra**.
+  - Respondeu tipo quando a pergunta era valor ("inteiro" para o `data_id`).
+  - `t`/`f` lidos como "dois erros".
+  - "Já rodei e passou" para um `INSERT` preso no `-#`. Não conferiu.
+  - "Derrubar o banco" para trocar uma tabela. Lembrou certo que as tabelas
+    sobrevivem ao `down`/`up` ("se mantém"), o que desmontou a ideia.
+  - "n lembro" para `DROP TABLE` (feito na 12).
+  - Frustração alta duas vezes ("vai se fuder claude, que trampo";
+    "entendi porra nenhuma"). A primeira foi no passo certo (o escrever
+    achou o erro). A segunda foi minha (ver abaixo).
+  - 3 frases: 1 de 3 com o "para quê". Ver pontos frágeis.
+- Método:
+  - **Coluna ↔ pergunta da reitoria** como régua de lista: a pergunta
+    honesta que ele escreveu para `dia` ("todo dia 15") expôs a coluna
+    sozinha. Usar em `dim_usuario` e no fato.
+  - **Segundo caso concreto** (15/07 depois de 21/04) derrubou `feriado` sem
+    eu dizer que estava errado.
+  - **Uma linha só, com o nome das colunas em cima**, destravou o
+    "entendi porra nenhuma" em uma troca. Mesmo resultado da tabela de 2
+    linhas da 12.
+  - **Previsão + `SELECT` de uma linha** para comportamento de SQL: o `t`
+    ensinou mais que a explicação que veio depois.
+- Falha do professor:
+  - **Analogia do dicionário com mapeamento quebrado.** Troquei `a→1`,
+    `b→0`, `c→3`, e isso põe o `0` depois do `1`, o que é falso em texto. Ele
+    tropeçou no `0` ("porque ficaria 1 0 3 n?") e o `0` voltou como o
+    porquê errado nas 3 frases. Devia ter rodado `SELECT '9' < '10';` com
+    previsão, que não tem zero nenhum. **Analogia que eu não testei é pior
+    que nenhuma.**
+  - **"Copie a linha 12 e diga como se aplica"** seguido de "copie o valor do
+    `DETAIL`": duas coisas, duas fontes → "entendi porra nenhuma". Mesmo erro
+    das sessões 8 e 10.
+  - Mandei comparar dois números de 8 dígitos de cabeça antes de mandar
+    escrever. A régua (escrever antes de comparar) já existia.
+- Aberto:
+  - **`ORDER BY nome_dia` sai em ordem alfabética** (domingo, quarta,
+    quinta, sábado, segunda, sexta, terça). Isca: o relatório da reitoria
+    por dia da semana sai embaralhado, sem erro. Mesma família de texto ×
+    número.
+  - **`data_id` e `dia`/`mes`/`ano` dizem a mesma coisa duas vezes.** Nada
+    impede `data_id = 20260315` com `dia = 16`. Mesma redundância de
+    `data_fim_id`, com uma diferença a defender: a `dim_data` é gerada uma
+    vez e o calendário não muda.
+  - **Sem `CHECK` em `dia`, `mes`, `ano`.** `mes = 13` entra calado. Aplicar
+    a lista do válido.
+  - **Quem preenche a `dim_data`?** 365 linhas por ano não se escrevem à
+    mão. Gancho para o gerador. E `tem_aula` exige o calendário acadêmico da
+    universidade: premissa com fonte. Sábado tem aula?
+  - `'Não se aplica'` × `'Desconhecido'` agora também em `tem_aula`.
+  - `UNIQUE (dia, mes, ano)` no meio da lista de colunas. Funciona; quem lê
+    procura no fim.
+  - **Mensagens de commit:** `e6f07ff` foi com o texto do molde,
+    `<o que mudou no projeto>`; `a09f067` diz "adição da `dim_local`" e só
+    tem o PROGRESSO. A do schema ficou sem descrição.
+  - `schema.sql` continua não rodando duas vezes, agora com 5 tabelas.
+  - Faltam `dim_usuario` e `fato_transporte`.
+  - Herdados: `data_fim_id` / `hora_fim_id` (décima sessão em aberto);
+    nomear a universidade; senha `12345` no histórico antes de qualquer
+    push; `modelo_database` e onde o compose fica; endereço de casa como
+    dado pessoal; "Rua X" × "R. X".
+  - **Ritmo para a reavaliação de 2026-11-02:** 13 sessões, 5 de 7 tabelas,
+    0 de 10 itens do CURRICULO marcados. Ritmo atual: ~1 tabela por sessão.
+- Retomo em:
+  1. Revisão, previsão antes de rodar: `SELECT '9' < '10';`. Explicar o
+     resultado sem falar em zero.
+  2. `ORDER BY nome_dia`: prever a ordem, rodar com 7 linhas, decidir.
+  3. `dim_usuario` escrita e rodada, com a régua coluna ↔ pergunta.
