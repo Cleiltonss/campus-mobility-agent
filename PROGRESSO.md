@@ -57,6 +57,15 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   acertou nas três vezes**: as linhas `CREATE TABLE` deram as 6 dimensões;
   a linha da `dim_local` colada deu "porra nenhuma" para o `7 + 15`; a
   linha `local_id INTEGER PRIMARY KEY` colada deu os `REFERENCES` certos.
+  Sessão 16, cinco vezes, com o `schema.sql` aberto e linhas selecionadas
+  no editor: `dim_local` como a tabela onde moram `origem_id`, `destino_id`
+  **e** `local_id`; `endereco, bairro e cidade (3)` para a coluna apontada,
+  com `(local_id)` no fim da linha 43; "universidades" para o papel da Rua
+  A na volta (respondeu quem era a origem); colou o bloco Pinheiros ×
+  Butantã quando pedido o de ida/volta; `dim_origem` para a Universidade da
+  ida, com `destino = Universidade` escrito. **Colando ou lendo a linha
+  pedida, acertou nas três vezes**: linha 43 → `fato_transportes`; linha
+  43 colada → `local_id`; a palavra antes de `= Universidade` → `destino`.
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -117,6 +126,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   da sessão 13 (tipo quando a pergunta era valor). Com a pergunta repetida
   e a linha do 42 na tela, "min, km, reais" de primeira. E 23h50 + 20 min =
   "0h20", de cabeça; a conclusão (chegou no dia 16) estava certa.
+  Sessão 16: "duas" para "quantas colunas do fato apontam para quantas da
+  `dim_local`", e com o formato pedido de novo, "apontam pra `dim_local`"
+  (tabela no lugar de coluna). E **rótulo errado no lugar de rótulo
+  nenhum**: "duas origens" para o que eram dois bairros, com "pinheiros e
+  butantã" escrito por ele seis mensagens antes.
 - **Vírgula sobrando antes do fecha-parêntese** — quatro vezes na sessão 6,
   em três tabelas. Mecânico, não conceitual, mas para o arquivo inteiro. Ele
   ainda não rodou o SQL em banco nenhum — é erro que sumiria sozinho no
@@ -205,6 +219,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   os minutos" voltou. A primeira saiu **invertida**: "uma coluna do fato
   associada a duas colunas de outras tabelas", quando é uma coluna da
   dimensão (`local_id`) com duas colunas do fato apontando para ela.
+  Sessão 16: abriu o fechamento com "aprendi que eu sou burro". Depois, 1
+  frase de 3: "nas colunas de saída e destino, havia uma ambiguidade se n
+  fossem isoladas. algo assim". Recusou as outras duas ("muito difícil de
+  entender"). A frase é ambígua (ver "Role-playing: direção e porquê"), e
+  o mecanismo da sessão (uma tabela por papel duplica o lugar) não
+  apareceu.
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -368,6 +388,31 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   silenciosa". Com a `dim_local` de 3 linhas (7, 15, -1) na tela: "n
   junta" → "some dela". Dois passos para o que na sessão 6 saiu frio. Pode
   ser fadiga (fim de sessão longa), mas entra no teste frio do star schema.
+- **Role-playing: direção e porquê** — frase invertida no fim da sessão 15;
+  revisada na 16, com o objetivo dito antes ("o que é uma role-playing
+  dimension?").
+  - **Direção:** pôs as três colunas na `dim_local`, sem separar onde a
+    coluna mora (`origem_id` e `destino_id` moram no fato) e para onde ela
+    aponta. Colando a linha 43, chegou em "duas colunas do fato apontam pra
+    1 coluna da `dim_local`".
+  - **Porquê:** com o aluno 42 (ida: Rua A, 120 → Universidade; volta: o
+    contrário), viu que com `dim_origem` + `dim_destino` a Rua A entra nas
+    duas, e que corrigir o bairro em uma só dá "duas" respostas
+    (Pinheiros, Butantã). **Ideia errada nova:** "uma representa a ida, a
+    outra a volta" (tabela por viagem, não por papel). A ida sozinha já
+    usa as duas tabelas; copiando a palavra antes de `= Universidade`,
+    viu isso.
+  - **Furo da primeira frase dele:** "sem repetições desnecessárias,
+    preservando a unicidade". Reescrita com o caso, descreveu o sintoma
+    (Rua A com dois bairros), que também acontece com uma `dim_local` só:
+    o `UNIQUE (endereco, bairro, cidade)` não barra `Rua A, 120 |
+    Butantã` × `Rua A, 120 | Pinheiros`. O que é exclusivo do desenho com
+    duas tabelas é a repetição **sem ninguém errar nada**.
+  - **A frase final fui eu que montei**, com as peças dele. Não fixou: no
+    fechamento saiu "ambiguidade se n fossem isoladas". Lida como "colunas
+    separadas no fato", é o argumento da sessão 15 (`42 | ?` com dois
+    lugares); lida como "tabelas separadas", é o contrário do de hoje.
+  - Entra no teste frio com a pergunta de entrevista, sem andaime.
 - **Onde estou: `%` × `transportes=#`** — sessão 14: digitou `DROP TABLE`
   duas vezes no terminal do Mac (`zsh: command not found: DROP`). Regra
   entregue: **SQL só depois do `transportes=#`; o `%` é o Mac.** Mesma
@@ -1529,3 +1574,74 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
   2. Revisão hostil 2 a 4: `duracao`, nome no plural, `PRIMARY KEY`. Um
      `DROP` + `CREATE` só, no fim, com os três consertos.
   3. SCD: o aluno que muda de turno.
+
+### Sessão 16 — 2026-10-03 (terminou depois da meia-noite)
+- Fase: 1, semana 4 de 8 — revisão de role-playing
+- Contexto: quarta sessão do sábado 03/10 (13 a 16), contra o README. Eu
+  registrei isso na abertura e segui.
+- Feito:
+  - **O que quebrou na 15**, nas palavras dele: "usar `saida_hora` +
+    `duracao` [...] não sabia sobre o erro acumulado no número flutuante".
+    **Misturou dois mecanismos**: o da hora de chegada (grão da
+    `dim_hora` perde os minutos) e o do float (`preco`). Com o caso da
+    sessão 15 na tela (7h50, `hora_saida_id = 7`, `duracao = 20`) e a
+    pergunta "onde aparece o float nessa conta?", separou sozinho: "não
+    aparece, os minutos são ignorados". Depois localizou o float no
+    `preco` e defendeu o `NUMERIC` contra "ninguém perde dinheiro com
+    0,00000000000000004": o `WHERE preco = 0.30` não acha a linha. Disse
+    `JOIN` querendo dizer filtro. **Os melhores 10 minutos da sessão.**
+  - **Revisão de role-playing.** Ver pontos frágeis. Direção consertada
+    colando a linha 43; porquê derivado com o aluno 42; frase final
+    montada por mim.
+  - **Ele quis seguir "até fechar o primeiro tópico".** Mostrei o que
+    falta para marcar o item 1 (revisão hostil 2 a 4, SCD, teste frio) e
+    que o teste frio não pode ser no mesmo dia em que se trabalhou o
+    assunto: depois de quatro sessões de star schema, acertar mediria
+    memória de minutos atrás. Com o item 1 fora do alcance de hoje,
+    encerrou. **A opção de um conserto de 10 minutos para ter artefato
+    não o motivou; fechar o item, sim.**
+  - **Zero artefato.** Regra da sessão 5 quebrada pela segunda vez (11 e
+    16). A pergunta da revisão hostil 2 ficou feita e sem resposta:
+    `duracao NUMERIC (10,2)` foi decisão ou cópia da linha de baixo?
+- Quebrou:
+  - Ver pontos frágeis: não olhar a tela (5), número sem rótulo, role-
+    playing, 3 frases (1 de 3).
+  - "n lembro", "entendi nd", "n entendi" e respostas de uma palavra na
+    segunda metade, depois da meia-noite.
+  - "aprendi que eu sou burro". Respondido com a evidência da sessão: o
+    raciocínio da abertura funcionou, e os erros da segunda metade sumiram
+    todos quando ele colou o texto. Quando é burrice, colar o texto não
+    conserta nada.
+- Método:
+  - **Colar a linha** de novo destravou tudo o que a pergunta não
+    destravou (linha 43 duas vezes, a palavra antes de `= Universidade`).
+  - **Repor o bloco eu mesmo** quando ele cola o bloco errado.
+  - **O caso da sessão anterior com uma pergunta** ("onde aparece o float
+    nessa conta?") separou dois mecanismos misturados em uma troca.
+- Falha do professor:
+  - **Ida/volta + hipótese de duas tabelas + pergunta** numa mensagem →
+    "entendi nd". Sexta vez (8, 10, 13, 14, 15, 16). Encolhido para "na
+    ida, a Rua A é origem ou destino?", funcionou.
+  - **Pergunta em duas partes** ("na ida...? e na volta?") → respondeu a
+    segunda sobre outra coisa.
+  - **Molde com duas lacunas** → "n entendi". Uma lacuna por vez resolveu.
+  - **Montei a frase final por ele.** É o sinal da regra da sessão 4
+    (comecei a entregar resposta → a sessão já tinha acabado). O
+    fechamento confirmou: não fixou.
+  - **Quarta sessão do dia, aberta e levada até depois da meia-noite.**
+    Registrar o sábado e seguir não adiantou. A sessão rendeu uma revisão
+    e nenhum artefato.
+- Aberto:
+  - **Revisão hostil 2 a 4**, sem mudança: `duracao` (pergunta já feita),
+    `fato_transportes` no plural, fato sem `PRIMARY KEY`.
+  - Todo o resto do "Aberto" da sessão 15 continua aberto.
+  - **Ritmo para 2026-11-02:** 16 sessões, 7 de 7 tabelas, 0 de 10 itens
+    do CURRICULO.
+- Retomo em (**em outro dia**, não no mesmo dia de outra sessão):
+  1. **Teste frio do star schema**, 5 perguntas, sem o arquivo, uma por
+     vez. Inclui role-playing com a pergunta de entrevista e NULL em FK
+     no `JOIN`. Dizer o objetivo antes: é o teste para marcar o item 1.
+  2. Revisão hostil 2 a 4, começando pela resposta à pergunta do
+     `duracao`. Um `DROP` + `CREATE` só. **Artefato.**
+  3. SCD: o aluno que muda de turno. Com o teste frio passado e o SCD
+     feito, o item 1 do CURRICULO é marcado.
