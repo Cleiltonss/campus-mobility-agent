@@ -42,6 +42,14 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   colou** (o `15`, os dois números um embaixo do outro, o `\d`). Uma vez
   recusou colar ("puxe vc"): repus as duas frases lado a lado e ele achou
   o comum na hora.
+  Sessão 14, cinco vezes: "tem sim" para `ordem_dia` estar no banco sem ter
+  rodado o `\d` (tinha digitado só `\`), mesma frase e mesmo erro da 13;
+  `data_id`, uma coluna, para uma pergunta sobre linha; `quantidade` como
+  nome de coluna que não existe; `endereco, bairro e cidade` para "qual
+  coluna do **fato**"; `PK` no lugar do tipo. **Colando ou com a lista na
+  tela, acertou nas três vezes**: a linha 45 colada deu o `-1`; a lista das
+  9 chaves do fato deu `origem_id`; as duas colunas da `dim_usuario` lado a
+  lado deram `usuario_id`.
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -104,6 +112,10 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   interativo, comando sem `;` não dá erro; o prompt vira `transportes-#` e
   fica esperando. Ele tomou o silêncio por sucesso. Regra entregue: **`-#`
   = nada foi para o banco.**
+  Sessão 14: `CHECK (... OR -1)`, consertado sozinho para `OR ordem_dia =
+  -1` antes de rodar; `INSERT` com 7 valores para 6 colunas, que o banco
+  pegou e ele leu e consertou sozinho. **A `dim_usuario` passou de
+  primeira, como ele previu.**
 - **Número lido como posição, não como valor** — sessão 7: disse que
   `hora_id = 99` era "posição 100", numa tabela vazia. `PRIMARY KEY` não
   numera posição e não sabe quantas linhas existem. Mesma raiz do off-by-one da
@@ -121,6 +133,7 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   com a versão de 2 valores. Salvou ao ser avisado. Nas outras três, salvou.
   Sessão 13: **zero.** Conferido no disco seis vezes, salvo nas seis.
   Primeira sessão limpa. Continuar conferindo.
+  Sessão 14: zero de novo, em quatro conferências.
 - **Servidor × esquema** — sessão 8: derivou sozinho que o servidor sobe
   antes das tabelas e existe sem elas. Mesmo assim pôs as tabelas dentro do
   `docker-compose.yml` três vezes (na mensagem ao colega, em "o que precisa
@@ -158,6 +171,14 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   pedido, outros meses entram), mas o mecanismo saiu errado: "porque '0' é
   menor que '1'". Ver "Ordem de texto × ordem de número". Chave
   `AAAAMMDD`, `feriado` × `tem_aula` e o `-#` do `psql` não apareceram.
+  Sessão 14: 1 de 3 com o porquê (nome fora: a reitoria quer quantidade,
+  não indivíduo). A segunda com meio porquê ("já está na `dim_local`"; o
+  forte era o aluno 42, Pinheiros × Bela Vista). A terceira, fato
+  ("considerar o integral"); com uma pergunta, o porquê saiu errado
+  (matutino = `origem_id`, vespertino = `destino_id`), quando era horário:
+  o integral chega com o matutino e sai depois do vespertino. **As três
+  vieram da última meia hora**: `ordem_dia`, texto × número e a defesa do
+  gerador não apareceram.
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -275,6 +296,13 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   é culpa minha** (ver falha do professor da sessão 13). Nunca respondeu o
   contraexemplo `'9'` × `'10'`. Revisar com previsão e execução:
   `SELECT '9' < '10';`.
+  Revisão da sessão 14: `'9' < '10'` → `f` de primeira. O porquê veio com o
+  zero de novo ("'0' < '1' < '9'"), mas com a conclusão certa
+  (`'1' < '10' < '9'`). O teste sem zero (`'9' < '19'` → `f`) tirou o zero:
+  "o primeiro algarismo foi o mais importante". Recusou rodar ("n vou
+  rodar, mas as duas são falsas"); estavam certas. **Aplicou sozinho ao
+  `nome_dia`**: escreveu os 7 nomes e achou `terça` por último. Daí saiu a
+  `ordem_dia`. Melhorou muito; o zero ainda aparece antes de sumir.
 - **Copiar a forma da solução e perder o significado** — sessão 7 (chave `2`
   nos `INSERT` do `-1`). Sessão 13, duas vezes: `data_id = 15` (a regra da
   `dim_hora`, "a chave é o próprio valor", sem testar o segundo dia 15); e
@@ -282,6 +310,24 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   `-1` diz `'Não se aplica'`. E, para fazer a regra errada passar, **trocou o
   dado** (`tem_aula = -1` no `INSERT`) em vez da regra. O relatório da
   reitoria com uma linha `-1` resolveu: "nada".
+- **Lista do válido sem o membro `-1`** — sessão 14, duas vezes: válidos de
+  `ordem_dia` = "1 a 7" e de `periodo` = "manha, tarde, noite", as duas sem
+  a linha `-1` que ele tinha acabado de definir. Mesmo conflito do `CHECK`
+  da `dim_hora` na sessão 7. Nas duas, uma pergunta ("reescreva levando em
+  conta a linha `-1`") consertou.
+- **Restrição no banco × garantia no processo** — sessão 14. Viu sozinho,
+  restrição por restrição, que `segunda | ordem_dia = 5` entra no banco.
+  Depois: "o que impede de fato? isso ainda n entendi". Chegou com muitos
+  passos: a `dim_data` é escrita só pelo gerador, que calcula `nome_dia` e
+  `ordem_dia` da mesma data; bug no gerador erra as 52 segundas, e uma
+  semana conferida mostra; uma linha errada sozinha só nasce de `INSERT` à
+  mão, e essa exige conferir as 365. A resposta ao entrevistador saiu pela
+  metade ("o gerador designa o número correto"), sem o risco que sobra.
+  Revisar: "o que impede uma segunda com `ordem_dia = 5`?".
+- **Onde estou: `%` × `transportes=#`** — sessão 14: digitou `DROP TABLE`
+  duas vezes no terminal do Mac (`zsh: command not found: DROP`). Regra
+  entregue: **SQL só depois do `transportes=#`; o `%` é o Mac.** Mesma
+  família de cliente × servidor (sessão 7) e do `cd` (sessão 10).
 - **Grão com valor específico** — escreve o grão colando um valor concreto
   dentro dele. Errou duas vezes na sessão 2, corrigiu nas duas.
 - **Teste de unicidade do grão** — chegou na conclusão certa pelo raciocínio
@@ -1198,3 +1244,117 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
      resultado sem falar em zero.
   2. `ORDER BY nome_dia`: prever a ordem, rodar com 7 linhas, decidir.
   3. `dim_usuario` escrita e rodada, com a régua coluna ↔ pergunta.
+
+### Sessão 14 — 2026-10-03
+- Fase: 1, semana 4 de 8 — modelagem dimensional, `ordem_dia` e `dim_usuario`
+- Feito:
+  - **O que quebrou na 13:** "n lembro". Com a pista (`'10'` em
+    `BETWEEN '1' AND '3'` deu `t`), virou a revisão.
+  - **Revisão texto × número.** Ver pontos frágeis. Melhor que a 13.
+  - **`ORDER BY nome_dia` desmontado e consertado.** Escreveu os 7 nomes e
+    achou `terça` por último. "Formato de data" caiu com o caso das 52
+    segundas numa linha só do relatório. Com a tabela de 2 linhas
+    (`segunda | ?`, `terça | ?`) chegou num número de ordem: `ordem_dia`.
+  - **Domingo primeiro, decisão dele, com motivo:** o leitor é uma reitoria
+    brasileira. Fato entregue: calendário brasileiro (domingo primeiro;
+    "segunda-feira" é o segundo dia) × ISO 8601 (segunda `1`, domingo `7`).
+    Escolheu `1 a 7` em vez de `0 a 6`: "na `dim_data` toda contagem começa
+    em 1", como `dia` e `mes`.
+  - **`ordem_dia INTEGER NOT NULL CHECK (ordem_dia BETWEEN 1 AND 7 OR
+    ordem_dia = -1)`**, com `-1` no `INSERT`. Consertou o `OR -1` sozinho; o
+    banco pegou 7 valores para 6 colunas e ele consertou. `DROP` + `CREATE`
+    + `INSERT`; disco = banco, conferido. O banco reescreveu o `BETWEEN`
+    como `>= 1 AND <= 7`, o que respondeu à pergunta dele ("between é >= ou
+    >?").
+  - **Revisão hostil `segunda | 5`.** Ver "Restrição no banco × garantia no
+    processo".
+  - **`dim_usuario` decidida, escrita e rodada, de primeira.** Régua coluna
+    ↔ pergunta da reitoria:
+    - `periodo` entra: muda o horário do fretado.
+    - Endereço sai. Propôs rua/bairro/cidade/estado; com a lista das 9
+      chaves do fato na tela, viu que isso chega pelo `origem_id` na
+      `dim_local`. Caso do aluno 42 (mora em Pinheiros, às terças sai do
+      estágio na Bela Vista): o endereço de casa erraria o ponto; a origem
+      da viagem acerta.
+    - Nome sai: "na verdade ela perguntaria por quantidade de alunos". Conta
+      alunos pelo `usuario_id`, sem saber quem. De quebra, não guarda dado
+      pessoal de 7.000 alunos.
+    - Integral, pelo caso da aluna 77 (Medicina, manhã e tarde): o padrão de
+      viagem não é o de quem só estuda de manhã. Listou sozinho as
+      combinações dos 3 turnos (faltou `noite`, 7 no total). A lista vem da
+      universidade, não da combinatória; fato de domínio entregue. Decisão
+      dele: `Matutino`, `Vespertino`, `Noturno`, `Integral` e
+      `Não se aplica`.
+    - Previu "passa"; passou.
+  - **`\dt` com 6 tabelas: todas as dimensões.** Falta só o
+    `fato_transporte`.
+  - **Perguntou se está atrasado.** Números entregues: semana 4 de 8, 0 de
+    10 itens, 6 de 7 tabelas, ~14 sessões até 02/11 (12/10 e 02/11 são
+    feriados), e nada do pipeline (gerador, dado, query). No ritmo atual
+    chega em 02/11 com o star schema e pouco mais. Recomendação minha: não
+    redecidir o prazo antes de 02/11; fechar o fato em 1–2 sessões e ir
+    direto para dado e SQL de consulta. **Sessão num sábado**, contra o
+    README (fim de semana é para candidatura).
+- Quebrou:
+  - Ver pontos frágeis: não olhar a tela (5), lista do válido sem `-1` (2),
+    `DROP` no `%`, restrição × processo, 3 frases.
+  - "a primeiro e o b despercebido", invertido; mas a pergunta era ambígua
+    (falha minha, abaixo).
+  - Frustração duas vezes: "vsf claude, para com essa porra" (paginador) e
+    "qual o objetivo dessa pergunta?". As duas foram minhas.
+- Método:
+  - **Escrever a lista**, de novo: os 7 nomes → `terça`; 1 a 7 com nomes →
+    "quinta é 5".
+  - **Tabela de 2 linhas com `?`** destravou o "n sei" da coluna nova.
+  - **Mostrar a lista das chaves do fato** destravou `origem_id` em uma
+    troca.
+  - **Caso concreto com id de aluno** (42, 77) derrubou o endereço e testou
+    a lista de turnos.
+  - Previsão antes de rodar, 3 vezes: `f` (certa), "agora vai" (errou no
+    `INSERT`), "s" na `dim_usuario` (certa).
+- Falha do professor:
+  - **Paginador do `psql`.** Mandei rolar com espaço e `q` → "vsf claude".
+    Devia ter dado `\pset pager off` antes, ou conferido eu mesmo, como fiz
+    na mensagem seguinte.
+  - **Pergunta ambígua que eu não testei:** "qual você percebe no primeiro
+    relatório?" — nos dois casos aparece algo estranho. Troquei por
+    "quantas linhas você precisa conferir", que funcionou. Mesmo erro da
+    analogia da sessão 13.
+  - **Sequência longa sem dizer o objetivo.** ~12 trocas na defesa do
+    gerador até ele perguntar "qual o objetivo dessa pergunta?". Dito o
+    objetivo (a pergunta do entrevistador), ele engajou. Dizer no começo.
+  - Li errado a referência dele a "id começar em zero" e atribuí à sessão 6.
+- Aberto:
+  - **Aluno que muda de turno** (noturno → matutino no meio do curso). Um
+    `UPDATE` em `periodo` reclassifica as viagens antigas, feitas no
+    noturno. Isca para dimensão de mudança lenta (SCD tipo 1 × tipo 2),
+    clássico de entrevista.
+  - **`periodo` × `hora_inicio_id`:** o fato já diz a hora de cada viagem,
+    o mesmo argumento que tirou o endereço da `dim_usuario`. O que `periodo`
+    responde que a hora da viagem não responde? (Defesa possível: aluno sem
+    viagem nenhuma; planejamento do semestre seguinte.)
+  - **`periodo` (`dim_usuario`) × `periodo_dia` (`dim_hora`):** nomes quase
+    iguais, significados diferentes, lado a lado na mesma query.
+  - **Endereço exato na `dim_local`:** tirou o endereço de casa da
+    `dim_usuario`, mas o `origem_id` aponta para "Rua A, 120", que é a casa
+    do aluno. Dado pessoal continua no schema.
+  - **"Só o gerador escreve na `dim_data`"** não está escrito em lugar
+    nenhum. E `EXTRACT(DOW)` devolve 0–6 com domingo 0; a escolha dele é
+    1–7: o gerador precisa somar 1.
+  - Turnos oferecidos entram na lista de premissas com fonte, junto com
+    nomear a universidade e o calendário acadêmico (`tem_aula`).
+  - Herdados: **`data_fim_id` / `hora_fim_id` (11ª sessão em aberto: decide
+    na próxima, escrevendo o fato)**; `-1` um membro ou dois; `mes = 13` sem
+    `CHECK`; `data_id` × `dia`/`mes`/`ano`; `schema.sql` não roda duas vezes
+    (agora com 6 tabelas); `UNIQUE` no meio da lista; senha `12345` no
+    histórico; `modelo_database`; "Rua X" × "R. X"; mensagens de commit.
+  - **Ritmo para 2026-11-02:** 14 sessões, 6 de 7 tabelas, 0 de 10 itens do
+    CURRICULO.
+- Retomo em:
+  1. Revisão curta, no máximo 10 min, sem andaime: "o que impede uma
+     segunda com `ordem_dia = 5` na sua `dim_data`?". Dizer o objetivo
+     antes da primeira pergunta.
+  2. **`fato_transporte` escrito e rodado.** Decidir `data_fim_id` /
+     `hora_fim_id` enquanto escreve. Sintaxe nova: `REFERENCES` (FK). Com o
+     fato, o star schema fecha.
+  3. Se der tempo: aluno que muda de turno.
