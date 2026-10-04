@@ -50,6 +50,13 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   tela, acertou nas três vezes**: a linha 45 colada deu o `-1`; a lista das
   9 chaves do fato deu `origem_id`; as duas colunas da `dim_usuario` lado a
   lado deram `usuario_id`.
+  Sessão 15, três vezes: "mas que 6 dimensões?" com o `schema.sql` aberto
+  no editor; "ele saiu às 22h?" para `origem_id`, com a linha
+  `dim_local | origem_id, destino_id` três mensagens acima; "n lembro" para
+  `duracao`, numa tabela que bastava rolar a tela para ver. **Colando,
+  acertou nas três vezes**: as linhas `CREATE TABLE` deram as 6 dimensões;
+  a linha da `dim_local` colada deu "porra nenhuma" para o `7 + 15`; a
+  linha `local_id INTEGER PRIMARY KEY` colada deu os `REFERENCES` certos.
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -58,6 +65,9 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   feriado?", respondeu `NULL` e depois `-1`. O valor é **não**, e é
   conhecido. Perguntado "15/07 é feriado?" em sim/não, respondeu "n" na hora.
   `NULL` e `-1` são para quando a informação falta.
+  Sessão 15: com metrô e Uber numa linha só, preencheu `modal_id` com
+  `transporte`, que não é modal (é o nome do fato). Valor genérico para não
+  escolher entre dois. A linha `42 | ?` com um lugar só resolveu: "duas".
 - **Responder contra o que acabou de derivar** — sessão 5, duas vezes seguidas:
   disse que `0 = 0` é verdadeiro e que a linha entra no SUM, e no passo seguinte
   respondeu que a soma continuava 35. Não é desconhecimento, é não reler a
@@ -88,6 +98,10 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   propôs como pergunta da coluna "esses dias são feriado?". Disse "eu já
   rodei e passou" para um `INSERT` que nunca chegou ao banco (0 linhas): não
   conferiu, e a tela não tinha dado nem erro nem `INSERT 0 1`.
+  Sessão 15, versão arquivo: respondeu `duracao` "inteiro", em "min", e no
+  disco ficou `duracao NUMERIC (10,2)`, igual às duas linhas de baixo. Não
+  avisou nem defendeu a troca. Pode ser decisão (minuto fracionado), pode
+  ser cópia da linha vizinha: perguntar.
 - **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
   de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
   unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
@@ -98,6 +112,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   acabado. A unidade até fechava em `linhas` — respondia outra pergunta. Sinal
   novo: número que sobrou na tela é matéria-prima de conta inventada. Sessão 7: pedido
   o resultado no formato `nome_modal | soma`, respondeu `10`.
+  Sessão 15: perguntado **em que unidade** ficam `duracao`, `distancia` e
+  `preco`, respondeu o tipo ("inteiro, inteiro, flutuante"). Mesmo desvio
+  da sessão 13 (tipo quando a pergunta era valor). Com a pergunta repetida
+  e a linha do 42 na tela, "min, km, reais" de primeira. E 23h50 + 20 min =
+  "0h20", de cabeça; a conclusão (chegou no dia 16) estava certa.
 - **Vírgula sobrando antes do fecha-parêntese** — quatro vezes na sessão 6,
   em três tabelas. Mecânico, não conceitual, mas para o arquivo inteiro. Ele
   ainda não rodou o SQL em banco nenhum — é erro que sumiria sozinho no
@@ -179,6 +198,13 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   o integral chega com o matutino e sai depois do vespertino. **As três
   vieram da última meia hora**: `ordem_dia`, texto × número e a defesa do
   gerador não apareceram.
+  Sessão 15: 1 de 3 com o porquê (`float` guarda aproximação, o filtro de
+  igualdade perde a linha; disse "arredondamento exato", e `NUMERIC` não
+  arredonda). A segunda trocou `duracao` por `distancia` e perdeu o porquê
+  que ele tinha escrito melhor uma hora antes; com uma pergunta, "joga fora
+  os minutos" voltou. A primeira saiu **invertida**: "uma coluna do fato
+  associada a duas colunas de outras tabelas", quando é uma coluna da
+  dimensão (`local_id`) com duas colunas do fato apontando para ela.
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -229,6 +255,10 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   hora), mas erra a frase "métrica mora no fato" toda vez que a pergunta é
   abstrata. Quarta inversão na sessão 3. Só acerta quando ancorado num exemplo
   concreto. Perguntar sempre com exemplo junto, nunca no abstrato.
+  Sessão 15: perguntado que métricas a linha do 42 guarda, com as 9 chaves
+  recém-listadas na tela: "todas n?". O exemplo concreto resolveu de novo:
+  `origem_id` `7 + 15 = 22` → "porra nenhuma". Depois, `duracao` (com a
+  tabela reposta), `preco` e `distancia` (com R$ 30 e 8 km na frase).
 - **Nome de tabela carregando fornecedor** — propôs `fato_uber`, depois
   `tabela_uber`, depois `dim_carro`. Na sessão 4 reincidiu duas vezes: chamou o
   fato de "tabela de corridas de uber" e escreveu "uber" dentro do próprio grão.
@@ -324,6 +354,20 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   mão, e essa exige conferir as 365. A resposta ao entrevistador saiu pela
   metade ("o gerador designa o número correto"), sem o risco que sobra.
   Revisar: "o que impede uma segunda com `ordem_dia = 5`?".
+  Revisão da sessão 15, sem andaime, com o objetivo dito antes: "aceita" e
+  "o `CHECK` só olha a `ordem_dia`" de primeira; "um gerador" de primeira,
+  com um furo: o gerador "**recebe** a `nome_dia`" (se recebe, alguém
+  digitou). Com uma pergunta: "interpreta dia, mês e ano". **O risco que
+  sobra ("`INSERT` à mão") saiu sozinho**, o que não aconteceu na 14. Na
+  resposta ao entrevistador, a primeira frase cobria só a `nome_dia`;
+  reescrita, cobriu as duas, com "correlacionado" no lugar do verbo.
+  Melhorou muito; falta a frase curta ("calcula as duas da mesma data").
+- **NULL em FK dentro de JOIN (voltou do "Resolvido")** — sessão 15,
+  revisão hostil do fato. "Aceita, mas n deveria" e "passa despercebida"
+  certos; o mecanismo saiu errado: "ela entra na contagem, mas de forma
+  silenciosa". Com a `dim_local` de 3 linhas (7, 15, -1) na tela: "n
+  junta" → "some dela". Dois passos para o que na sessão 6 saiu frio. Pode
+  ser fadiga (fim de sessão longa), mas entra no teste frio do star schema.
 - **Onde estou: `%` × `transportes=#`** — sessão 14: digitou `DROP TABLE`
   duas vezes no terminal do Mac (`zsh: command not found: DROP`). Regra
   entregue: **SQL só depois do `transportes=#`; o `%` é o Mac.** Mesma
@@ -349,7 +393,8 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   ("daqui a duas sessões, sem andaime") foi aplicado uma sessão depois e passou
   frio: NULL não casa com nada, a linha não aparece no INNER JOIN, o `SUM` não
   soma o valor dela e o número chega errado no relatório **sem erro nenhum**.
-  Três perguntas, três acertos, zero andaime.
+  Três perguntas, três acertos, zero andaime. **Regrediu na sessão 15**:
+  ver pontos frágeis.
 - **Separar métrica de dimensão ao escrever** (sessão 3) — colapsou tudo em
   "métricas" na primeira tentativa; separou correto na segunda, aplicando a
   própria régua item por item.
@@ -1358,3 +1403,129 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
      `hora_fim_id` enquanto escreve. Sintaxe nova: `REFERENCES` (FK). Com o
      fato, o star schema fecha.
   3. Se der tempo: aluno que muda de turno.
+
+### Sessão 15 — 2026-10-03
+- Fase: 1, semana 4 de 8 — `fato_transporte`; star schema fechado
+- Feito:
+  - **O que quebrou na 14**, nas palavras dele: o endereço na
+    `dim_usuario`, "sendo que a `dim_local` já traz". É o meio porquê; o
+    caso do aluno 42 (casa × estágio) não voltou.
+  - **Revisão `segunda | 5`.** Ver "Restrição no banco × garantia no
+    processo". Melhor que a 14.
+  - **Perguntou se o fato fechado fecha o item 1 do CURRICULO.** Resposta:
+    fecha o artefato; o item só é marcado depois de um teste frio (5
+    perguntas, sem o arquivo). Proposta minha: SCD (aluno que muda de
+    turno) antes do teste, porque entrevistador pergunta.
+  - **Grão rederivado.** "Deslocamento de um indivíduo" → metrô + Uber do
+    42 = "uma" → `modal_id = transporte` → `42 | ?` com um lugar só →
+    "duas". Frase dele: "por um meio de transporte"; o "único" (da sessão
+    4, dele) fui eu que repus.
+  - **9 chaves derivadas dimensão por dimensão**, numa tabela
+    `dimensão | colunas no fato`. `local_id` → com `42 | ?` e dois locais →
+    `origem_id`, `destino_id`. Hora: saída 7h, chegada 8h → `saida_id`,
+    `chegada_id` → posto lado a lado com `data_saida_id`, viu que faltava a
+    dimensão no nome → `hora_saida_id`, `hora_chegada_id`.
+  - **`data_fim_id` / `hora_fim_id`: FECHADO, depois de 11 sessões
+    aberto.** Caso de uma linha: saiu 7h50, durou 20 min; o fato guarda
+    `hora_saida_id = 7`, `duracao = 20`; "7h20, o que estaria errado" (o
+    real é 8h10). Frase dele: "hora de chegada precisa ficar, pois
+    `hora_saida_id` conserva somente o valor da hora, ignorando os
+    minutos". Mesmo teste na data: 23h50 de 15/03 + 20 min → a conta dá dia
+    15, o real é dia 16. **As duas ficam**, com o nome saída/chegada no
+    lugar de início/fim. O argumento da sessão 4 ("redundante, deriva de
+    início + duração") só valia se a hora guardasse minutos: o grão da
+    `dim_hora` derrubou a redundância.
+  - **Métricas:** `duracao` (min), `distancia` (km), `preco` (reais), sem o
+    "da viagem" no nome (argumento do `HD_`, dito por mim).
+  - **Tipos, previstos:**
+    - `distancia` inteira: previu `8` para 8,4 ("eu sei", sem rodar);
+      certo, o Postgres arredonda. → decimal.
+    - `preco` em `float`: recusou rodar ("n velho, n vou rodar"). Pedida só
+      a previsão, eu rodei: previu `0,3`, saiu `0.30000000000000004`, e a
+      comparação com `0.30` deu `f`. "N aparece" para o
+      `WHERE preco = 0.30`: falha silenciosa. `NUMERIC(10, 2)` entregue
+      como fato de documentação.
+    - `distancia` também `NUMERIC`, com argumento dele (filtro que não
+      acha a linha).
+  - **`REFERENCES` entregue** com exemplo de fora (`venda`,
+    `comprador_id` → `cliente (cliente_id)`), com o nome do papel
+    diferente do nome da coluna lá, de propósito.
+  - **Escreveu o fato.** Primeira linha: `dim_modal INTEGER REFERENCES
+    modal (modal_id)`, com o nome da dimensão no lugar da coluna e a tabela
+    sem `dim_`. A posição da coluna consertou com a linha encaixada no
+    exemplo; `modal` → `dim_modal` ele consertou sozinho. **Decidiu testar
+    duas linhas antes das doze** (passo pequeno, iniciativa dele). Travou
+    em "quem está com quem"; a lacuna "a coluna ___ do fato aponta para a
+    coluna ___ da tabela ___" destravou. As 9 `REFERENCES` saíram certas,
+    as três de role-playing apontando para `local_id`, `hora_id` e
+    `data_id`.
+  - Previu "não passa" sem motivo; **passou de primeira.** `\dt` com **7
+    tabelas: star schema fechado.**
+  - **Revisão hostil, 1 de 4: `NOT NULL`.** Viu no `\d` que as chaves
+    aceitam `NULL` ("mas n deveria"). Mecanismo em dois passos (ver pontos
+    frágeis). Pôs `NOT NULL` nas 9 chaves e **fez o `DROP` + `CREATE`
+    sozinho, sem eu pedir**. Disco = banco, conferido nos dois.
+- Quebrou:
+  - Ver pontos frágeis: não olhar a tela (3), `transporte` como modal,
+    "todas" as colunas como métrica, tipo no lugar de unidade, "0h20",
+    `NULL` no `JOIN`, `duracao` inteiro no chat e `NUMERIC` no disco, 3
+    frases (1 invertida).
+  - "entendi porra nenhuma" e "ainda n entendi o que preciso responder":
+    as duas por enunciado meu (abaixo).
+- Método:
+  - **Uma linha com `?`** (`42 | ?`) destravou grão, `dim_local` e hora de
+    chegada. A melhor ferramenta da sessão, de novo.
+  - **Lacuna em português para sintaxe** ("a coluna ___ do fato aponta
+    para ___") destravou o `REFERENCES`.
+  - **Duas linhas lado a lado** (`saida_id` × `data_saida_id`) mostraram o
+    nome faltando sem eu dizer.
+  - **Uma linha de exemplo preenchida** numa tabela vazia transformou "não
+    sei o que responder" em resposta.
+  - **Quando ele recusa rodar:** pedir só a previsão, rodar eu mesmo
+    (`docker exec ... psql -c`), mostrar a saída. A surpresa ensina igual.
+- Falha do professor:
+  - **Mensagem com quatro peças** (`dim_modal` desenhada, linha `4`
+    inventada, pergunta da reitoria, pergunta final) → "entendi porra
+    nenhuma". Quinta vez (8, 10, 13, 14, 15). A versão de uma linha
+    resolveu na hora. **Antes de mandar, contar as peças.**
+  - **Tabela vazia sem linha de exemplo** → "ainda n entendi o que preciso
+    responder".
+  - **Desenhei `origem_id, destino_id` na mesma linha da tabela**, e ele
+    perguntou, com razão, se iam na mesma linha do `CREATE TABLE`.
+  - Repus "um único modal" no grão em vez de perguntar.
+- Aberto:
+  - **Revisão hostil, 2 a 4:**
+    - `duracao NUMERIC (10,2)` no disco contra "inteiro, min" no chat.
+    - `fato_transportes` no plural, com as 6 dimensões no singular e o
+      grão falado como `fato_transporte`.
+    - **O fato não tem `PRIMARY KEY`.** Duas linhas idênticas entram.
+      Duplicata legítima ou erro? Chave substituta?
+  - **Métricas aceitam `NULL`.** Metrô sem registro de saída:
+    `hora_chegada_id` vai para `-1`, mas e a `duracao`? `NULL` (o `SUM`
+    ignora) × `0` (o `SUM` mente). Contraste com a FK, que não pode ser
+    `NULL`. E esse `-1` é **desconhecido**, não "não se aplica": caso forte
+    para o membro duplo.
+  - **Nada impede `data_chegada_id` < `data_saida_id`**, nem chegada
+    incoerente com a `duracao`. Mesma família de restrição × processo.
+  - `NUMERIC(10,2)` em `distancia`: 10 dígitos para km é exagero.
+  - SCD (aluno que muda de turno), depois teste frio de star schema →
+    marcar o item 1 do CURRICULO.
+  - **Depois do item 1: dado e query.** O fato está vazio. Gerador
+    sintético e o primeiro `SELECT` com `JOIN` levam a window functions e
+    CTE (item 2).
+  - `schema.sql` não roda duas vezes, agora com 7 tabelas.
+  - Herdados: `-1` um membro ou dois; `mes = 13` sem `CHECK`; `data_id` ×
+    `dia`/`mes`/`ano`; `UNIQUE` no meio da lista; senha `12345` no
+    histórico; `modelo_database`; "Rua X" × "R. X"; endereço exato na
+    `dim_local` como dado pessoal; `periodo` × `periodo_dia`; "só o gerador
+    escreve na `dim_data`" não está escrito; `EXTRACT(DOW)` + 1; premissas
+    com fonte (universidade, calendário, turnos).
+  - **Ritmo para 2026-11-02:** 15 sessões, **7 de 7 tabelas**, 0 de 10
+    itens do CURRICULO. Terceira sessão no sábado 03/10, contra o README.
+- Retomo em:
+  1. Revisão curta: a frase 1 invertida. Escrever `origem_id`,
+     `destino_id` e `local_id` um embaixo do outro: quantas apontam para
+     quantas, e por quê.
+  2. Revisão hostil 2 a 4: `duracao`, nome no plural, `PRIMARY KEY`. Um
+     `DROP` + `CREATE` só, no fim, com os três consertos.
+  3. SCD: o aluno que muda de turno.

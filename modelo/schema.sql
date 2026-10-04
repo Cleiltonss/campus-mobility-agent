@@ -37,6 +37,21 @@ CREATE TABLE dim_usuario (
     periodo TEXT NOT NULL CHECK (periodo IN ('Matutino', 'Vespertino', 'Noturno', 'Integral') OR periodo = 'Não se aplica')
 );
 
+CREATE TABLE fato_transportes (
+    modal_id INTEGER NOT NULL REFERENCES dim_modal (modal_id),
+    categoria_id INTEGER NOT NULL REFERENCES dim_categoria (categoria_id),
+    origem_id INTEGER NOT NULL REFERENCES dim_local (local_id),
+    destino_id INTEGER NOT NULL REFERENCES dim_local (local_id),
+    hora_saida_id INTEGER NOT NULL REFERENCES dim_hora (hora_id),
+    hora_chegada_id INTEGER NOT NULL REFERENCES dim_hora (hora_id),
+    data_saida_id INTEGER NOT NULL REFERENCES dim_data (data_id),
+    data_chegada_id INTEGER NOT NULL REFERENCES dim_data (data_id),
+    usuario_id INTEGER NOT NULL REFERENCES dim_usuario (usuario_id),
+    duracao NUMERIC (10,2),
+    distancia NUMERIC (10,2),
+    preco NUMERIC (10,2)
+);
+
 
 -- membros "Não se aplica": toda dimensão tem chave -1
 
