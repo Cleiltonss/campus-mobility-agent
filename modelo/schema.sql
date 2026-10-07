@@ -34,7 +34,9 @@ CREATE TABLE dim_data (
 
 CREATE TABLE dim_usuario (
     usuario_id INTEGER PRIMARY KEY,
-    periodo TEXT NOT NULL CHECK (periodo IN ('Matutino', 'Vespertino', 'Noturno', 'Integral') OR periodo = 'Não se aplica')
+    aluno_id INTEGER NOT NULL,
+    periodo TEXT NOT NULL CHECK (periodo IN ('Matutino', 'Vespertino', 'Noturno', 'Integral') OR periodo = 'Não se aplica'),
+    atual BOOLEAN NOT NULL
 );
 
 CREATE TABLE fato_transportes (
@@ -47,7 +49,7 @@ CREATE TABLE fato_transportes (
     data_saida_id INTEGER NOT NULL REFERENCES dim_data (data_id),
     data_chegada_id INTEGER NOT NULL REFERENCES dim_data (data_id),
     usuario_id INTEGER NOT NULL REFERENCES dim_usuario (usuario_id),
-    duracao NUMERIC (10,2),
+    duracao NUMERIC (10),
     distancia NUMERIC (10,2),
     preco NUMERIC (10,2)
 );
@@ -65,4 +67,5 @@ INSERT INTO dim_local (local_id, endereco, bairro, cidade) VALUES (-1, 'Não se 
 
 INSERT INTO dim_data (data_id, nome_dia, dia, mes, ano, tem_aula, ordem_dia) VALUES (-1, 'Não se aplica', -1, -1, -1, 'Não se aplica', -1);
 
-INSERT INTO dim_usuario (usuario_id, periodo) VALUES (-1, 'Não se aplica');
+INSERT INTO dim_usuario (usuario_id, aluno_id, periodo, atual) VALUES (-1, -1, 'Não se aplica', true);
+

@@ -5,7 +5,7 @@ Marque só o que você sabe explicar sem consultar o código.
 
 ## Fase 1 — Engenharia de dados e SQL (sem 1-4) — #1
 
-- [ ] Modelagem dimensional, star schema
+- [x] Modelagem dimensional, star schema
 - [ ] Window functions, CTE
 - [ ] Leitura de query plan e otimização
 - [ ] Airflow ou Dagster: DAG, retry, backfill, idempotência

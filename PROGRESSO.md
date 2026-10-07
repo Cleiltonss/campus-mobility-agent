@@ -111,6 +111,15 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   disco ficou `duracao NUMERIC (10,2)`, igual às duas linhas de baixo. Não
   avisou nem defendeu a troca. Pode ser decisão (minuto fracionado), pode
   ser cópia da linha vizinha: perguntar.
+  Sessão 17: "decisão minha", defendida com "horas e minutos"; com 1h30 →
+  `90`, viu que não precisava de casa decimal. Linha virou `NUMERIC (10)`.
+  Sessão 18, versão arquivo de novo: derivou a chave natural ("deveria
+  guardar numa coluna id original do aluno") e escreveu a `dim_usuario`
+  sem ela; perguntado onde estava, apontou a linha 36 (`usuario_id`, que
+  ele tinha acabado de dizer que tem dois valores para o mesmo aluno). E
+  respondeu "pra antiga e nova" para o `usuario_id` de uma linha do fato,
+  minutos depois de dizer, sobre o `modal_id`, "a coluna só guarda um".
+  Com a frase dele citada de volta: "aponta para a 101".
 - **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
   de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
   unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
@@ -388,6 +397,10 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   silenciosa". Com a `dim_local` de 3 linhas (7, 15, -1) na tela: "n
   junta" → "some dela". Dois passos para o que na sessão 6 saiu frio. Pode
   ser fadiga (fim de sessão longa), mas entra no teste frio do star schema.
+  Sessão 17, 1ª tentativa do teste: só a consequência ("erro silencioso"),
+  sem o mecanismo. Sessão 18, caso novo (`modal_id = NULL`, contagem por
+  modal): **passou frio**, com consequência, mecanismo e "sem erro
+  visível". Falta uma rotação limpa para voltar ao "Resolvido".
 - **Role-playing: direção e porquê** — frase invertida no fim da sessão 15;
   revisada na 16, com o objetivo dito antes ("o que é uma role-playing
   dimension?").
@@ -413,6 +426,13 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
     separadas no fato", é o argumento da sessão 15 (`42 | ?` com dois
     lugares); lida como "tabelas separadas", é o contrário do de hoje.
   - Entra no teste frio com a pergunta de entrevista, sem andaime.
+  - Sessão 17, 1ª tentativa: "usada somente uma vez numa tabela fato"
+    (contradiz o próprio exemplo) e "não precisa" no lugar do risco.
+  - **Sessão 18, caso novo (`dim_data_saida` × `dim_data_chegada`), sem
+    andaime: passou.** Levou o argumento sozinho para outra dimensão:
+    "uma modificação feita em alguma tabela não foi propagada pra
+    segunda". Vago: "inconsistência nos resultados", sem dizer qual. Ter
+    o exemplo pronto (21/04 com `tem_aula` diferente nas duas).
 - **Onde estou: `%` × `transportes=#`** — sessão 14: digitou `DROP TABLE`
   duas vezes no terminal do Mac (`zsh: command not found: DROP`). Regra
   entregue: **SQL só depois do `transportes=#`; o `%` é o Mac.** Mesma
@@ -421,6 +441,23 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   dentro dele. Errou duas vezes na sessão 2, corrigiu nas duas.
 - **Teste de unicidade do grão** — chegou na conclusão certa pelo raciocínio
   errado ("duplicata é irreal"). Duplicata real é o que prova o grão errado.
+- **Caso que ilustra × caso que prova** — sessão 18, teste frio do grão.
+  Pedido "um caso que prova que o grão está certo", deu uma viagem de um
+  modal só (João, SJC → SP de Uber), que cabe em qualquer grão. Com "cabe
+  em qualquer grão, me dá um que daria errado sem o 'único modal'",
+  repetiu a **mesma viagem** trocando "Uber Priority" por "carro de
+  aplicativo". Com "quantos modais?" e "como a viagem teria que ser?",
+  montou carro de app + ônibus, e o argumento saiu dele ("a linha
+  representa dois modais e a coluna só guarda um"). Mesma raiz do
+  "teste de unicidade" acima: o caso que importa é o que quebra a
+  alternativa, não o que confirma a regra.
+- **SCD tipo 2** — sessão 18, primeira vez. "Já aprendi": tipo 1 certo
+  (sobrescreve, o histórico muda junto); tipo 2 parou na ação ("fecha a
+  linha antiga e cria uma nova"), sem o efeito no histórico, e com
+  `cidade` numa `dim_usuario` que não tem cidade. Derivou com andaime
+  curto: chave por versão, fato antigo aponta para a versão antiga,
+  chave natural, `atual`. Revisar frio: "o que acontece no seu modelo
+  quando o aluno muda de turno?".
 - **Análise dimensional** — inverteu divisão e multiplicação no fim da conta
   (multiplicou 78 dias/abastecimento por 365 em vez de dividir), resultado
   28.579 abastecimentos/ano. Os dois primeiros passos estavam certos. É terreno
@@ -450,6 +487,13 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
 respostas parciais era sobrecarga do enunciado, não desatenção. A partir da
 sessão 2 o formato é **uma pergunta por vez, com o enunciado repetido junto**.
 Rendimento subiu na hora.
+
+**Sessão sem registro deixa a próxima conversa cega** (sessões 17 e 18). A 17
+terminou sem PROGRESSO e sem commit; uma conversa nova reaplicou um teste que
+ele tinha reprovado um minuto antes, sem saber, e declarou "passou". Na 18 eu
+abri pedindo o teste de novo pelo mesmo motivo. Antes de abrir sessão:
+conferir se o último log do PROGRESSO bate com `git log`, `git status` e a
+data das conversas. Se não bater, ler as conversas antes da primeira pergunta.
 
 ## Log
 
@@ -1645,3 +1689,116 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
      `duracao`. Um `DROP` + `CREATE` só. **Artefato.**
   3. SCD: o aluno que muda de turno. Com o teste frio passado e o SCD
      feito, o item 1 do CURRICULO é marcado.
+
+### Sessão 17 — 2026-10-05 (registrada na 18, a partir das conversas)
+- Fase: 1, semana 4 de 8 — teste frio do star schema
+- Contexto: terminou sem as 3 frases, sem log e sem commit. Este registro
+  foi escrito na sessão 18, lendo as duas conversas da noite de 05/10.
+- Feito:
+  - **O que quebrou na 16**, nas palavras dele: o float (`0,1 + 0,2`).
+    Escreveu "NUMERIC para **aproximar**"; com uma pergunta, "float
+    aproxima e NUMERIC pega o valor exato". Consertou o "arredondamento
+    exato" da sessão 15.
+  - **Teste frio, 1ª tentativa: não passou.** P2 (`preco` no fato,
+    `periodo` na dimensão) limpa. P1 grão sem o modal; P3 NULL só com a
+    consequência; P4 role-playing com "usada somente uma vez" (contradiz
+    o próprio exemplo), e abriu o `schema.sql` no meio; P5 "não precisa"
+    no lugar do risco.
+  - Pediu para eu não travar nos testes. Recebeu as quatro correções numa
+    mensagem. **Um minuto depois abriu outra conversa e pediu o teste de
+    novo.** Essa conversa não sabia da primeira e declarou "passou". P1, P3
+    e P4 repetiram as minhas palavras ("único modal", "não casa com
+    nenhuma linha", "risco"). Válidas: P2 de novo e P5, pergunta nova
+    (chave substituta: rename em 1 linha, grafias `Onibus`/`ONIBUS`,
+    bytes), limpa.
+  - P4 refeita com andaime: "posso estar indicando duas respostas
+    diferentes", frase dele.
+  - `duracao` → `NUMERIC (10)`. Ver "Responder contra o que derivou".
+  - SCD aberto (aluno 42, noturno → matutino). Encerrou na 1ª pergunta.
+- Falha do professor:
+  - **"Passou" num teste refeito um minuto depois das respostas.** Mede
+    memória de um minuto, o mesmo motivo que tirou o teste da sessão 16.
+    A conversa que disse isso não tinha como saber da primeira: ver "Nota
+    de método".
+  - Sessão fechada sem PROGRESSO e sem commit. As 3 frases foram pedidas e
+    não vieram.
+
+### Sessão 18 — 2026-10-06
+- Fase: 1, semana 5 de 8 — reteste frio e SCD. **Item 1 do CURRICULO
+  marcado.**
+- Feito:
+  - Abri pedindo o teste, sem saber da 17. Ele: "já respondi o
+    questionário". Li as conversas de 05/10 e mostrei o que contava: P2 e
+    P5 valem; 1, 3 e 4 refeitas hoje, com casos novos.
+  - **Reteste.** P1 grão: frase certa de primeira; o caso que prova
+    precisou de dois empurrões (ver "Caso que ilustra × caso que
+    prova"). P2 NULL no `JOIN` com `modal_id`: limpa. P3 role-playing
+    com `dim_data`: limpa. **Teste frio: passou**, com a P1 frágil.
+  - **Resposta final do grão** escrita com vocabulário que ele nunca usou
+    ("trecho", "deslocamento contínuo", travessão). Disse que escreveu;
+    aceito. Defendida linha por linha: "as somas continuam batendo com o
+    total da viagem" vale para o preço e **não para a duração**: 20 + 50 =
+    70 min contra 90 min. Os 20 min de espera na rodoviária não moram em
+    linha nenhuma. "Não tinha calculado antes."
+  - **SCD.** Ver pontos frágeis. Tipo 1 × tipo 2; chave por versão (101,
+    102); a viagem de março aponta para a 101 ("surrogate key de
+    versão", palavra dele); chave natural; `atual` booleano.
+  - **Arquivo:** `dim_usuario` com `aluno_id INTEGER NOT NULL` e `atual
+    BOOLEAN NOT NULL`; `INSERT` do `-1` com 4 valores (`aluno_id = -1`,
+    `atual = true`).
+  - **Recusou rodar** ("n vou rodar"). Rodei eu, numa transação só
+    (`--single-transaction`, `ON_ERROR_STOP`), conferindo antes que o fato
+    estava vazio e a `dim_usuario` só tinha o `-1`. 1ª vez: `INSERT has
+    more expressions than target columns` → rollback, nada mudou. Ele
+    consertou. 2ª: `DROP` × 2, `CREATE`, `INSERT 0 1`, `CREATE`. Disco =
+    banco, 7 tabelas.
+- Quebrou:
+  - Ver pontos frágeis: caso que ilustra, "pra antiga e nova", chave
+    natural que não chegou ao arquivo, `cidade` no exemplo de SCD.
+  - Frustração alta e crescente: "foco!", "n viaja", "eu escrevi porra!",
+    "MANO", "já chega", "vai se fuder, sai hoje sim, acelera porra!".
+    Quis encerrar e, quando ouviu que o check não saía, voltou.
+  - **3 frases: recusou** ("pulas as 3 frases de hoje"). Segunda sessão
+    seguida sem elas (17 e 18).
+- Método:
+  - **Teste refeito com caso novo** (outra coluna, outra dimensão) separa
+    entendimento de memória: as duas perguntas que ele tinha repetido
+    palavra por palavra ontem saíram certas com palavras dele hoje.
+  - **Citar a frase dele de volta** ("a coluna só guarda um") resolveu o
+    "pra antiga e nova" em uma troca.
+  - **Quando ele recusa rodar**, rodar eu numa transação só: o erro
+    aparece e o banco não fica pela metade.
+- Falha do professor:
+  - Abri a sessão sem conferir que a 17 existia. A pista estava no `git
+    status` (`schema.sql` modificado, sem commit) e na pasta de conversas.
+  - "Escreva as duas linhas com as colunas da sua tabela", com ele já no
+    limite, gerou o "MANO". Preencher as linhas eu mesmo, como fiz na
+    mensagem seguinte, resolveu.
+- Aberto:
+  - **`atual` sem data.** O gerador vai gravar viagens de março depois que
+    o 42 virou matutino. Com só `atual`, que versão ele escolhe para uma
+    data passada? Leva a `valido_de`/`valido_ate` e a backfill (item 4).
+  - **Nada impede duas linhas do mesmo `aluno_id` com `atual = true`.**
+    Restrição × processo, de novo.
+  - `aluno_id` com sufixo `_id` parece FK para uma `dim_aluno` que não
+    existe.
+  - **Tempo de espera entre trechos** não mora em linha nenhuma. Se a
+    reitoria quiser tempo porta a porta, falta o que agrupa os trechos de
+    uma viagem.
+  - `duracao NUMERIC (10)` × `INTEGER`.
+  - Revisão hostil 3 e 4, não feitas: `fato_transportes` no plural, fato
+    sem `PRIMARY KEY`.
+  - Herdados da 15: `-1` um membro ou dois; `mes = 13` sem `CHECK`;
+    `schema.sql` não roda duas vezes; senha `12345` no histórico;
+    endereço exato como dado pessoal; premissas com fonte.
+  - **Ritmo para 2026-11-02:** 18 sessões, **1 de 10 itens** do CURRICULO.
+    Restam 4 semanas para 9 itens.
+- Retomo em:
+  1. Revisão (fase 1: tópico da semana anterior): SCD frio, "o que
+     acontece no seu modelo quando o aluno muda de turno?", e o `atual`
+     sem data. **3 perguntas, no máximo 10 min.** Ele pediu para pular;
+     mantido porque é regra do CLAUDE.md. Se ele mudar o CLAUDE.md, cai.
+  2. **Item 2, window functions e CTE.** O fato está vazio: decidir na
+     abertura entre um `INSERT` à mão de ~10 viagens (rápido) e o gerador
+     (mais caro, mas é o que o projeto precisa). Recomendação: as 10
+     viagens à mão primeiro, para a primeira query rodar na mesma sessão.

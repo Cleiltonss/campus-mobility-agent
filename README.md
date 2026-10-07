@@ -58,8 +58,9 @@ fases 3 e 6. Fora dessa janela, cluster local (kind/k3d).
 
 ## Estado atual
 
-Fase 1, semana 4 de 8. Postgres 18 local via `modelo/docker-compose.yml`;
+Fase 1, semana 5 de 8. Item 1 do CURRICULO (star schema) marcado.
+Postgres 18 local via `modelo/docker-compose.yml`;
 `modelo/schema.sql` com o star schema completo rodando no banco:
 `fato_transportes` (9 FKs, 3 métricas) e 6 dimensões (`dim_modal`,
 `dim_categoria`, `dim_hora`, `dim_local`, `dim_data`, `dim_usuario`).
-Fato ainda vazio.
+`dim_usuario` é SCD tipo 2 (`aluno_id` + `atual`). Fato ainda vazio.
