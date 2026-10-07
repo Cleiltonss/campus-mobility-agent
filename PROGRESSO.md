@@ -1791,14 +1791,43 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
   - Herdados da 15: `-1` um membro ou dois; `mes = 13` sem `CHECK`;
     `schema.sql` não roda duas vezes; senha `12345` no histórico;
     endereço exato como dado pessoal; premissas com fonte.
-  - **Ritmo para 2026-11-02:** 18 sessões, **1 de 10 itens** do CURRICULO.
-    Restam 4 semanas para 9 itens.
+  - **Ritmo:** 18 sessões para o item 1. Ver "Replanejamento" abaixo.
+- **Replanejamento (fim da sessão, plano aprovado por ele):**
+  - Motivo dele: "necessidade real". As vagas de Eng. IA e FDE pedem LLM,
+    RAG, agente, evals, deploy e prova pública; Python em produção mais
+    que SQL. Motivo dos números: 18 sessões no item 1, com 48 itens no
+    CURRICULO, faziam LLM e RAG nunca chegarem.
+  - Furos apontados: "SQL longe de LLM/RAG" é falso (pgvector, busca
+    híbrida, julgar o SQL do text-to-SQL; a própria lista dele põe SQL
+    em #2). "Evals primeiro" não dá sem sistema; o golden set, sim.
+    Trocar de domínio custaria as 18 sessões.
+  - Decisões dele: transporte + sintético; projeto público e processo
+    privado; SQL e Python juntos; live coding de SQL "provável que não
+    role", então SQL entra só por necessidade do projeto.
+  - **Roteiro novo, blocos de 2 semanas:** A Python de produção + dado
+    (06/10 a 17/10), B agente (20/10 a 31/10), C API + container (03/11 a
+    14/11), D evals + RAG (17/11 a 28/11), E operar e mostrar (01/12 a
+    12/12). O agente vem antes da API: a FastAPI serve o agente, e é aí
+    que `async` faz sentido. Airflow, dbt, K8s, Terraform e MLOps ficam
+    como conceito.
+  - **Domingo vira dia de entrevista** (2h): live coding Python, design
+    de IA, deep dive estilo Amazon em inglês. Pedido dele, a partir da
+    entrevista da Amazon ("muitas perguntas de detalhamento de projeto").
+    `ARQUITETURA.md` (escada de 5 perguntas por decisão) e `HISTORIAS.md`
+    (8 histórias STAR) criados como moldes vazios; o conteúdo é dele.
+  - README, CURRICULO e CLAUDE.md atualizados ("fase" → "bloco"; sábado
+    candidaturas, domingo entrevista).
+  - **Próxima reavaliação: 2026-10-17**, fim do bloco A, com o ritmo
+    medido. Substitui a de 02/11.
 - Retomo em:
-  1. Revisão (fase 1: tópico da semana anterior): SCD frio, "o que
-     acontece no seu modelo quando o aluno muda de turno?", e o `atual`
-     sem data. **3 perguntas, no máximo 10 min.** Ele pediu para pular;
-     mantido porque é regra do CLAUDE.md. Se ele mudar o CLAUDE.md, cai.
-  2. **Item 2, window functions e CTE.** O fato está vazio: decidir na
-     abertura entre um `INSERT` à mão de ~10 viagens (rápido) e o gerador
-     (mais caro, mas é o que o projeto precisa). Recomendação: as 10
-     viagens à mão primeiro, para a primeira query rodar na mesma sessão.
+  1. Revisão curta: SCD, 3 perguntas, no máximo 10 min (ele pediu para
+     pular; é regra do CLAUDE.md).
+  2. **Bloco A, sessão 1.** O `pyproject` e as pastas são boilerplate,
+     então eu escrevo. Ele escreve o modelo Pydantic de uma viagem, com os
+     campos tirados do `fato_transportes`, e o primeiro teste pytest que
+     falha com uma viagem inválida. Antes de codar, ele explica em texto
+     o que o contrato barra e por quê.
+  3. Commit.
+  - Primeiro domingo de entrevista: 2026-10-11. Começar pelo pitch e por
+    uma entrada do `ARQUITETURA.md` (sugestão: `NUMERIC` × float, que
+    ele já defende bem).

@@ -10,45 +10,55 @@ Engenheiro mecatrônico, trabalho com IA aplicada em produção
 fundamentos. O objetivo NÃO é entregar software: é reconstruir
 memória muscular e ter artefatos defensáveis em entrevista.
 
-Tempo: 2h/dia, pós-trabalho. 21 semanas (eram 17; a fase 1 ganhou
-+4 em 2026-09-30). Reavaliar em 2026-11-02: contar itens da fase 1
-fechados no CURRICULO e decidir de novo com o ritmo medido.
-Fins de semana são para candidaturas, não para este projeto.
+Alvo: Engenheiro de IA e Forward Deployed Engineer. As entrevistas
+acontecem ao longo dos meses, sem data fixa: o projeto tem que estar
+defensável a qualquer momento.
+
+Tempo: 2h/dia, pós-trabalho. Segunda a sexta: construção. Sábado:
+candidaturas. Domingo: dia de entrevista (2h).
+
+Prazo: blocos A a E de 2026-10-06 a 2026-12-12. O prazo final continua
+2027-01-31, e a diferença é folga para o ritmo real. Reavaliar em
+2026-10-17, no fim do bloco A, com o ritmo medido.
+
+Replanejado em 2026-10-06 (sessão 18). O roteiro de 7 fases não chegava
+em LLM e RAG no ritmo medido (o item 1 levou 18 sessões), e as vagas
+tratam LLM com RAG e agente como eliminatório.
 
 ## O que estou construindo
 
-Plataforma de agentes sobre dados operacionais. Ingere dado bruto,
-modela, expõe via API async, sobe em cluster, serve um agente com
-ferramentas e mede a si mesma. Cada fase adiciona uma camada.
+Um assistente de dados para a reitoria de uma universidade com cerca de
+7.000 alunos. É um agente que responde perguntas sobre o transporte dos
+alunos consultando um star schema em Postgres (text-to-SQL com
+guardrails) e documentos da reitoria (RAG). Ele é servido por API async,
+medido por evals e publicado em cloud. Cada bloco adiciona uma camada.
 
-## Fases
+## Blocos
 
-Ordem = ranking de exigência de vagas.
+| Bloco | Datas | Foco | Entregável |
+|-------|-------|------|------------|
+| A | 06/10 a 17/10 | Python de produção + dado | Gerador sintético tipado e testado, 5M viagens carregadas |
+| B | 20/10 a 31/10 | Agente | Golden set + agente text-to-SQL com guardrails, exposto via MCP |
+| C | 03/11 a 14/11 | API + container | FastAPI async na frente do agente, Docker multi-stage |
+| D | 17/11 a 28/11 | Evals + RAG | Execution accuracy em CI + RAG em pgvector medido |
+| E | 01/12 a 12/12 | Operar e mostrar | Langfuse, deploy no Cloud Run, CI, repo público |
 
-| Fase | Semanas | Ranking | Foco | Entregável |
-|------|---------|---------|------|------------|
-| 1 | 1-8 | #1 | Engenharia de dados e SQL | Pipeline Airflow/dbt + modelagem dimensional |
-| 2 | 9-11 | #2 | Python de produção | API FastAPI async, testada e perfilada |
-| 3 | 12-15 | #3 | Cloud e containers | Docker, K8s, Terraform, IAM |
-| 4 | 16-17 | #4 | LLM em produção | Roteamento, structured output, cache, fallback |
-| 5 | 18-19 | #6 | Agentes e orquestração | Agente com tools, MCP, human-in-the-loop |
-| 6 | 20 | #7 | MLOps | Versionamento, CI/CD, canary, rollback |
-| 7 | 21 | #8, #9 | Evals e RAG | Golden set + RAG híbrido medido |
-
-ML clássico (#5) está fora do escopo destas 21 semanas.
-Decisão consciente: só entra se eu voltar a mirar indústria,
-energia ou saúde.
+SQL não é bloco: entra em cada bloco por necessidade do projeto.
+Airflow, dbt, K8s, Terraform e MLOps ficam como conceito de entrevista
+(ver CURRICULO). ML clássico continua fora: só entra se eu voltar a
+mirar indústria, energia ou saúde.
 
 ## Stack
 
-Python 3.12, FastAPI, Postgres + pgvector, Airflow, dbt,
-Docker, Kubernetes, Terraform, GCP, MLflow, Langfuse.
+Python 3.12, Pydantic, pytest, FastAPI, Postgres + pgvector, Docker,
+MCP, Langfuse, GitHub Actions, GCP (Cloud Run).
 
 ## Custo
 
-Conta GCP criada na fase 3 (semana 12), não antes: os $300 de
-crédito valem 90 dias a partir da criação e precisam cobrir as
-fases 3 e 6. Fora dessa janela, cluster local (kind/k3d).
+Conta GCP criada no bloco E, não antes: os $300 de crédito valem 90
+dias a partir da criação. Até lá, tudo local em Docker.
+Do bloco B em diante há custo de API de LLM: definir um teto mensal
+antes da primeira chamada.
 
 ## Comandos
 
@@ -58,8 +68,8 @@ fases 3 e 6. Fora dessa janela, cluster local (kind/k3d).
 
 ## Estado atual
 
-Fase 1, semana 5 de 8. Item 1 do CURRICULO (star schema) marcado.
-Postgres 18 local via `modelo/docker-compose.yml`;
+Bloco A, semana 1 de 2. Star schema concluído (sessão 18). Zero Python
+ainda. Postgres 18 local via `modelo/docker-compose.yml`;
 `modelo/schema.sql` com o star schema completo rodando no banco:
 `fato_transportes` (9 FKs, 3 métricas) e 6 dimensões (`dim_modal`,
 `dim_categoria`, `dim_hora`, `dim_local`, `dim_data`, `dim_usuario`).

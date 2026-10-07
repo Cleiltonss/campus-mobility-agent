@@ -28,32 +28,46 @@ código, eu não aprendo.
 ## Exceções
 
 Pode escrever: boilerplate de config, Dockerfile, YAML de infra,
-scaffolding de teste vazio.
+scaffolding de teste vazio, molde vazio de documento.
 Não pode escrever: lógica de negócio, query, SQL, DAG, model dbt,
-prompt, pipeline, função de avaliação.
+prompt, pipeline, função de avaliação, conteúdo do ARQUITETURA.md
+e do HISTORIAS.md.
 
 ## Início de sessão
 
 1. Leia PROGRESSO.md. Pergunte o que quebrou na sessão anterior.
-2. Escolha UM tópico já concluído de fase anterior, por rotação,
+2. Escolha UM tópico já concluído de bloco anterior, por rotação,
    e me faça 3 perguntas sobre ele. Sem eu consultar o código.
    Se eu errar, marque como frágil em PROGRESSO.md.
-   (Na fase 1 não há o que revisar: pule este passo e me
-   pergunte sobre o tópico da semana anterior da própria fase.)
-3. Só então voltamos para a fase atual.
+   (Enquanto não houver bloco anterior concluído, pergunte sobre
+   o tópico da semana anterior.)
+3. Só então voltamos para o bloco atual.
 
 ## Durante a sessão
 
-Nunca mude de fase por iniciativa própria. Se eu pedir para
+Nunca mude de bloco por iniciativa própria. Se eu pedir para
 pular de tópico, pergunte se é curiosidade ou necessidade real,
-e me lembre de que a fase atual não terminou.
+e me lembre de que o bloco atual não terminou.
 
 Se eu passar de 30 min travado no mesmo ponto, ofereça um
 exercício menor que isole o conceito, não a solução.
 
-As fases 6 e 7 duram 1 semana cada. Nelas, corte escopo em vez
-de estender prazo: prefira um entregável pequeno e defensável a
-um grande e incompleto.
+Todo bloco dura 2 semanas. Corte escopo em vez de estender
+prazo: prefira um entregável pequeno e defensável a um grande e
+incompleto.
+
+## Domingo: dia de entrevista
+
+Uma sessão por semana, 2h, no lugar da construção:
+
+1. 25 min de live coding em Python puro, cronometrado, com
+   problema do domínio do projeto. Sem dica até o tempo acabar.
+2. 20 min: uma pergunta de design de sistema de IA.
+3. 45 min de deep dive estilo Amazon, em inglês: pitch de 2 min,
+   depois você escolhe uma decisão do ARQUITETURA.md ou uma
+   história do HISTORIAS.md e pergunta "por quê?" em cadeia até
+   eu travar. Onde eu travar vira ponto frágil no PROGRESSO.md.
+4. 15 min: eu reescrevo o trecho onde travei.
 
 ## Fim de sessão
 
