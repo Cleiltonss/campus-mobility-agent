@@ -66,6 +66,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   ida, com `destino = Universidade` escrito. **Colando ou lendo a linha
   pedida, acertou nas três vezes**: linha 43 → `fato_transportes`; linha
   43 colada → `local_id`; a palavra antes de `= Universidade` → `destino`.
+  Sessão 19, quatro vezes, todas numa data escrita na própria pergunta:
+  `01` e `2026` para "12 de março de 2027"; ano `2026` de novo, com
+  `2027` na linha de cima; `20270211` para 11/01. **Mandado copiar o
+  número da linha, acertou**; o `20270211` ele consertou sozinho com
+  "que dia e que mês é esse?".
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -234,6 +239,15 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   entender"). A frase é ambígua (ver "Role-playing: direção e porquê"), e
   o mecanismo da sessão (uma tabela por papel duplica o lugar) não
   apareceu.
+  Sessões 17 e 18: recusou as 3 frases. Sessão 19: 1 frase, **com
+  mecanismo**, a melhor em semanas: com só `NOT NULL` e `REFERENCES`, o
+  banco aceita viagem impossível, porque o erro só aparece comparando
+  duas colunas da mesma linha. **O fim saiu trocado**: "aceita os casos
+  onde a data de saída acontece antes da data de chegada", que é a
+  viagem normal. Perguntado, disse certo ("se a chegada acontecer
+  primeiro, seria impossível") e defendeu que a frase estava certa. O
+  entendimento está certo; a frase escrita nomeia o caso errado. Mesma
+  família da frase invertida da sessão 15.
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -369,6 +383,14 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   `-1` diz `'Não se aplica'`. E, para fazer a regra errada passar, **trocou o
   dado** (`tem_aula = -1` no `INSERT`) em vez da regra. O relatório da
   reitoria com uma linha `-1` resolveu: "nada".
+  **Sessão 19, a chave `AAAAMMDD` não voltou sem andaime.** Mesmo
+  caminho da 13, inteiro: `13h` e `12 de janeiro` numa coluna `INTEGER`;
+  `data_saida_id = 12` (a regra da `dim_hora` de novo); `12032027`
+  (`DDMMAAAA`, o formato que ele mesmo descartou na 13). Com os dois
+  números um embaixo do outro (`12032027` × `01042027`), viu que o menor
+  é a data mais tarde, e "ano, mês, dia" saiu de primeira. Seis passos
+  para uma decisão dele. Revisar: "que número vai na `data_id` de
+  05/11/2027, e por que nessa ordem?".
 - **Lista do válido sem o membro `-1`** — sessão 14, duas vezes: válidos de
   `ordem_dia` = "1 a 7" e de `periodo` = "manha, tarde, noite", as duas sem
   a linha `-1` que ele tinha acabado de definir. Mesmo conflito do `CHECK`
@@ -458,6 +480,9 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   curto: chave por versão, fato antigo aponta para a versão antiga,
   chave natural, `atual`. Revisar frio: "o que acontece no seu modelo
   quando o aluno muda de turno?".
+  Sessão 19: revisão encolhida para essa pergunta só, e recusada ("n
+  quero, segue"). Pulada duas sessões seguidas (18 e 19). O gerador
+  precisa disso: viagem de março tem que apontar para a versão de março.
 - **Análise dimensional** — inverteu divisão e multiplicação no fim da conta
   (multiplicou 78 dias/abastecimento por 365 em vez de dividir), resultado
   28.579 abastecimentos/ano. Os dois primeiros passos estavam certos. É terreno
@@ -1831,3 +1856,79 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
   - Primeiro domingo de entrevista: 2026-10-11. Começar pelo pitch e por
     uma entrada do `ARQUITETURA.md` (sugestão: `NUMERIC` × float, que
     ele já defende bem).
+
+### Sessão 19 — 2026-10-07
+- Bloco A, semana 1 de 2, sessão 1 do bloco — contrato de dado
+- Duração: ~20 min (21h46 a 22h04). Encerrou ele, no meio de uma pergunta.
+- Contexto: abriu como "Sessão 18". Conferi `git log` e as conversas: a 18
+  estava registrada e commitada, então esta é a 19.
+- Feito:
+  - Pulou "o que quebrou na 18" e a revisão de SCD, mesmo encolhida para
+    uma pergunta. Ver "SCD tipo 2".
+  - Perguntou "estamos no bloco 2?". Contexto entregue: bloco A, o que é
+    o contrato e por que vem antes do gerador.
+  - **Caso da viagem impossível, dele: chegar antes de sair.** Primeiro
+    fora do domínio (avião para Roma; "domínio" era palavra nova). No
+    domínio, depois de refazer a chave `AAAAMMDD` (ver "Copiar a forma"):
+    ```
+    hora_saida_id | hora_chegada_id | data_saida_id | data_chegada_id
+    13            | 11              | 20270112      | 20270111
+    ```
+  - **Vínculo novo:** a chave `AAAAMMDD` não serve só para o `BETWEEN` de
+    março. É ela que faz a regra "a chegada não vem antes da saída"
+    funcionar como comparação de números; em `DDMMAAAA`, a regra erraria
+    calada.
+  - **Por que o banco aceita, dele:** "eles só olham para as tabelas
+    `dim_`". Mecanismo fechado com uma pergunta: o impossível aparece
+    olhando "duas [colunas] do mesmo tipo", e `NOT NULL` e `REFERENCES`
+    olham uma coluna por vez.
+  - 3 frases: 1, com mecanismo. Ver "Fecha a sessão em sintaxe".
+- Quebrou:
+  - Ver pontos frágeis: não olhar a tela (4), chave `AAAAMMDD` (6 passos),
+    frase final trocada, SCD pulado.
+  - **Zero artefato e zero Python** na sessão 1 do bloco de Python.
+    Terceira sessão sem artefato (11, 16, 19).
+- Falha do professor:
+  - **A volta pela chave `AAAAMMDD` levou ~10 trocas, e o porquê dela só
+    foi dito no fim.** Devia ter dito antes ("a regra do contrato compara
+    duas datas; o número precisa estar na ordem do calendário"), como diz
+    a regra de dizer o objetivo da sequência. Numa sessão de 20 min, comeu
+    a sessão.
+  - Pergunta em duas partes ("qual é menor? e qual vem primeiro no
+    calendário?") → respondeu só a primeira. Mesmo erro da 16.
+  - "No domínio" sem dizer o que é domínio.
+- Aberto:
+  - **Pergunta em que ele encerrou:** o `CHECK (data_chegada_id >=
+    data_saida_id)` existe e barra a linha. Com 5 milhões de viagens numa
+    carga só e a impossível na posição 3.200.000, se a única proteção é o
+    `CHECK`, o que acontece? (A carga inteira volta, e o erro aparece no
+    fim, longe do código que gerou a viagem. O contrato barra a viagem
+    quando ela nasce, com o campo e o motivo. Resposta de entrevista: os
+    dois, o contrato na entrada e o `CHECK` como última linha.)
+  - **Hora sozinha não prova nada:** `hora_chegada_id = 0` com
+    `hora_saida_id = 23` é a viagem que vira a meia-noite. A regra precisa
+    comparar data e hora juntas. Isca para quando ele escrever o validador.
+  - **O contrato modela o quê?** Uma linha do fato (chaves inteiras) ou a
+    viagem como ela acontece (data e hora com minuto, nome do modal)? Com
+    minuto, o contrato confere `duracao` contra saída e chegada, coisa que
+    o banco não consegue (o grão da `dim_hora` perdeu os minutos). Decisão
+    dele, antes de codar.
+  - **Python 3.14.5 no Mac (Homebrew), README diz 3.12, sem `uv`.** Decidir
+    antes do `pyproject`. É o `latest` × `18` de novo, agora em Python.
+  - Herdados da 18: `atual` sem data; duas linhas `atual = true` para o
+    mesmo aluno; `aluno_id` com sufixo `_id`; espera entre trechos;
+    `duracao NUMERIC (10)`; plural do fato; fato sem `PRIMARY KEY`; e os
+    da 15.
+  - **Ritmo do bloco A:** 1 sessão de ~9 (até 17/10), zero linha de
+    Python. Entregável: gerador tipado e testado, 5M viagens carregadas.
+- Retomo em:
+  1. Revisão: SCD, uma pergunta, frio ("o aluno 42 era noturno e virou
+     matutino em maio; o que acontece na sua `dim_usuario`?"). Pulada
+     duas vezes.
+  2. Resposta à pergunta da carga (posição 3.200.000). Depois, a lista do
+     que o contrato barra, regra por regra, cada uma com "banco, Python
+     ou os dois?".
+  3. Versão do Python decidida. `pyproject` e pastas (eu escrevo). Ele
+     escreve o modelo Pydantic e o primeiro teste que falha com a viagem
+     `20270112 → 20270111`. **A sessão não termina sem esse teste no
+     disco, mesmo falhando.**
