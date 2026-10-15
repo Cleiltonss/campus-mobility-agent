@@ -71,6 +71,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   `2027` na linha de cima; `20270211` para 11/01. **Mandado copiar o
   número da linha, acertou**; o `20270211` ele consertou sozinho com
   "que dia e que mês é esse?".
+  Sessão 20, três vezes: `15/04/2027` para a data que vem primeiro no
+  calendário, com 20/03 e 15/04 escritas uma embaixo da outra; "`Noturno
+  | ?` -> false" no lugar da pergunta feita (quantas linhas casam no
+  `JOIN`); "o período de março" para a coluna `periodo`, que é turno.
+  **Mandado ler o mês ou copiar a coluna, acertou nas três.**
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -248,6 +253,8 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   primeiro, seria impossível") e defendeu que a frase estava certa. O
   entendimento está certo; a frase escrita nomeia o caso errado. Mesma
   família da frase invertida da sessão 15.
+  Sessão 20: recusou ("to mt morto"). Três recusas em quatro sessões
+  (17, 18, 20).
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -376,6 +383,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   rodar, mas as duas são falsas"); estavam certas. **Aplicou sozinho ao
   `nome_dia`**: escreveu os 7 nomes e achou `terça` por último. Daí saiu a
   `ordem_dia`. Melhorou muito; o zero ainda aparece antes de sumir.
+  Sessão 20: o zero voltou como porquê da chave `AAAAMMDD` ("evitando o
+  caso de número com 0 como primeiro algarismo"). Com `20032027` ×
+  `15042027`, sem zero nenhum: o menor de primeira, a data mais cedo
+  errada (ver "Não olhar a tela"), e o mecanismo saiu dele ("mesmo que
+  20 > 15"). **O zero é o porquê que volta quando o outro não vem.**
 - **Copiar a forma da solução e perder o significado** — sessão 7 (chave `2`
   nos `INSERT` do `-1`). Sessão 13, duas vezes: `data_id = 15` (a regra da
   `dim_hora`, "a chave é o próprio valor", sem testar o segundo dia 15); e
@@ -391,6 +403,9 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   é a data mais tarde, e "ano, mês, dia" saiu de primeira. Seis passos
   para uma decisão dele. Revisar: "que número vai na `data_id` de
   05/11/2027, e por que nessa ordem?".
+  **Sessão 20: `20271105` de primeira, sem andaime.** A decisão virou
+  dele; o porquê ainda não (o zero de novo, ver "Ordem de texto × ordem
+  de número").
 - **Lista do válido sem o membro `-1`** — sessão 14, duas vezes: válidos de
   `ordem_dia` = "1 a 7" e de `periodo` = "manha, tarde, noite", as duas sem
   a linha `-1` que ele tinha acabado de definir. Mesmo conflito do `CHECK`
@@ -413,6 +428,16 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   resposta ao entrevistador, a primeira frase cobria só a `nome_dia`;
   reescrita, cobriu as duas, com "correlacionado" no lugar do verbo.
   Melhorou muito; falta a frase curta ("calcula as duas da mesma data").
+  Sessão 20, versão contrato × `CHECK` (carga de 5M com a viagem
+  impossível na posição 3.200.000): "checa uma a uma"; "são ignoradas"
+  para as 3.199.999, lido como rollback, com a evidência da sessão 18.
+  O que o contrato muda saiu vago ("só checa uma possibilidade") até a
+  pergunta concreta "em que momento você fica sabendo?" → "no momento
+  que eu ponho o `>=`". **O risco que sobra não voltou:** "excelente
+  pergunta kkk", "não lembro"; com o `INSERT` à mão no `psql` posto na
+  tela, "isso tá sendo visto pelo sql". Saiu sozinho na 15 e com andaime
+  na 20. A frase de entrevista ("os dois: o contrato na entrada, o
+  `CHECK` como última linha") fui eu que montei.
 - **NULL em FK dentro de JOIN (voltou do "Resolvido")** — sessão 15,
   revisão hostil do fato. "Aceita, mas n deveria" e "passa despercebida"
   certos; o mecanismo saiu errado: "ela entra na contagem, mas de forma
@@ -483,6 +508,22 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   Sessão 19: revisão encolhida para essa pergunta só, e recusada ("n
   quero, segue"). Pulada duas sessões seguidas (18 e 19). O gerador
   precisa disso: viagem de março tem que apontar para a versão de março.
+  **Sessão 20, frio, enfim. Passou com andaime:**
+  - "criou uma nova coluna id": coluna no lugar de linha. Com a tabela
+    de uma linha desenhada, "uma" e depois "duas".
+  - Na linha nova, `usuario_id = 101` de novo: **a chave por versão não
+    voltou.**
+  - **Ideia errada nova sobre `JOIN`:** com dois `101`, "pode inibir
+    alguma dessas linhas, provavelmente a primeira". Fato entregue: o
+    `JOIN` devolve uma linha por casamento e não escolhe. Com a coluna
+    copiada: "nossa, tem noturno e matutino" (a viagem de março contada
+    duas vezes, uma com o turno errado, sem erro). Daí `102` de primeira.
+  - Frase de entrevista: "recebe um segundo identificador para sinalizar
+    a mudança", sem "linha nova" e sem porquê. Perguntado por que não um
+    `UPDATE` no 101, o porquê saiu dele: "nunca encontraríamos que o
+    aluno pertenceu anteriormente a outro período".
+  - Revisar com outra pergunta: "por que a linha nova não pode
+    reaproveitar o `usuario_id`?".
 - **Análise dimensional** — inverteu divisão e multiplicação no fim da conta
   (multiplicou 78 dias/abastecimento por 365 em vez de dividir), resultado
   28.579 abastecimentos/ano. Os dois primeiros passos estavam certos. É terreno
@@ -1932,3 +1973,67 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
      escreve o modelo Pydantic e o primeiro teste que falha com a viagem
      `20270112 → 20270111`. **A sessão não termina sem esse teste no
      disco, mesmo falhando.**
+
+### Sessão 20 — 2026-10-14
+- Bloco A, semana 2 de 2, sessão 2 do bloco — revisões e contrato × `CHECK`
+- Duração: ~27 min (21h16 a 21h43). Encerrou ele ("to mt morto"), sem as
+  3 frases.
+- Contexto: 7 dias sem sessão desde a 19 (07/10). O domingo de entrevista
+  de 11/10 não aconteceu. Minutos antes, numa outra conversa, perguntou se
+  o projeto vai ter camadas de ML. Lá a resposta foi o escopo da sessão 18
+  e a pergunta "curiosidade ou vaga?", que ficou sem resposta.
+- Feito:
+  - **O que quebrou na 19:** "nem ideia". Com a pista (`12032027`), virou
+    revisão da chave: `20271105` de primeira, porquê com o zero. Ver
+    pontos frágeis.
+  - **Revisão de SCD, enfim** (pulada na 18 e na 19). Passou com andaime;
+    o porquê final (`UPDATE` apaga o histórico) saiu dele. Ver pontos
+    frágeis.
+  - **Contrato × `CHECK`, a pergunta em que ele encerrou a 19.** Ver
+    "Restrição no banco × garantia no processo".
+- Quebrou:
+  - Ver pontos frágeis: não olhar a tela (3), o zero de novo, coluna ×
+    linha no SCD, `JOIN` que "inibe" uma linha, risco que sobra.
+  - **Zero artefato e zero Python, segunda sessão seguida no bloco de
+    Python.** Quarta sessão sem artefato (11, 16, 19, 20). "A sessão só
+    termina com o teste no disco" foi dito na abertura e não se cumpriu.
+- Falha do professor:
+  - **A abertura comeu a sessão.** "O que quebrou" virou uma revisão
+    inteira (`AAAAMMDD`, ~8 trocas), depois veio a de SCD (~12) e depois a
+    pergunta conceitual da carga (~8). Três revisões em 27 min, e ele
+    cansou na pergunta da versão do Python, a primeira do caminho para o
+    arquivo. Mesmo erro da sessão 5, e contra a memória "sessão precisa
+    de artefato" (revisão ~15 min, depois arquivo). A pista do "o que
+    quebrou" devia ter parado no `20271105` certo.
+  - **Montei duas respostas de entrevista** com as peças dele (o inteiro
+    compara da esquerda; "os dois, o contrato na entrada e o `CHECK` como
+    última linha"). É o sinal da regra da sessão 4, e a sessão acabou
+    duas mensagens depois.
+- Aberto:
+  - **Pergunta em que ele encerrou:** "o Python do Homebrew (3.14.5, que
+    atualiza a cada `brew upgrade`) é o `postgres:18` ou o
+    `postgres:latest`?". Depois, decidir 3.12 × 3.14 e onde a versão fica
+    fixa (`requires-python`, `.python-version`, `uv`).
+  - **O contrato modela o quê?** Linha do fato (chaves inteiras) × viagem
+    com minuto. Sem mudança desde a 19.
+  - Hora sozinha não prova nada (23h → 0h). Sem mudança.
+  - **O escopo do bloco A não cabe no prazo.** Entregável: gerador tipado
+    e testado, 5M viagens carregadas. Sobram 15/10 e 16/10, com zero
+    Python. A regra do CLAUDE.md é cortar escopo, não estender prazo:
+    a reavaliação de 17/10 decide o corte, com o ritmo medido.
+  - Pergunta de ML (outra conversa): curiosidade ou vaga? Levar para a
+    reavaliação de 17/10, que é onde se mexe no escopo.
+  - Herdados da 19 e da 18, sem mudança.
+  - **Ritmo do bloco A:** 2 sessões de ~9 (19 e 20), zero linha de Python.
+- Retomo em (15/10, quinta):
+  1. "O que quebrou na 20" + revisão de rotação, **no máximo 10 min,
+     cronometrados**. Rotação: NULL em FK no `JOIN` (falta uma rotação
+     limpa para voltar ao "Resolvido"). Se a pista do "o que quebrou"
+     destravar, parar ali; não vira segunda revisão.
+  2. A pergunta da versão (Homebrew = `18` ou `latest`?) e a decisão
+     3.12 × 3.14. Eu escrevo `pyproject`, `.python-version`, pastas e o
+     arquivo de teste vazio.
+  3. Decisão "o contrato modela o quê?", em texto, com o porquê. Ele
+     escreve o modelo Pydantic e o primeiro teste que falha com a viagem
+     que chega antes de sair. **Primeiro arquivo dele antes dos 30 min de
+     sessão.**
