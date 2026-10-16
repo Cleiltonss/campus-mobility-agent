@@ -50,7 +50,7 @@ mirar indústria, energia ou saúde.
 
 ## Stack
 
-Python 3.12, Pydantic, pytest, FastAPI, Postgres + pgvector, Docker,
+Python 3.14 (fixo em `.python-version`, via uv), Pydantic, pytest, FastAPI, Postgres + pgvector, Docker,
 MCP, Langfuse, GitHub Actions, GCP (Cloud Run).
 
 ## Custo
@@ -63,13 +63,15 @@ antes da primeira chamada.
 ## Comandos
 
 ```bash
-# preencher conforme o projeto cresce
+uv sync          # cria o .venv com o Python e as dependências fixos
+uv run pytest    # roda os testes
 ```
 
 ## Estado atual
 
-Bloco A, semana 1 de 2. Star schema concluído (sessão 18). Zero Python
-ainda. Postgres 18 local via `modelo/docker-compose.yml`;
+Bloco A, semana 2 de 2. Star schema concluído (sessão 18). Primeiro
+Python na sessão 21: contrato `Viagem` (Pydantic) em `src/assistente/`,
+com 1 teste em `tests/`. Postgres 18 local via `modelo/docker-compose.yml`;
 `modelo/schema.sql` com o star schema completo rodando no banco:
 `fato_transportes` (9 FKs, 3 métricas) e 6 dimensões (`dim_modal`,
 `dim_categoria`, `dim_hora`, `dim_local`, `dim_data`, `dim_usuario`).

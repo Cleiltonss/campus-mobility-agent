@@ -76,6 +76,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   | ?` -> false" no lugar da pergunta feita (quantas linhas casam no
   `JOIN`); "o período de março" para a coluna `periodo`, que é turno.
   **Mandado ler o mês ou copiar a coluna, acertou nas três.**
+  Sessão 21, duas vezes: "primeira" para quantas linhas casam com
+  `usuario_id = 101`, com os dois `101` na tela; abriu o
+  `.python-version` (o do projeto) para responder que versão o **Mac**
+  roda. **Mandado copiar a coluna ou rodar `python3 --version`, acertou
+  nas duas.**
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -130,6 +135,9 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   respondeu "pra antiga e nova" para o `usuario_id` de uma linha do fato,
   minutos depois de dizer, sobre o `modal_id`, "a coluna só guarda um".
   Com a frase dele citada de volta: "aponta para a 101".
+  Sessão 21: escreveu a regra com `hora_saida < hora_chegada` e
+  respondeu "deixa" para a viagem 7h10 → 7h40 (7 < 7). Copiando a linha
+  da regra com os números: "falso" → `<=`.
 - **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
   de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
   unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
@@ -255,6 +263,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   família da frase invertida da sessão 15.
   Sessão 20: recusou ("to mt morto"). Três recusas em quatro sessões
   (17, 18, 20).
+  **Sessão 21: 2 de 3 com mecanismo, a melhor até aqui.** (1)
+  `AAAAMMDD` "pra evitar o caso 20/03 > 15/05", sem o zero; (2) o brew
+  muda o Python do Mac, o uv usa o do projeto pelo `.python-version`, e
+  o projeto não é afetado. (3) `self` "permite a função trazer os
+  objetos criados pra aquela classe": plural, quando `self` é **o**
+  objeto que está sendo conferido agora. Nenhuma em sintaxe pura.
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -269,6 +283,16 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   lembro" para a consequência, e com uma pergunta de sim/não chegou em "a
   versão não pode ser a culpada". Melhorou muito. Falta dizer sozinho o
   último passo: fixar a versão tira um suspeito da investigação.
+  Sessão 21, versão Python: "o 3.14.5 do Homebrew é o `18` ou o
+  `latest`?" → "latest" de primeira. Escolheu 3.14 "porque é a versão em
+  que meu Mac roda" (o argumento do `latest` de novo); com "e quando o
+  brew trouxer o 3.15?" → "n manda n"; com os fatos de suporte, 3.14 pelo
+  período de correção. **A evidência veio sozinha:** o `brew install uv`
+  desinstalou o `python@3.14`; o `python3` do Mac virou o 3.9.6 da Apple,
+  e o pytest rodou no 3.14.8 do uv. Mecanismo primeiro errado ("o brew
+  está barrado de atualizar por conta do `.python-version`"); com o
+  caminho do log (`~/.local/share/uv/python/...`) → "uv". Dois Pythons,
+  um do Mac e um do projeto. **História pronta para o `HISTORIAS.md`.**
 - **Para que serve um banco (memória × persistência)** — sessão 9. Deu como
   papel do Postgres "documentar" e depois "reflete o valor". Previu que uma
   lista Python sobrevive ao fim do script ("salvou as informações"). Rodou
@@ -388,6 +412,9 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   `15042027`, sem zero nenhum: o menor de primeira, a data mais cedo
   errada (ver "Não olhar a tela"), e o mecanismo saiu dele ("mesmo que
   20 > 15"). **O zero é o porquê que volta quando o outro não vem.**
+  Sessão 21, sem pergunta nenhuma, duas vezes: na decisão do contrato
+  ("20/03 > 15/05, o que não é verdade") e nas 3 frases. **Sem o zero
+  nas duas.**
 - **Copiar a forma da solução e perder o significado** — sessão 7 (chave `2`
   nos `INSERT` do `-1`). Sessão 13, duas vezes: `data_id = 15` (a regra da
   `dim_hora`, "a chave é o próprio valor", sem testar o segundo dia 15); e
@@ -498,6 +525,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   representa dois modais e a coluna só guarda um"). Mesma raiz do
   "teste de unicidade" acima: o caso que importa é o que quebra a
   alternativa, não o que confirma a regra.
+  Sessão 21, versão teste: o único teste é a viagem impossível, e ele
+  só passa pelo primeiro `if`. O `elif` tem `data_chegada_id` sem
+  `self.`, e **toda viagem válida** (12/01 7h → 12/01 8h) dá `NameError`,
+  não `ValidationError`. Conferido por mim, dito a ele só como isca.
+  Teste verde prova o caso testado, não o arquivo. Falta o teste da
+  viagem que **tem que passar**.
 - **SCD tipo 2** — sessão 18, primeira vez. "Já aprendi": tipo 1 certo
   (sobrescreve, o histórico muda junto); tipo 2 parou na ação ("fecha a
   linha antiga e cria uma nova"), sem o efeito no histórico, e com
@@ -524,12 +557,34 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
     aluno pertenceu anteriormente a outro período".
   - Revisar com outra pergunta: "por que a linha nova não pode
     reaproveitar o `usuario_id`?".
+  - Sessão 21, essa pergunta, como pista do "o que quebrou na 20":
+    respondeu por que existe linha nova, não por que o número muda. **O
+    `JOIN` que esconde linha voltou** ("se fizermos um JOIN haveria a
+    informação omitida") e "primeira" para quantas casam. Copiando a
+    coluna: "as duas", "duas linhas de mesmo usuário contando
+    informações diferentes". Hipótese: é o NULL em FK generalizado
+    errado. Lá a linha some (0 casamentos); aqui duplica (2). Regra
+    única: o `JOIN` devolve uma linha por casamento.
 - **Análise dimensional** — inverteu divisão e multiplicação no fim da conta
   (multiplicou 78 dias/abastecimento por 365 em vez de dividir), resultado
   28.579 abastecimentos/ano. Os dois primeiros passos estavam certos. É terreno
   de mecatrônico; não deveria escapar.
 - **Fato snapshot periódico e métrica semi-aditiva** — visto na sessão 2. Não
   testado ainda.
+- **Python: classe, objeto, `self`, e os rótulos** — sessão 21, primeira
+  vez. "Sei os conceitos de programação em Python, mas não lembro como
+  usar os objetos." Ponte que funcionou: SQL (`class` = `CREATE TABLE`,
+  `Viagem(...)` = `INSERT`, validador = `CHECK`, `ValidationError` = o
+  erro do banco) e chamada de função com argumento nomeado. Perguntas
+  boas dele: o que o `@model_validator` faz; por que `self` ("o self
+  puxa os objetos pra serem permitidos usar dentro da função?", quase
+  certo). Rótulos trocados: "pasta `assistente` que armazena uma
+  **classe** `contrato` e importa a **função** `viagem`" (a pasta
+  existe; `contrato` é arquivo; `Viagem` é classe); `.env` × `.venv`
+  ("não subir a `.venv` pra não subir as chaves de API"); `AND` do SQL
+  no `if` (consertou sozinho, rodando). Revisar frio: "no seu
+  validador, o que é `self`, e o que `self.data_saida_id` devolve quando
+  o Pydantic confere a viagem do 42?".
 
 ## Resolvido
 
@@ -2037,3 +2092,100 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
      escreve o modelo Pydantic e o primeiro teste que falha com a viagem
      que chega antes de sair. **Primeiro arquivo dele antes dos 30 min de
      sessão.**
+
+### Sessão 21 — 2026-10-15
+- Bloco A, semana 2 de 2, sessão 3 do bloco — primeiro Python
+- Duração: ~1h25 (20h51 a ~22h15). Encerrou ele, com o teste verde.
+- Feito:
+  - **O que quebrou na 20:** "n lembro". Com a pista (o segundo `101`),
+    virou meia revisão. Ver "SCD tipo 2". Parada às 21h00, no relógio.
+  - **Revisão de rotação (NULL em FK): não feita.** Adiada para depois
+    do arquivo pelo limite de 10 min, e a sessão acabou antes.
+  - **Versão do Python: 3.14, fixa.** Ver "`latest` × versão fixa".
+  - **Boilerplate (eu):** `pyproject.toml` (hatchling, layout `src/`,
+    Pydantic, pytest no grupo `dev`), `.python-version` (`3.14`),
+    `src/assistente/__init__.py`, `tests/test_contrato.py` vazio,
+    `.gitignore` com `.venv`, README com 3.14 e os comandos. Ele rodou
+    `brew install uv && uv sync`: CPython 3.14.8 do uv; `uv.lock` com
+    Pydantic 2.14.1 e pytest 9.1.1.
+  - **O contrato modela o quê: A, a linha do fato.** Propôs A com a hora
+    em minutos (`13*60 + 40 = 820`); com a FK para a `dim_hora` (0 a 23)
+    na tela: "não está", hora inteira. Defendeu a data `AAAAMMDD` com
+    20/03 × 15/05, sem o zero. Disse que B "gera complexidade,
+    geralmente se quebra data e hora": vale para o fato, não para o
+    contrato. Não discutido.
+  - **Regra derivada antes de codar, por casos:** "qualquer hora desde
+    que `data_chegada > data_saida`" barrava a viagem do mesmo dia; três
+    linhas com `<` barravam 7h10 → 7h40 (ver "Responder contra o que
+    derivou") → `<=`. Final: chegada em data posterior, qualquer hora;
+    mesma data, `hora_saida <= hora_chegada`; chegada antes, não existe.
+  - **Teste primeiro.** `tests/test_contrato.py`,
+    `test_viagem_impossivel` (12/01 13h → 11/01 11h) com
+    `pytest.raises(ValidationError)`. Previsão "falha" certa, com os
+    rótulos trocados. `ModuleNotFoundError: No module named
+    'assistente.contrato'`: vermelho. **Primeiro arquivo Python do
+    projeto, às 21h46** (a meta era 21h21).
+  - **Modelo:** `src/assistente/contrato.py`, `Viagem(BaseModel)` com as
+    4 chaves `int` e um `@model_validator(mode="after")`. Escreveu a
+    regra como o proibido (saída depois da chegada; ou mesma data e hora
+    de saída maior), que é a negação exata da regra dele. Previu
+    "passa"; rodou, consertou sozinho (`AND` → `and`, um `self.`),
+    **`1 passed`**.
+  - **3 frases: 2 de 3 com mecanismo.** Ver "Fecha a sessão em sintaxe".
+- Quebrou:
+  - Ver pontos frágeis: não olhar a tela (2), responder contra a regra
+    (7 < 7), `JOIN` que esconde linha, rótulos de Python, `.env` ×
+    `.venv`.
+  - **O arquivo verde está quebrado.** Linha 25: `data_chegada_id` sem
+    `self.`. Toda viagem válida dá `NameError`. Conferido por mim; dito
+    a ele só como isca ("existe uma viagem normal que derruba esse
+    arquivo").
+- Método:
+  - **Ponte SQL → Python** (`CREATE TABLE`/`INSERT`/`CHECK`/erro do
+    banco) destravou classe, objeto e `self`. Usar de novo para `Field`,
+    `Literal` e fixture.
+  - **Prever e rodar `python3 --version`** depois do brew: "oxe, 3.9".
+    A lição do `latest` saiu da máquina dele, não de mim.
+  - **Caso concreto contra a regra antes de codar** (mesmo dia; mesma
+    hora) achou dois furos sem uma linha de código.
+  - Copiar: a coluna do `101` e a linha `7 < 7`, as duas certas.
+- Falha do professor:
+  - **Primeiro arquivo aos 55 min, contra a meta de 30.** As duas
+    decisões (versão, contrato) e o "explica do zero" couberam; a
+    revisão de rotação, não. Decisão que só precisa de texto (versão,
+    modelo) pode ser pedida no fim da sessão anterior.
+  - Mandei "cole o exemplo da turma e troque três coisas": o exemplo
+    ficou comentado no topo dos dois arquivos.
+- Aberto:
+  - **Isca:** a viagem normal que dá `NameError`. Próximo teste: uma
+    viagem válida que **tem que passar**.
+  - **O que a opção A não pega:** mesma data, mesma hora, 7h40 → 7h10.
+    `7 <= 7` deixa passar. O minuto se perdeu no grão da `dim_hora`. É
+    o argumento para B voltar, com evidência.
+  - **Falso verde à vista:** quando o modelo tiver as 12 colunas
+    obrigatórias, `test_viagem_impossivel` (4 colunas) continua verde
+    pelo motivo errado: coluna faltando também é `ValidationError`.
+  - Mensagem de erro `"impossivel"`, sem campo nem valor. O argumento
+    dele para o contrato (sessão 20) era "o erro vem com o campo e o
+    motivo".
+  - Validador escrito como lista do proibido: aqui está completo, mas é
+    a lista que erra calada (sessão 12).
+  - Exemplo da turma comentado nos dois arquivos: código morto.
+  - `python3` do Mac agora é o 3.9.6 da Apple: scripts do trabalho que
+    chamam `python3` mudaram de versão.
+  - Revisão de rotação NULL em FK, pendente. Juntar com o `JOIN` que
+    "omite": 0 casamentos some, 2 casamentos duplica.
+  - Domingo 18/10: candidata a primeira entrada do `ARQUITETURA.md` e
+    primeira história do `HISTORIAS.md`: o brew trocou o Python do Mac e
+    o projeto não caiu.
+  - **Reavaliação de 17/10:** o bloco A, em 3 sessões, tem o contrato
+    com 1 teste. Gerador e 5M viagens não cabem em uma sessão. Cortar
+    escopo, não estender prazo.
+- Retomo em (16/10, sexta, última sessão do bloco A):
+  1. "O que quebrou na 21" + revisão de rotação: NULL em FK no `JOIN`,
+     rodado no banco com 3 linhas, junto com o `101` duplicado. 10 min.
+  2. A isca: ele escreve o teste da viagem 12/01 7h → 12/01 8h, que tem
+     que passar. Prever, rodar, ler o `NameError`, consertar.
+  3. O teste 7h40 → 7h10 na mesma hora: A deixa passar. Decidir A × B
+     com o teste vermelho na tela.
+  4. Commit. A reavaliação do bloco é no sábado, 17/10.
