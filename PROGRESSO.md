@@ -2189,3 +2189,13 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
   3. O teste 7h40 → 7h10 na mesma hora: A deixa passar. Decidir A × B
      com o teste vermelho na tela.
   4. Commit. A reavaliação do bloco é no sábado, 17/10.
+- Depois do fechamento: **repositório público no GitHub**,
+  `Cleiltonss/campus-mobility-agent` (nome dele, escolhido entre 4).
+  Avisado de que o histórico leva o PROGRESSO, o CLAUDE.md, as mensagens
+  "sessão N" e a senha `12345`, e de que apagar do arquivo não apaga do
+  histórico. Decisão dele: subir como está ("é tudo dado mockado e
+  fictício") e ajeitar durante o projeto. README em português; só o nome
+  em inglês. Pendente para o bloco E ("repo público"): separar processo
+  de projeto, senha para `.env`, README só do sistema, `name` do
+  `pyproject.toml` ainda `assistente-reitoria`. Em repo público,
+  reescrever o histórico depois não apaga o que já foi clonado.
