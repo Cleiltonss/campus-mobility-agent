@@ -71,7 +71,7 @@ uv run pytest    # roda os testes
 
 Bloco A, semana 2 de 2. Star schema concluído (sessão 18). Primeiro
 Python na sessão 21: contrato `Viagem` (Pydantic) em `src/assistente/`,
-com 1 teste em `tests/`. Postgres 18 local via `modelo/docker-compose.yml`;
+com 2 testes em `tests/`. Postgres 18 local via `modelo/docker-compose.yml`;
 `modelo/schema.sql` com o star schema completo rodando no banco:
 `fato_transportes` (9 FKs, 3 métricas) e 6 dimensões (`dim_modal`,
 `dim_categoria`, `dim_hora`, `dim_local`, `dim_data`, `dim_usuario`).

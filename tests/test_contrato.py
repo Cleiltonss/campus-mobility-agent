@@ -16,4 +16,14 @@ def test_viagem_impossivel():
                 hora_saida_id=13,
                 hora_chegada_id=11, 
                 data_saida_id=20270112, 
-                data_chegada_id=20270111)
+                data_chegada_id=20270111
+                )
+
+def test_viagem_possivel():
+    Viagem(
+            hora_saida_id=7,
+            hora_chegada_id=8, 
+            data_saida_id=20261210, 
+            data_chegada_id=20261210
+            )
+    

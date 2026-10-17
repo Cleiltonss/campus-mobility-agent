@@ -81,6 +81,14 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   `.python-version` (o do projeto) para responder que versão o **Mac**
   roda. **Mandado copiar a coluna ou rodar `python3 --version`, acertou
   nas duas.**
+  Sessão 22, três vezes: pedida a viagem com números, deu a regra;
+  pedido para comparar as linhas 23 e 25 do contrato, respondeu com a
+  ideia de criar um `viagem_possivel()`; "é a classe `Viagem`" com
+  `self = Viagem(hora_saida_id=7, ...)` colado por ele mesmo. **Copiando,
+  acertou nas três vezes em que colou**: a linha do `src/` deu o
+  arquivo (na segunda tentativa: primeiro colou a do `NameError`); as
+  linhas 23 e 25 lado a lado deram o `self`; a linha `self = ` com a
+  ponte do `INSERT` deu "insert".
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -138,6 +146,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   Sessão 21: escreveu a regra com `hora_saida < hora_chegada` e
   respondeu "deixa" para a viagem 7h10 → 7h40 (7 < 7). Copiando a linha
   da regra com os números: "falso" → `<=`.
+  Sessão 22, três vezes: disse que o teste da viagem válida não usa
+  `pytest.raises` e, duas mensagens depois, "abriria um novo `with`";
+  abriu a sessão com "a viagem do mesmo dia derruba o arquivo" e previu
+  "passa" para um teste de mesmo dia; disse que 10/12 → 11/12 dava
+  `NameError` e, três passos depois, que quebravam "todas as viagens de
+  mesma data".
 - **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
   de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
   unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
@@ -269,6 +283,9 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   o projeto não é afetado. (3) `self` "permite a função trazer os
   objetos criados pra aquela classe": plural, quando `self` é **o**
   objeto que está sendo conferido agora. Nenhuma em sintaxe pura.
+  Sessão 22: recusou ("vamos pular essa revisão e você recapitula e
+  reforça tudo amanhã comigo mais descansado"). Quatro recusas em seis
+  sessões (17, 18, 20, 22).
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -367,6 +384,17 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   target columns than expressions" com só as duas palavras traduzidas.
   Regra entregue: **o erro aponta onde o banco percebeu, não onde o erro
   está; se a palavra apontada parece certa, olhar a linha de cima.**
+  Sessão 22, primeiro traceback de Python: com o `NameError` apontando
+  `src/assistente/contrato.py:25`, **mexeu no teste** (pôs `with
+  pytest():` na linha 23, contra a regra do pytest que tinha acabado de
+  receber). O erro virou outro (`TypeError: 'module' object is not
+  callable`), que ele não viu: rodei eu, conferindo o disco. Mandado
+  copiar a linha que diz onde, copiou a que diz o quê (`NameError: name
+  ... is not defined`); com "a que diz onde começa com `src/`", acertou.
+  Regra entregue: **no traceback do pytest, a linha com `src/` diz o
+  arquivo e a linha; a com `E` diz o que deu errado.** Mesma família de
+  trocar o dado para caber na regra (sessão 13): mexeu no lado que ele
+  controlava em vez de ler qual lado quebrou.
 - **`CHECK`: lista do válido × lista do proibido** — revisão da sessão 12.
   Pergunta 1 certa (o banco recusa; disse "tabela" querendo dizer linha).
   Pergunta 2 com andaime: em vez do porquê, escreveu a versão proibida como
@@ -465,16 +493,6 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   tela, "isso tá sendo visto pelo sql". Saiu sozinho na 15 e com andaime
   na 20. A frase de entrevista ("os dois: o contrato na entrada, o
   `CHECK` como última linha") fui eu que montei.
-- **NULL em FK dentro de JOIN (voltou do "Resolvido")** — sessão 15,
-  revisão hostil do fato. "Aceita, mas n deveria" e "passa despercebida"
-  certos; o mecanismo saiu errado: "ela entra na contagem, mas de forma
-  silenciosa". Com a `dim_local` de 3 linhas (7, 15, -1) na tela: "n
-  junta" → "some dela". Dois passos para o que na sessão 6 saiu frio. Pode
-  ser fadiga (fim de sessão longa), mas entra no teste frio do star schema.
-  Sessão 17, 1ª tentativa do teste: só a consequência ("erro silencioso"),
-  sem o mecanismo. Sessão 18, caso novo (`modal_id = NULL`, contagem por
-  modal): **passou frio**, com consequência, mecanismo e "sem erro
-  visível". Falta uma rotação limpa para voltar ao "Resolvido".
 - **Role-playing: direção e porquê** — frase invertida no fim da sessão 15;
   revisada na 16, com o objetivo dito antes ("o que é uma role-playing
   dimension?").
@@ -531,6 +549,15 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   não `ValidationError`. Conferido por mim, dito a ele só como isca.
   Teste verde prova o caso testado, não o arquivo. Falta o teste da
   viagem que **tem que passar**.
+  Sessão 22: escreveu esse teste (10/12/2026 7h → 8h), previu "passa",
+  deu `NameError`, consertou o `self.`, previu "dois", `2 passed`. **O
+  porquê não fechou.** Abriu a sessão com "era a viagem do mesmo dia".
+  Com a viagem 10/12 23h → 11/12 1h, "daria `NameError`" de primeira, e
+  "linha 23 dá falso → vai para a 25" com uma pergunta cada. Perguntado
+  quais viagens quebravam: "todas de mesma data"; depois "saída menor
+  que a chegada" (faltou o igual). "n sei" para o que o `1 passed` da 21
+  provava. Encerrou em "a viagem 12/01 → 11/01 parava na linha 23 ou
+  chegava à 25?". Ver "Ler o código pela intenção".
 - **SCD tipo 2** — sessão 18, primeira vez. "Já aprendi": tipo 1 certo
   (sobrescreve, o histórico muda junto); tipo 2 parou na ação ("fecha a
   linha antiga e cria uma nova"), sem o efeito no histórico, e com
@@ -585,6 +612,30 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   no `if` (consertou sozinho, rodando). Revisar frio: "no seu
   validador, o que é `self`, e o que `self.data_saida_id` devolve quando
   o Pydantic confere a viagem do 42?".
+  Sessão 22, essa revisão, frio: "`self` é o indicador que permite que
+  as variáveis construídas na classe sejam usadas nas funções" (acesso,
+  e "da classe"). Com `self = Viagem(hora_saida_id=7, ...)` do
+  traceback colado por ele: "é a classe `Viagem`". Pela ponte
+  (`CREATE TABLE` × `INSERT`): "insert". Pediu a definição ("por
+  definição de programação, o que é o self mesmo?"); entregue como
+  fato: o objeto sobre o qual o método foi chamado; no validador, a
+  viagem que o Pydantic acabou de montar. Depois, "`data_chegada_id`
+  sem `self.` é de qual viagem?" → "nenhuma!". Rótulo trocado de novo:
+  "a classe `Viagem` tem como **objetos** cada um desses 4 campos". E
+  "abrir um `Viagem2` ou comentar o `Viagem` antigo?" para escrever o
+  segundo teste (classe × teste); a ponte "dois `INSERT` na mesma
+  tabela" resolveu. Fatos entregues: cada teste é um `def test_...`;
+  quem chama a função é o pytest; verde = a função chega ao fim sem
+  erro. Revisar frio: "o que é `self`?" e "na sua `Viagem`, o que é
+  classe, o que é objeto e o que é campo?".
+- **Ler o código pela intenção, não pela execução** — sessão 22. Leu o
+  `elif self.data_saida_id == data_chegada_id and ...` como "a linha das
+  viagens do mesmo dia" e concluiu que só elas quebravam. O Python não
+  lê intenção: roda a condição para **toda** viagem em que o `if` de
+  cima deu falso, e quebra ao ler o nome antes de saber se é o mesmo
+  dia. Cada passo saiu certo com uma pergunta (linha 23 dá falso; vai
+  para a 25); a conclusão voltou para "mesma data" duas vezes. Revisar
+  com o arquivo antigo na tela: "quais viagens chegam na linha 25?".
 
 ## Resolvido
 
@@ -596,8 +647,15 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   ("daqui a duas sessões, sem andaime") foi aplicado uma sessão depois e passou
   frio: NULL não casa com nada, a linha não aparece no INNER JOIN, o `SUM` não
   soma o valor dela e o número chega errado no relatório **sem erro nenhum**.
-  Três perguntas, três acertos, zero andaime. **Regrediu na sessão 15**:
-  ver pontos frágeis.
+  Três perguntas, três acertos, zero andaime. Regrediu na sessão 15
+  (mecanismo errado: "entra na contagem, de forma silenciosa"; dois
+  passos) e na 17 (só a consequência). Passou frio com caso novo na 18
+  (`modal_id`). **Voltou ao "Resolvido" na sessão 22**, rotação limpa
+  com `origem_id`: `30` de primeira (o total real era 55); "NULL não
+  permite identificar um `local_id` equivalente"; `-1` no `origem_id`
+  (hesitou com `'Não se aplica'` e separou sozinho). O "sem erro" fui eu
+  que disse, antes de perguntar. Próxima rotação: o mesmo `JOIN` com 2
+  casamentos (o `101` duplicado do SCD).
 - **Separar métrica de dimensão ao escrever** (sessão 3) — colapsou tudo em
   "métricas" na primeira tentativa; separou correto na segunda, aplicando a
   própria régua item por item.
@@ -2199,3 +2257,86 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
   de projeto, senha para `.env`, README só do sistema, `name` do
   `pyproject.toml` ainda `assistente-reitoria`. Em repo público,
   reescrever o histórico depois não apaga o que já foi clonado.
+
+### Sessão 22 — 2026-10-16
+- Bloco A, semana 2 de 2, sessão 4 do bloco (a última) — teste da
+  viagem válida
+- Duração: ~35 min (21h56 a 22h31). Encerrou ele, no meio de uma
+  pergunta, sem as 3 frases.
+- Feito:
+  - Conferido antes de abrir: o último log (21) bate com o `git log` e
+    com as conversas; a conversa de 15/10 de madrugada (UTC) é a 20.
+  - **O que quebrou na 21:** "lembro de nada". Com a pista (teste verde,
+    viagem normal que derruba o arquivo): "era a viagem do mesmo dia".
+    Meio certo; ficou para o item 2.
+  - **Revisão de rotação, NULL em FK: 3 de 3, frio, em 7 min** (21h56 a
+    22h03). Voltou ao "Resolvido".
+  - **Teste da viagem válida.** A regra da 21 veio certa de cabeça;
+    pedida a viagem, deu a regra; depois `7 | 8 | 20261210 | 20261210`.
+    "Não entendi" para "usa `pytest.raises`? por quê?"; encolhido
+    ("espera que recuse ou aceite?") → "aceite" → "não". Duas regras do
+    pytest entregues como fato, depois de ele reclamar com razão (ver
+    Falha do professor). `test_viagem_possivel` **no disco às 22h11,
+    antes da meta de 22h26. Primeira vez que a meta de arquivo foi
+    cumprida.**
+  - Previu "passa"; `1 failed, 1 passed`, `NameError` na linha 25 do
+    contrato. Mexeu no teste (`with pytest():`); copiando a linha do
+    `src/`, achou o arquivo; copiando as linhas 23 e 25, achou o
+    `self.`. Revisão de `self` (ver pontos frágeis). Consertou as duas
+    linhas; previu "dois"; **`2 passed`**. Disco conferido.
+  - **Por que toda viagem válida quebrava:** cadeia de 6 perguntas, não
+    fechou. Ver "Ler o código pela intenção".
+  - 3 frases: recusou. Pediu que eu recapitule e reforce amanhã, com ele
+    descansado.
+- Quebrou:
+  - Ver pontos frágeis: não olhar a tela (3), responder contra o que
+    derivou (3), mexer no teste com o erro no contrato, `self` = "a
+    classe", "objetos" para campos, `Viagem2` para o segundo teste,
+    leitura do `elif` pela intenção, "n sei" para o `1 passed`.
+- Método:
+  - **Abertura com hora para acabar** (até 22h06) acabou às 22h03, e o
+    arquivo saiu às 22h11. A meta de 30 min funcionou na primeira vez em
+    que a abertura teve hora marcada.
+  - **Copiar a linha do traceback** destravou as três leituras de erro.
+  - **Ponte SQL** de novo: dois `INSERT` na mesma tabela (o segundo
+    teste) e `CREATE TABLE` × `INSERT` (o `self` é uma linha).
+  - **O traceback do pytest como evidência:** a linha
+    `self = Viagem(hora_saida_id=7, ...)` mostrou o que é `self`.
+- Falha do professor:
+  - **"Desse bloco, o que entra no teste novo?"** sem ter dito como o
+    pytest decide verde. Ele: "n tem como saber, sem saber a sintaxe,
+    vc viajou". Certo: é fato de documentação, e devia ter vindo junto
+    com o pedido do teste.
+  - **A cadeia "por que toda viagem válida quebrava"** começou às 22h25
+    sem dizer o objetivo (a pergunta de entrevista "seu teste estava
+    verde e o código quebrado: como?") e foi até ele encerrar no "n
+    sei". Mesmo padrão das sessões 19 e 20: cadeia longa no fim.
+- Aberto:
+  - **Pergunta em que encerrou:** "a viagem `20270112` → `20270111`
+    parava na linha 23 ou chegava à 25?". Leva a: o `1 passed` da 21
+    provava só que essa viagem é recusada, e o resto do arquivo nunca
+    tinha rodado. A resposta de entrevista quem monta é ele.
+  - **Item 3 da 21, não feito:** 7h40 → 7h10 na mesma hora. A opção A
+    deixa passar (`7 <= 7`). Decidir A × B com o teste vermelho.
+  - Falso verde à vista (12 colunas), mensagem `"impossivel"` sem campo,
+    validador como lista do proibido, exemplo da turma comentado nos
+    dois arquivos: sem mudança.
+  - `101` duplicado no `JOIN` (2 casamentos): próxima rotação.
+  - Domingo 18/10: primeira entrada do `ARQUITETURA.md` e primeira
+    história do `HISTORIAS.md` (o brew e os dois Pythons).
+  - **Ritmo do bloco A, fechado:** 4 sessões (19 a 22), ~2h50 somadas.
+    Entregue: contrato `Viagem` com 4 campos e 1 validador, 2 testes
+    (recusa a impossível, aceita a válida). Não entregue: gerador, 5M
+    viagens, dado sujo, window functions, query plan. O bloco B começa
+    em 20/10, e o agente text-to-SQL consulta um fato que ainda está
+    vazio.
+- Retomo em (17/10, sábado, reavaliação do bloco A):
+  1. **Recapitulação, como ele pediu, mas falada por ele:** as 3 frases
+     da 22 em 3 perguntas (o que é `self`; por que toda viagem válida
+     quebrava; o que o `1 passed` da 21 provava). Eu não recapitulo por
+     ele.
+  2. **Reavaliação do bloco A com os números acima.** Decidir o corte:
+     o que do bloco A o agente do bloco B precisa (dado no fato) e o que
+     vira só conceito. Regra do CLAUDE.md: cortar escopo, não estender
+     prazo.
+  3. Commit.

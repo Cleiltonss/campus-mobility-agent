@@ -22,7 +22,11 @@ class Viagem(BaseModel):
     def viagem_impossivel(self):
         if self.data_saida_id > self.data_chegada_id:
             raise ValueError("impossivel")
-        elif self.data_saida_id == data_chegada_id and self.hora_saida_id > self.hora_chegada_id:
+        elif self.data_saida_id == self.data_chegada_id and self.hora_saida_id > self.hora_chegada_id:
             raise ValueError("impossivel")
         return self
+
+    # @model_validator(mode="after")
+    # def viagem_possivel(self):
+    #     if self.data_saida_id < self.data_chegada_id:
 
