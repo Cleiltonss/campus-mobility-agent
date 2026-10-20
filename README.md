@@ -18,12 +18,21 @@ Tempo: 2h/dia, pós-trabalho. Segunda a sexta: construção. Sábado:
 candidaturas. Domingo: dia de entrevista (2h).
 
 Prazo: blocos A a E de 2026-10-06 a 2026-12-12. O prazo final continua
-2027-01-31, e a diferença é folga para o ritmo real. Reavaliar em
-2026-10-17, no fim do bloco A, com o ritmo medido.
+2027-01-31, e a diferença é folga para o ritmo real.
 
 Replanejado em 2026-10-06 (sessão 18). O roteiro de 7 fases não chegava
 em LLM e RAG no ritmo medido (o item 1 levou 18 sessões), e as vagas
 tratam LLM com RAG e agente como eliminatório.
+
+Reavaliado em 2026-10-19 (sessão 23), no fim do bloco A. Ritmo medido:
+4 sessões e ~2h50 em duas semanas, contra ~20h planejadas. As datas
+ficam e o escopo corta. O bloco A fecha com o contrato `Viagem` e 2
+testes. Um gerador pequeno (centenas de viagens, cada uma validada pela
+`Viagem` antes de entrar no banco) passa para o início do bloco B,
+porque o agente precisa de linhas no fato. Saem do bloco A: 5M viagens,
+`COPY` × `INSERT`, dado sujo, window functions e query plan; voltam por
+necessidade do projeto ou como conceito. O corte do bloco B é decidido
+na primeira sessão dele.
 
 ## O que estou construindo
 
@@ -37,8 +46,8 @@ medido por evals e publicado em cloud. Cada bloco adiciona uma camada.
 
 | Bloco | Datas | Foco | Entregável |
 |-------|-------|------|------------|
-| A | 06/10 a 17/10 | Python de produção + dado | Gerador sintético tipado e testado, 5M viagens carregadas |
-| B | 20/10 a 31/10 | Agente | Golden set + agente text-to-SQL com guardrails, exposto via MCP |
+| A | 06/10 a 17/10 | Python de produção + dado | Contrato `Viagem` tipado e testado (gerador e 5M cortados em 19/10) |
+| B | 20/10 a 31/10 | Agente | Gerador pequeno; golden set + agente text-to-SQL com guardrails, exposto via MCP (corte a decidir) |
 | C | 03/11 a 14/11 | API + container | FastAPI async na frente do agente, Docker multi-stage |
 | D | 17/11 a 28/11 | Evals + RAG | Execution accuracy em CI + RAG em pgvector medido |
 | E | 01/12 a 12/12 | Operar e mostrar | Langfuse, deploy no Cloud Run, CI, repo público |
@@ -69,7 +78,8 @@ uv run pytest    # roda os testes
 
 ## Estado atual
 
-Bloco A, semana 2 de 2. Star schema concluído (sessão 18). Primeiro
+Bloco A fechado na reavaliação de 2026-10-19 (sessão 23); o bloco B
+começa em 2026-10-20 pelo gerador. Star schema concluído (sessão 18). Primeiro
 Python na sessão 21: contrato `Viagem` (Pydantic) em `src/assistente/`,
 com 2 testes em `tests/`. Postgres 18 local via `modelo/docker-compose.yml`;
 `modelo/schema.sql` com o star schema completo rodando no banco:

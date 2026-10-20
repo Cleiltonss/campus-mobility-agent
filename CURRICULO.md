@@ -22,6 +22,11 @@ por necessidade do projeto.
 - [ ] Window functions, CTE (dedup, espera entre trechos)
 - [ ] Leitura de query plan e otimização
 
+Cortado na reavaliação de 2026-10-19 (sessão 23): batching, dado sujo,
+window functions e query plan saem do bloco A. Voltam quando o projeto
+precisar ou como conceito de entrevista. O gerador pequeno passa para o
+início do bloco B.
+
 ## Bloco B — Agente (20/10 a 31/10)
 
 - [ ] Golden set versionado (escrito antes do agente)

@@ -89,6 +89,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   arquivo (na segunda tentativa: primeiro colou a do `NameError`); as
   linhas 23 e 25 lado a lado deram o `self`; a linha `self = ` com a
   ponte do `INSERT` deu "insert".
+  Sessão 23, quatro vezes: "atributo" para "o `self` é ___", logo
+  depois de responder "uma" viagem; mandado copiar a frase, "então eu
+  não sei o que o self é" (não colou); mandado copiar a frase do "para
+  ali", colou a pista da mensagem anterior; "n lembro" para a linha 25
+  ter rodado, com a resposta duas linhas acima. **Com a frase reposta
+  por mim, "n" na hora.**
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -152,6 +158,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   "passa" para um teste de mesmo dia; disse que 10/12 → 11/12 dava
   `NameError` e, três passos depois, que quebravam "todas as viagens de
   mesma data".
+  Sessão 23, duas vezes: disse que a linha 23 dá falso para data igual
+  e, na resposta seguinte, que a viagem de data igual "entraria dentro
+  do erro antes do elif"; com `20261210 > 20261210` → "falso". E
+  "aceitou" para a viagem 12/01 → 11/01, três mensagens depois de dar
+  "verdadeiro" para a linha 23 dela. A segunda já no fim, cansado.
 - **Número sem rótulo** (nome novo para "aritmética contaminada") — os três erros
   de conta das sessões 3 e 4 são o mesmo mecanismo: levou o número e deixou a
   unidade para trás. `7` sem `km/dia`, `8.640` sem `horas/ano`, `24` sem
@@ -286,6 +297,13 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   Sessão 22: recusou ("vamos pular essa revisão e você recapitula e
   reforça tudo amanhã comigo mais descansado"). Quatro recusas em seis
   sessões (17, 18, 20, 22).
+  Sessão 23: 1 de 3, com mecanismo, e meio emprestada: "gerador, pois
+  toda linha do fato passa pela `Viagem` antes de entrar no banco"
+  repete a minha frase da mensagem anterior. O fim dele saiu trocado
+  ("evitando erros de linhas que não foram inseridas"); com uma
+  pergunta, "linhas que não atendem as restrições da viagem". A frase
+  do teste verde não fechou (ver "Caso que ilustra"); a do `self` não
+  foi pedida.
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -558,6 +576,17 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   que a chegada" (faltou o igual). "n sei" para o que o `1 passed` da 21
   provava. Encerrou em "a viagem 12/01 → 11/01 parava na linha 23 ou
   chegava à 25?". Ver "Ler o código pela intenção".
+  Sessão 23: **o que o `1 passed` provava não fechou de novo.** "Não
+  lembro"; `20270112 > 20270111` → "verdadeiro"; "n lembro" para a 25
+  ter rodado; com a frase reposta, "n". Lacuna "o `1 passed` provava só
+  que ___" → "que havia um problema na lógica" (verde lido como sinal
+  de problema). Sim/não "foi aceita ou recusada?" → "aceitou".
+  **Ideia errada provável:** com `pytest.raises`, verde quer dizer que o
+  erro esperado aconteceu, ou seja, que a viagem foi recusada; ele
+  parece ler verde como "a viagem passou". O fato da 22 ("verde = a
+  função chega ao fim sem erro") não cobre o `with pytest.raises`.
+  Revisar com essa pergunta só: "teste com `pytest.raises` ficou verde:
+  a viagem foi aceita ou recusada?".
 - **SCD tipo 2** — sessão 18, primeira vez. "Já aprendi": tipo 1 certo
   (sobrescreve, o histórico muda junto); tipo 2 parou na ação ("fecha a
   linha antiga e cria uma nova"), sem o efeito no histórico, e com
@@ -628,6 +657,20 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   quem chama a função é o pytest; verde = a função chega ao fim sem
   erro. Revisar frio: "o que é `self`?" e "na sua `Viagem`, o que é
   classe, o que é objeto e o que é campo?".
+  Sessão 23, essa revisão, frio: "um objeto que permite usar os
+  atributos de uma classe" (objeto, enfim; acesso e "da classe" de
+  novo). Para o `self` do `Viagem(hora_saida_id=7, ...)`: "os
+  componentes" (os campos); "quantas viagens cria?" → "uma"; na lacuna
+  "o `self` é ___", "atributo". Na múltipla escolha, "a classe"; com a
+  tabela dos dois testes (mesma classe, `13` × `7`), não respondeu o
+  número e passou por "self é um campo?" até "self é a viagem? n faz
+  sentido!". **Hipótese:** "viagem" e `Viagem` são a mesma palavra
+  falada; "self é a viagem" soa como "self é a classe", que eu tinha
+  acabado de dizer que não era. A ponte com a linha (`self` → a linha
+  que o `CHECK` confere agora) deu "entendi", conferido só de lado
+  ("`data_chegada_id` sem `self.` é de qual viagem?" → "nenhuma").
+  Revisar frio: "seus dois testes usam a mesma classe: quantos `self`
+  existem, e quanto vale `self.hora_saida_id` em cada um?".
 - **Ler o código pela intenção, não pela execução** — sessão 22. Leu o
   `elif self.data_saida_id == data_chegada_id and ...` como "a linha das
   viagens do mesmo dia" e concluiu que só elas quebravam. O Python não
@@ -636,6 +679,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   dia. Cada passo saiu certo com uma pergunta (linha 23 dá falso; vai
   para a 25); a conclusão voltou para "mesma data" duas vezes. Revisar
   com o arquivo antigo na tela: "quais viagens chegam na linha 25?".
+  Sessão 23, com o arquivo antigo na tela: a linha 23 dá falso para
+  "data de saída igual à chegada ou menor", de primeira; escorregou
+  ("igual entraria no erro antes do elif") e consertou com os números;
+  "nenhuma" para o dono do `data_chegada_id` sem `self.`. **A cadeia
+  fechou pela execução**, mas a conclusão ("toda viagem normal
+  quebrava") fui eu que disse.
 
 ## Resolvido
 
@@ -2340,3 +2389,105 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
      vira só conceito. Regra do CLAUDE.md: cortar escopo, não estender
      prazo.
   3. Commit.
+
+### Sessão 23 — 2026-10-19
+- Bloco A, reavaliação (fim do bloco), na véspera do bloco B
+- Duração: ~50 min (20h28 a 21h18). Encerrei eu, quando ele começou a
+  responder contra as próprias respostas.
+- Contexto: conferido antes de abrir: o último log (22) bate com o `git
+  log`. A reavaliação de sábado (17/10) e o domingo de entrevista
+  (18/10) não aconteceram; a conversa de 18/10 é de trabalho.
+- Feito:
+  - **O que quebrou + revisão:** as 3 perguntas da 22, que ele tinha
+    pedido para eu recapitular, respondidas por ele, com o objetivo dito
+    antes (a pergunta de entrevista "teste verde, código quebrado:
+    como?").
+    - `self`: ~15 min. Ver "Python: classe, objeto, `self`".
+    - Por que toda viagem válida quebrava: fechou pela execução. Ver
+      "Ler o código pela intenção".
+    - O que o `1 passed` da 21 provava: não fechou. Ver "Caso que
+      ilustra × caso que prova".
+  - A abertura com hora marcada (20h40) estourou: acabou às 20h59.
+  - **Reavaliação do bloco A.** Números: 10 sessões planejadas × 4
+    feitas; ~20h × ~2h50; gerador + 5M × contrato com 2 testes.
+    Perguntado se o ritmo daqui para frente fica perto do planejado ou
+    do real: "to muito cansado durante os dias. mas continuo aqui.
+    vamos seguir no planejamento". Lido como: as datas ficam (o B
+    começa em 20/10) e, pela regra do CLAUDE.md, corta-se escopo.
+    - O que o B precisa do A: "minha resiliência em não desistir"
+      (desvio). Encolhido para "a reitoria pergunta e o fato tem zero
+      linhas": "0". Falha silenciosa, agora no agente.
+    - **Decisão: gerador pequeno** (centenas de viagens, cada uma pela
+      `Viagem`, gravadas no Postgres) × seed à mão (~30 `INSERT`).
+      Perguntou "qual é a mais profissional?"; respondido com o
+      argumento dele das sessões 15 e 20 (o `INSERT` à mão é o risco
+      que passa por fora do contrato). Frase dele, com a primeira
+      metade minha: "gerador, pois toda linha do fato passa pela
+      `Viagem` antes de entrar no banco". O fim, consertado com uma
+      pergunta: o contrato barra "linhas que não atendem as restrições
+      da viagem".
+    - Saem do A: 5M viagens, `COPY` × `INSERT`, dado sujo, window
+      functions, query plan. Voltam por necessidade do projeto ou como
+      conceito. README e CURRICULO atualizados por mim, com a decisão
+      dele.
+  - 3 frases: 1 de 3. Ver "Fecha a sessão em sintaxe".
+- Quebrou:
+  - Ver pontos frágeis: não olhar a tela (4), responder contra o que
+    derivou (2), `self` (classe, campo, atributo), o que o verde com
+    `pytest.raises` prova.
+  - Zero código. Quinta sessão sem artefato de código (11, 16, 19, 20,
+    23); hoje o item planejado era a reavaliação.
+- Método:
+  - **Repor a frase eu mesmo** quando ele cola a linha errada: "n" na
+    hora (o mesmo da sessão 16).
+  - **Encolher para um número** ("a reitoria recebe o quê?") destravou
+    o desvio da resiliência em uma troca.
+  - **Múltipla escolha não funcionou** para o `self`: ele passou pelas
+    opções uma a uma (a classe, o campo, a viagem). Quando o conceito
+    não está lá, a opção vira chute.
+  - A tabela dos dois testes (13 × 7) ficou sem resposta; o que
+    destravou foi a ponte SQL, de novo.
+- Falha do professor:
+  - **Mensagem das opções do gerador** com duas opções, custo, o que
+    sai do A, recomendação e pergunta → "o que a gente tá decidindo
+    mesmo?". Sétima vez (8, 10, 13, 14, 15, 16, 23). A versão de uma
+    linha resolveu.
+  - **Pus o argumento na boca dele:** a frase da decisão repete a
+    minha mensagem anterior. Devia ter perguntado "qual o risco do seed
+    à mão?" antes de dizer.
+  - **Cadeia no fim, com ele cansado** (o `1 passed`, ~8 trocas depois
+    das 21h05), o mesmo padrão das sessões 19, 20 e 22. Com a abertura
+    estourada, a pergunta devia ter ido direto para a próxima sessão.
+  - Li "seguir no planejamento" como "as datas ficam, o escopo corta"
+    sem confirmar com ele que o B também vai encolher.
+- Aberto:
+  - **Pergunta em que encerrou:** "teste com `pytest.raises` ficou
+    verde: a viagem 12/01 → 11/01 foi aceita ou recusada?". Depois, a
+    lacuna "o `1 passed` provava só que ___" e a resposta de entrevista,
+    montada por ele.
+  - **Corte do bloco B:** no ritmo medido, o gerador come de 2 a 3 das
+    ~4 sessões do B. Golden set, agente, guardrails e MCP não cabem no
+    que sobra. Decidir na primeira sessão do B, com opções de uma linha
+    cada.
+  - **Ritmo:** o README diz 2h/dia, e o medido é ~1h30 por semana. Ele
+    quer manter o plano.
+  - `contrato.py`, linhas 29 a 31: um `viagem_possivel` comentado e pela
+    metade. Código morto, junto com o exemplo da turma.
+  - Item 3 da 21 (7h40 → 7h10, A × B), falso verde à vista (12
+    colunas), mensagem `"impossivel"` sem campo, validador como lista
+    do proibido: sem mudança. O gerador vai mexer nisso, porque vai
+    gerar as 12 colunas.
+  - `101` duplicado no `JOIN`: próxima rotação.
+  - Domingo 25/10: primeiro domingo de entrevista (os de 11/10 e 18/10
+    não aconteceram). Primeira entrada do `ARQUITETURA.md` e primeira
+    história do `HISTORIAS.md` (o brew e os dois Pythons).
+- Retomo em (20/10, terça, sessão 1 do bloco B):
+  1. "O que quebrou na 23" = a pergunta do verde com `pytest.raises` e
+     a lacuna do `1 passed`. **Até 10 min, com hora marcada.** Se não
+     fechar, vai para o domingo.
+  2. Corte do bloco B, com opções de uma linha. A decisão é dele.
+  3. Gerador: antes de codar, ele explica em texto o que vai fazer
+     (quantas viagens, de onde sai cada uma das 12 colunas, onde a
+     `Viagem` entra, como grava no banco), e eu aponto o furo. Eu
+     escrevo o arquivo de teste vazio do gerador.
+  4. Commit.
