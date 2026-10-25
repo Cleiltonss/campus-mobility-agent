@@ -18,7 +18,5 @@ def test_periodo_dia_impossivel():
 def test_linhas_dim_hora():
     resultado = linhas_dim_hora()
     assert len(resultado) == 24
-
-def test_linhas_dim_hora_impossivel():
-    with pytest.raises(ValueError):
-        len(linhas_dim_hora()) > 24
+    assert all(resultado[i]["hora_id"] == i and resultado[i]["periodo_dia"] == periodo_dia(i) for i in range (24))
+    

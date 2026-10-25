@@ -12,4 +12,13 @@ def periodo_dia(hora_id):
 
 
 def linhas_dim_hora():
+    lista = []
+    for hora_id in range(24):
+        dic = {}
+        dic["hora_id"] = hora_id # hora_id: 0 a 24
+        dic["periodo_dia"] = periodo_dia(hora_id) # periodo_dia: manhã, tarde, noite, madrugada
+        # { hora_id: 0, periodo_dia: madrugada } 
+
+        lista.append(dic)
     
+    return lista
