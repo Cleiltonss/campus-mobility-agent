@@ -9,3 +9,7 @@ def periodo_dia(hora_id):
         return "noite"
     else:
         raise ValueError(f"Impossível essa hora utilizada: {hora_id}")
+
+
+def linhas_dim_hora():
+    

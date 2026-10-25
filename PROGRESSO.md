@@ -196,6 +196,10 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   (tabela no lugar de coluna). E **rótulo errado no lugar de rótulo
   nenhum**: "duas origens" para o que eram dois bairros, com "pinheiros e
   butantã" escrito por ele seis mensagens antes.
+  Sessão 26: "2" para quantas linhas a função da `dim_hora` entrega, com
+  "duas viagens" e as duas linhas de exemplo na tela. Mandado colar a
+  linha do `CHECK` (`BETWEEN 0 AND 23`), "24" na hora. Pedido o rótulo,
+  veio só o número.
 - **Vírgula sobrando antes do fecha-parêntese** — quatro vezes na sessão 6,
   em três tabelas. Mecânico, não conceitual, mas para o arquivo inteiro. Ele
   ainda não rodou o SQL em banco nenhum — é erro que sumiria sozinho no
@@ -520,6 +524,15 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   copiado do teste válido para o impossível; `return` com a mensagem
   de erro no lugar do `raise`; e o `f` do f-string sumiu ao trocar
   (`{hora_id}` literal na mensagem). Rodando, consertou os cinco.
+  Sessão 26: os dois testes da `periodo_dia` (válido + impossível)
+  copiados para a função nova, inclusive um `pytest.raises(ValueError)`
+  para uma função que não recebe nada: que entrada impossível ele
+  testa? Não discutido. E os dois com o mesmo nome (`test_tamanho_hora`):
+  o segundo apagou o primeiro, e o pytest rodou 3 de 4 testes sem
+  avisar. Consertou o nome sozinho, sem responder quantos `def test_`
+  havia; o porquê não foi conferido. `=` no `assert` de novo (na 25
+  disse "`=` atribui, `==` testa igualdade"); com o `SyntaxError`,
+  consertou.
 - **Lista do válido sem o membro `-1`** — sessão 14, duas vezes: válidos de
   `ordem_dia` = "1 a 7" e de `periodo` = "manha, tarde, noite", as duas sem
   a linha `-1` que ele tinha acabado de definir. Mesmo conflito do `CHECK`
@@ -744,6 +757,13 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   fato da 22 (verde = chega ao fim sem erro) ainda não virou o porquê
   do `assert`. Também: o primeiro teste digitava o `6` **e** o
   `"manhã"`, conferindo o que ele mesmo escreveu ("vdd boa").
+  Sessão 26, função × teste: "a função vai **testar** e gerar as
+  linhas". Chamou a função de `tamanho_hora` e escreveu `assert
+  resultado == 24` (a função devolvendo o número). Com a frase dele
+  citada de volta (as duas linhas que ela entrega) → "lista de linhas";
+  daí o `len` foi para o teste. **Regra: a função devolve o dado; o
+  teste mede.** Achou sozinho que `tamanho_hora` era nome ruim; o nome
+  novo não saiu (ver log).
 - **Ler o código pela intenção, não pela execução** — sessão 22. Leu o
   `elif self.data_saida_id == data_chegada_id and ...` como "a linha das
   viagens do mesmo dia" e concluiu que só elas quebravam. O Python não
@@ -2682,3 +2702,85 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
     `periodo_dia` com `raise` × `return "Não se aplica"`.
   - **Segunda 26/10:** a função das 24 linhas da `dim_hora`, teste
     primeiro.
+
+### Sessão 26 — 2026-10-24 (sábado, 23h19) a 2026-10-25 (01h05)
+- Bloco B, semana 1 de 2, sessão 3 do bloco — teste da função da
+  `dim_hora`
+- Duração: ~1h45 no relógio; o trabalho de fato foi de 00h40 a 01h05.
+  Aberta um minuto depois do commit da 25.
+- Contexto: recomendei não abrir (segunda sessão da noite, depois de
+  1h45; mesmo caso da 16; domingo de entrevista no dia seguinte). Ele
+  escolheu seguir. "O que quebrou na 25" pulado (tinha terminado um
+  minuto antes); a rotação (`101` duplicado) ficou para o domingo, como
+  já estava. Marquei fim às 00h00, não olhei o relógio, e só vi às
+  00h38; encerrei. Ele pediu para seguir ("vamos seguir o projeto
+  aqui"); segui com uma meta só, o teste no disco e vermelho. Cumprida
+  às 00h55, encerrei de novo; ele pediu de novo ("n continua, eu quero
+  seguir mais"); segui com a regra da sessão 4 (resposta entregue =
+  fim). Encerrei às 01h05, quando ele parou de responder as perguntas.
+- Feito:
+  - Duas primeiras linhas da `dim_hora`, em texto, certas: `hora_id:
+    0, periodo_dia: madrugada` e `hora_id: 1, periodo_dia: madrugada`.
+  - O que a função faz, nas palavras dele: "vai testar e gerar as
+    linhas de hora das viagens". A pergunta das duas viagens às 7h ele
+    leu como revisão ("sem revisão, parte pro projeto").
+  - **Quantas linhas:** "2"; colando a linha do `CHECK`, "24" (sem o
+    `-1`, coerente com a 25). "Com 500 viagens, muda?" → "não muda".
+    "Recebe o quê?" → "nada certo?". **O "das viagens" caiu:** a
+    `dim_hora` guarda as horas que existem; a hora de cada viagem mora
+    no fato.
+  - **Função × teste:** ver "Python: classe, objeto". A função devolve
+    a lista; o teste conta com `len`.
+  - **`tests/test_gerador.py`:** `test_linhas_dim_hora` (`assert
+    len(resultado) == 24`) e `test_linhas_dim_hora_impossivel`. Vermelho
+    pelo motivo certo (a função não existe; o `ImportError` foi
+    conferido com o nome antigo, antes da troca). No caminho: `=` no
+    `assert` e os dois testes com o mesmo nome (3 de 4 rodando). Ver
+    "Copiar a forma".
+  - **Nome da função: `linhas_dim_hora`.** "N gostei do nome
+    `tamanho_hora`", iniciativa dele. Três trocas perdidas por mensagem
+    minha (ver Falha); depois, "linhas de qual tabela?" → `dim_hora`;
+    "devolve o tamanho ou as linhas?" → `linhas_dim_hora`. No import,
+    escreveu `test_linhas_dim_hora` (o nome do teste); "o que mora no
+    `gerador`?" → "função", e consertou.
+  - **Segundo teste:** a linha 24 virou `linhas_dim_hora() > 24`,
+    depois `len(linhas_dim_hora) > 24`, depois `len(linhas_dim_hora())
+    > 24`, dentro do `pytest.raises(ValueError)`. A pergunta "uma função
+    que não recebe nada pode receber uma hora impossível?", feita duas
+    vezes, a segunda pedindo só sim ou não, ficou sem resposta: ele
+    mexeu na linha e mandou "pronto" nas duas. Encerrei aqui.
+  - No meio disso, sem dizer, abriu `def linhas_dim_hora():` no
+    `gerador.py`, sem corpo. O arquivo não importa assim (bloco vazio):
+    o vermelho de segunda começa por aí.
+- Falha do professor:
+  - **Marquei 00h00 e não olhei o relógio entre as mensagens.** Com
+    hora marcada, conferir `date` antes de cada resposta (feito depois
+    das 00h40, e funcionou).
+  - A pergunta das duas viagens não disse para que servia: é o número
+    que o teste confere. Leu como revisão.
+  - **Nome da função + nome do teste numa mensagem só** → "tamanho com
+    o que?". Nona vez (8, 10, 13, 14, 15, 16, 23, 25, 26). A versão
+    com as linhas marcadas "troca"/"fica" piorou ("troca?").
+  - Seguir depois da recomendação foi decisão dele, três vezes. Com
+    meta pequena e relógio conferido, saiu artefato, o que a 16 não
+    teve. Depois da meta cumprida, os 10 minutos a mais renderam o nome
+    e o import, e terminaram em "pronto" sem ler a pergunta.
+  - **Sinal novo de fim, além da regra da sessão 4:** ele responde
+    "pronto" a uma pergunta que não pedia mexer no arquivo.
+- Aberto:
+  - **`test_linhas_dim_hora_impossivel`:** a função não recebe nada.
+    Que entrada impossível ele testa? E o que a linha 24 tenta conferir
+    ("mais de 24") o primeiro teste já não confere?
+  - **`len == 24` passa com 24 cópias da hora 0.** Caso que ilustra ×
+    caso que prova: o teste confere o tamanho, não as horas.
+  - Por que o pytest rodou 3 de 4 testes (nome repetido): consertado,
+    porquê não conferido.
+  - Herdados da 25, sem mudança.
+- Retomo em:
+  - **Domingo 25/10, dia de entrevista:** sem mudança (ver sessão 25).
+    Começar depois de dormir: a 26 acabou depois da 1h.
+  - **Segunda 26/10:** (1) "uma função que não recebe nada pode receber
+    uma hora impossível?", em sim ou não, antes de mexer no arquivo;
+    (2) a função `linhas_dim_hora` escrita por ele, usando a
+    `periodo_dia`, até o verde; (3) "24 cópias da hora 0 passam no seu
+    teste?".
