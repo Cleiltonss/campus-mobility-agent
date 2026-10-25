@@ -95,6 +95,13 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   ali", colou a pista da mensagem anterior; "n lembro" para a linha 25
   ter rodado, com a resposta duas linhas acima. **Com a frase reposta
   por mim, "n" na hora.**
+  Sessão 25, quatro vezes: "zero ideia" para a tabela com zero linhas
+  (`fato_transportes`); "7 tabelas" para as dimensões; "qual o problema
+  da linha 5?" logo depois de escrever "`=` atribui, `==` testa
+  igualdade"; "break, next ou printf?" para a palavra da linha que ele
+  tinha colado duas mensagens antes. **Copiando ou com a linha reposta,
+  acertou nas quatro** (`CREATE TABLE fato_transportes`, os 6 nomes, o
+  `=`, `raise`).
 - **Inventar valor para não deixar coluna vazia** — duas vezes na sessão 4
   (número da linha do metrô, "híbrido ou não" no ônibus). O caso "não existe
   valor" é o caso que importa: é ele que gera NULL em FK.
@@ -106,6 +113,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   Sessão 15: com metrô e Uber numa linha só, preencheu `modal_id` com
   `transporte`, que não é modal (é o nome do fato). Valor genérico para não
   escolher entre dois. A linha `42 | ?` com um lugar só resolveu: "duas".
+  Sessão 25, versão Python, três vezes seguidas: `periodo_dia` da hora 2
+  = `-1`; depois "conhecida mas não se aplica"; depois o `else` da
+  função com `return "Não se aplica"` para a hora 99. A hora 2 tem
+  período (madrugada, que saiu com "como você chama de meia-noite às
+  6h?"); a hora 99 é bug, e bug pede barulho, não rótulo. Com "você
+  fica sabendo do bug no sorteio?" → "não fico" → `raise`.
 - **Responder contra o que acabou de derivar** — sessão 5, duas vezes seguidas:
   disse que `0 = 0` é verdadeiro e que a linha entra no SUM, e no passo seguinte
   respondeu que a soma continuava 35. Não é desconhecimento, é não reler a
@@ -304,6 +317,13 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   pergunta, "linhas que não atendem as restrições da viagem". A frase
   do teste verde não fechou (ver "Caso que ilustra"); a do `self` não
   foi pedida.
+  Sessão 25: 2 de 3 com mecanismo, depois de uma pergunta. (1) "o
+  `ValueError` quebra a função em casos de erro", sem o porquê; com
+  "o que acontecia com a hora 99 no `return`?" → "passava, erro
+  silencioso". (2) Convenção de nome em minúsculo, sem porquê. (3)
+  Classe para guardar valores lado a lado, função para entrada →
+  saída: mecanismo, dele. A fronteira 6 × 7 e as dimensões antes do
+  fato não apareceram.
 - **`latest` × versão fixa** — revisão da sessão 9, sem andaime: sabia o fato
   ("pega a versão mais atual"), não sabia a consequência. Respondeu repetindo
   a diferença de versão e tratando o problema como "o meu está
@@ -377,6 +397,10 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   bairros também. Chegou em `transportes` com a dica de `fato_uber` →
   `fato_transporte`. O teste do segundo caso ele aplica quando mandado, mas
   ainda não sozinho.
+  Sessão 25, oitava vez: `0 | uber` na `dim_modal`. Com "um aluno vai de
+  99: qual linha?", **consertou sozinho**: "uber e 99 são o mesmo modal,
+  transporte de aplicativo". Pôs a empresa na `dim_categoria`, que era
+  nível de serviço (UberX, Comfort, Black): aberto.
 - **Prefixo `fato_` / `dim_`** — não viu que prefixo igual em todas as tabelas
   não carrega informação. Convenção entregue pronta, não deduzida.
   Sessão 10, **primeira vez deduzido por ele**: propôs `HD_externo` para o
@@ -413,6 +437,11 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   arquivo e a linha; a com `E` diz o que deu errado.** Mesma família de
   trocar o dado para caber na regra (sessão 13): mexeu no lado que ele
   controlava em vez de ler qual lado quebrou.
+  Sessão 25: com o `TypeError ... Did you mean 'hora_dia'?`, viu sozinho
+  que teste e função usavam nomes diferentes; com o `DID NOT RAISE
+  ValueError`, achou sozinho a causa ("coloquei hora 6, numa hora que
+  passa"). **Rodei eu e mostrei as linhas `E`** (ajuste pedido por
+  ele): o ritmo não caiu e ele leu todas.
 - **`CHECK`: lista do válido × lista do proibido** — revisão da sessão 12.
   Pergunta 1 certa (o banco recusa; disse "tabela" querendo dizer linha).
   Pergunta 2 com andaime: em vez do porquê, escreveu a versão proibida como
@@ -423,6 +452,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   Argumento melhor que o da sessão 7 (lista infinita). Pergunta 3 certa sem
   andaime: na versão B o `-1` aparece como caso à parte para quem lê depois;
   na A fica "inibido" no intervalo (schema é documentação).
+  Sessão 25, versão Python: o `else: return "noite"` da `periodo_dia`
+  era a lista do proibido (tudo o que não é madrugada, manhã ou tarde
+  vira noite, inclusive 99 e -1). Com a hora 99 virando "noite" sem
+  aviso, trocou para quatro faixas explícitas e `raise` no `else`.
+  Faixa da noite escrita `17 <= hora_id` (17 em duas faixas);
+  consertou para 18 quando apontado.
 - **Grão da dimensão: guardar o mais fino** — sessão 12, `dim_local`.
   Escolheu bairro, "não sei defender", "n sei" para a rua do ponto de
   embarque. Destravou com as duas versões desenhadas: na de bairro, "Rua A"
@@ -479,6 +514,12 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   **Sessão 20: `20271105` de primeira, sem andaime.** A decisão virou
   dele; o porquê ainda não (o zero de novo, ver "Ordem de texto × ordem
   de número").
+  Sessão 25, Python, cinco vezes: `Hora(...)` com `import pydantic` e
+  `ValidationError` (a forma do contrato) para uma função de texto;
+  `ValidationError` de novo no teste do `ValueError`; `hora_id=6`
+  copiado do teste válido para o impossível; `return` com a mensagem
+  de erro no lugar do `raise`; e o `f` do f-string sumiu ao trocar
+  (`{hora_id}` literal na mensagem). Rodando, consertou os cinco.
 - **Lista do válido sem o membro `-1`** — sessão 14, duas vezes: válidos de
   `ordem_dia` = "1 a 7" e de `periodo` = "manha, tarde, noite", as duas sem
   a linha `-1` que ele tinha acabado de definir. Mesmo conflito do `CHECK`
@@ -587,6 +628,26 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   função chega ao fim sem erro") não cobre o `with pytest.raises`.
   Revisar com essa pergunta só: "teste com `pytest.raises` ficou verde:
   a viagem foi aceita ou recusada?".
+  Sessão 24, essa pergunta: "foi aceita" de novo. Previu "nada" para a
+  `Viagem` criada direto no terminal; rodou, deu erro com o
+  `impossivel` dele → "recusada"; "quando acontece" para o verde do
+  `with`. **A ideia errada se confirmou e caiu pela execução.** A
+  lacuna do `1 passed`: "ainda não sei"; mandado copiar a frase, colou
+  outra mensagem; com a frase reposta, "foi recusada". Resposta ao
+  entrevistador **saiu invertida**: "meu teste não conseguia
+  identificar uma viagem impossível", quando identificava; o que
+  faltava era o teste da válida. Mesma família das frases invertidas
+  (sessões 15 e 19).
+  **Sessão 25, a virada.** A resposta ao entrevistador saiu sem
+  inverter, com uma pista ("o teste fica verde porque a `Viagem`
+  recusava a impossível, sem criar nenhum teste válido"). **Fronteira
+  escolhida por ele, de primeira:** testar a hora 6 e não a 7, "porque
+  o teto da madrugada foi até as 5". **Verde com `pytest.raises` em
+  caso novo (hora 99): "recusada, por isso deu verde", de primeira.**
+  Ainda com furo: "que linha nenhum teste roda?" → "que?"; encolhido
+  (o `raise` roda com a hora 6?) → "n". E copiou `hora_id=6` para o
+  teste do impossível; leu o `DID NOT RAISE` e consertou sozinho.
+  Revisar: as fronteiras que faltam (5, 11/12, 17/18, 23, 24, -1).
 - **SCD tipo 2** — sessão 18, primeira vez. "Já aprendi": tipo 1 certo
   (sobrescreve, o histórico muda junto); tipo 2 parou na ação ("fecha a
   linha antiga e cria uma nova"), sem o efeito no histórico, e com
@@ -671,6 +732,18 @@ Escrito pelo professor ao fim de cada sessão. Não editar à mão.
   ("`data_chegada_id` sem `self.` é de qual viagem?" → "nenhuma").
   Revisar frio: "seus dois testes usam a mesma classe: quantos `self`
   existem, e quanto vale `self.hora_saida_id` em cada um?".
+  Sessão 25, classe × função: escreveu `Hora(hora_id=6)` (forma da
+  `Viagem`) para uma função que devolve texto; "o que `Viagem(...)`
+  devolve: string ou viagem?" → "uma viagem". Quis "deixar mais
+  sofisticada, meter uma classe" ("assim que sênior usa"); "que
+  problema a classe resolve?" → "não sei"; "a `periodo_dia` guarda
+  algum dado?" → "não guarda". Regra dele: classe para armazenar
+  valores, função quando só tem entrada e saída. **`assert`:** não
+  sabia a finalidade; disse "vermelho" para um teste sem `assert` com
+  valor errado. Com "devolver valor errado levanta erro?" → "não". O
+  fato da 22 (verde = chega ao fim sem erro) ainda não virou o porquê
+  do `assert`. Também: o primeiro teste digitava o `6` **e** o
+  `"manhã"`, conferindo o que ele mesmo escreveu ("vdd boa").
 - **Ler o código pela intenção, não pela execução** — sessão 22. Leu o
   `elif self.data_saida_id == data_chegada_id and ...` como "a linha das
   viagens do mesmo dia" e concluiu que só elas quebravam. O Python não
@@ -2491,3 +2564,121 @@ Retomada a pedido dele, depois do encerramento. Substitui o "Retomo em" acima.
      `Viagem` entra, como grava no banco), e eu aponto o furo. Eu
      escrevo o arquivo de teste vazio do gerador.
   4. Commit.
+
+### Sessão 24 — 2026-10-20 (registrada na 25, a partir da conversa)
+- Bloco B, semana 1 de 2, sessão 1 do bloco
+- Duração: ~13 min (20h59 a 21h12). Terminou sem as 3 frases, sem
+  PROGRESSO e sem commit (não havia arquivo alterado).
+- Feito:
+  - **O que quebrou na 23 (verde com `pytest.raises`):** fechou pela
+    execução. Ver "Caso que ilustra × caso que prova". A resposta ao
+    entrevistador saiu invertida e ficou para o domingo.
+  - **Corte do bloco B: decisão dele, sem corte.** "N vamos cortar
+    nada" → "pode esticar" → com a conta (5 itens do B no ritmo do A ≈
+    10 semanas, B terminando perto de 29/12, 4 semanas para C, D e E,
+    sem RAG em janeiro): "n topo, eu vou dar um gás no fim de semana".
+    Com o histórico (domingos de 11/10 e 18/10 não aconteceram; o
+    sábado de 03/10 com 4 sessões e zero artefato na última; fim de
+    semana já tem dono): "n topo, viva com minha suposição".
+    **Conferência da aposta: domingo, 25/10, o gerador está no disco
+    ou não está.**
+  - Gerador: pergunta feita e sem resposta ("o gerador recebe o quê,
+    entrega o quê, e onde entrega?").
+- Quebrou: ver pontos frágeis (verde lido como aceita; frase de
+  entrevista invertida; colou a mensagem errada).
+- Falha do professor: a sessão acabou sem registro e sem commit, de
+  novo o caso da 17. O "Nota de método" pegou na abertura da 25.
+- Retomo em: a pergunta do gerador, antes de qualquer código.
+
+### Sessão 25 — 2026-10-24 (sábado)
+- Bloco B, semana 1 de 2, sessão 2 do bloco — gerador, primeira peça
+- Duração: ~1h45 (20h45 a ~22h30). Sábado, contra o README, mas é o
+  "gás do fim de semana" em que ele apostou na 24 para não cortar o B.
+- Feito:
+  - Abertura: achei a sessão 24 sem registro (conversa de 20/10) e
+    registrei antes da primeira pergunta.
+  - **O que quebrou na 24:** "zero ideia". Com a frase invertida dele
+    na tela, a resposta ao entrevistador saiu certa em três trocas.
+    Ver "Caso que ilustra × caso que prova". A abertura estourou
+    (21h06 contra 20h58); **a rotação (`101` duplicado) não foi
+    feita**, adiada para o domingo.
+  - **Gerador, em texto, antes de codar:**
+    - "Onde entrega": `fato_transportes` (copiando a linha). "Entrega o
+      quê": o grão saiu de novo sem o "único modal" (terceira vez: 15,
+      17, 25); com o metrô + Uber do 42 e uma lacuna, completou.
+    - **Furo achado por ele:** para a Rua A ter `origem_id`, o gerador
+      precisa "inserir novas linhas" na `dim_local` antes; as 6
+      dimensões só têm o `-1`. O gerador é dimensões + fato, maior do
+      que o da sessão 23.
+    - **Mapa:** já dá para preencher `dim_hora`, `dim_data` (com o
+      `tem_aula` como premissa do calendário acadêmico), `dim_modal`,
+      `dim_categoria`; precisa inventar `dim_local` e `dim_usuario`.
+    - `dim_modal`: `0 | uber` → "transporte de aplicativo", sozinho,
+      pelo caso da 99.
+  - **`dim_hora`:** `periodo_dia` com quatro faixas, decisão dele:
+    madrugada 0–5, manhã 6–11, tarde 12–17, noite 18–23. A madrugada
+    entrou pelo aluno da festa às 2h, que não pode inflar o fretado
+    das 7h. A função não gera o `-1` (ele já está no banco; a `PRIMARY
+    KEY` recusaria o segundo).
+  - **Teste primeiro:** `tests/test_gerador.py` (vazio, eu), com
+    `test_periodo_dia` (hora 6 → `"manhã"`, fronteira escolhida por
+    ele). Formato B (lista de dicionários) escolhido com o argumento do
+    rótulo colado ao valor; ainda não usado.
+  - **Código dele:** `src/assistente/gerador.py`, `periodo_dia(hora_id)`
+    com quatro faixas explícitas e `raise ValueError(f"...{hora_id}")`
+    no `else`. Nome: `periodo` colidia com o turno da `dim_usuario` →
+    `periodo_dia`. Parâmetro: `hora_dia` → `hora_id`, o nome do banco.
+  - **Classe × função**, defendido por ele. Ver pontos frágeis.
+  - Segundo teste, `test_periodo_dia_impossivel` (hora 99, `pytest.raises
+    (ValueError)`). **`4 passed`.**
+  - Pergunta sobre a pasta `src/`: respondida (papel de cada pasta;
+    import do pacote instalado; reprodutibilidade). Item do currículo
+    "estrutura de projeto e packaging".
+  - 3 frases: 2 de 3 com mecanismo, uma depois de uma pergunta.
+- Quebrou: ver pontos frágeis (não olhar a tela 4, ausência inventada
+  3, fornecedor no nome, copiar a forma 5, `assert`).
+- Método:
+  - **Ele cortou a previsão de erro trivial** ("ficar prevendo erros em
+    coisas que não estão definidas [...] inútil"). Procedente: prever
+    qual erro o Python mostra primeiro é decoreba. Ajuste registrado na
+    memória: previsão só para regra ou modelo do código; erro trivial,
+    eu rodo e mostro as linhas `E`. Com isso o ritmo subiu.
+  - Copiar a linha ou repor a frase, de novo: quatro de quatro.
+  - O caso concreto contra a regra (festa às 2h; aluno de 99) achou os
+    furos sem eu dizer onde estavam.
+- Falha do professor:
+  - **"Quais têm uma lista de valores que você já conhece?"** era
+    ambígua (valor da dimensão × valor da viagem). Ele: "sua pergunta
+    foi mal estruturada". Certo. Oitava vez (8, 10, 13, 14, 15, 16, 23,
+    25). As duas linhas "dimensão guarda o que existe; fato guarda o que
+    aconteceu" resolveram.
+  - Pedi previsão de qual erro apareceria num arquivo sem função.
+  - Abertura estourada de novo (oito minutos), e a rotação caiu.
+- Aberto:
+  - **Próxima peça:** a função que gera as 24 linhas da `dim_hora`
+    (formato B), usando a `periodo_dia`; teste: 24 linhas, de 0 a 23,
+    sem `-1`.
+  - **Fronteiras não testadas:** 5, 11/12, 17/18, 23, 24, -1. Gancho
+    para `pytest.mark.parametrize`.
+  - **Iscas da revisão hostil, não levantadas:** `periodo_dia(6.5)` dá
+    `"manhã"` calado; `periodo_dia(True)` dá `"madrugada"` (`True == 1`).
+    Tipo de entrada sem conferência.
+  - Gravar no Postgres: falta o driver (dependência no `pyproject`, eu
+    escrevo) e o Docker estava desligado.
+  - `dim_data` (365 linhas, premissa do `tem_aula`), `dim_modal` e
+    `dim_categoria` (empresa × nível de serviço: a reitoria precisa da
+    empresa?), `dim_local` e `dim_usuario` (quantos lugares, quantos
+    alunos).
+  - Código morto no `contrato.py` e no `test_contrato.py` (exemplo da
+    turma, `viagem_possivel` comentado): sem mudança.
+  - **Aposta da 24:** o gerador está no disco, a primeira peça. Do B, 1
+    de 5 itens começado (gerador), e ele já é maior do que se pensava.
+- Retomo em:
+  - **Domingo 25/10, dia de entrevista** (formato do CLAUDE.md): live
+    coding de 25 min; design de IA; deep dive em inglês, começando pela
+    pergunta "o que acontecia com as viagens válidas?" (a peça que
+    faltou hoje na resposta do teste verde); rotação do `101`
+    duplicado. Primeira entrada do `ARQUITETURA.md` candidata:
+    `periodo_dia` com `raise` × `return "Não se aplica"`.
+  - **Segunda 26/10:** a função das 24 linhas da `dim_hora`, teste
+    primeiro.

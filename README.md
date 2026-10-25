@@ -86,3 +86,5 @@ com 2 testes em `tests/`. Postgres 18 local via `modelo/docker-compose.yml`;
 `fato_transportes` (9 FKs, 3 métricas) e 6 dimensões (`dim_modal`,
 `dim_categoria`, `dim_hora`, `dim_local`, `dim_data`, `dim_usuario`).
 `dim_usuario` é SCD tipo 2 (`aluno_id` + `atual`). Fato ainda vazio.
+Gerador começado na sessão 25: `periodo_dia` em `src/assistente/gerador.py`
+(faixa do dia de cada hora da `dim_hora`), com 2 testes.
