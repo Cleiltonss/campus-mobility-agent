@@ -5,6 +5,7 @@ description = "Assistente de dados da reitoria: transporte dos alunos (text-to-S
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "psycopg[binary]>=3.2",
     "pydantic>=2.12",
 ]
 
