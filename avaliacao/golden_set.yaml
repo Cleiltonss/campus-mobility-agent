@@ -1,0 +1,152 @@
+# Golden set do assistente da reitoria.
+#
+# Cada pergunta tem uma resposta certa só, conferida no banco carregado com
+# a semente 42 (7.000 alunos, ano letivo de 2026). Mesma semente, mesma
+# resposta.
+#
+# Campos:
+#   id         número da pergunta
+#   pergunta   como a reitoria digita para o assistente
+#   decisao    a decisão que a resposta apoia
+#   armadilha  onde um SQL apressado erra sem dar erro
+#   sql        a consulta que dá a resposta certa
+#   resposta   o resultado do sql, conferido no banco
+
+perguntas:
+  - id: 1
+    pergunta: >
+      Nos dias com aula, em que hora chegam mais alunos à universidade, e
+      quantos chegam nessa hora, em média por dia, em cada turno?
+    decisao: quantos guardas pôr na entrada no pico de chegada de cada turno
+    armadilha:
+    sql:
+    resposta:
+
+  - id: 2
+    pergunta: >
+      Em cada turno, de quais 5 bairros saem mais alunos de casa para a
+      universidade? Conte cada aluno uma vez por turno e diga a cidade de cada
+      bairro.
+    decisao: onde pôr os pontos de embarque do fretado de cada turno
+    armadilha: >
+      O banco não guarda a casa do aluno: ela é a origem da ida, e o trecho
+      que chega ao campus pode ter saído de uma estação. Há três bairros
+      chamados Centro (São Paulo, Osasco e Taboão da Serra), então o
+      agrupamento precisa da cidade. O turno é o da versão do aluno na
+      viagem, não o atual: quem trocou de turno entra nas duas listas, uma vez
+      em cada. E "os 5 de cada turno" é um ranking dentro de cada grupo.
+    sql:
+    resposta:
+
+  - id: 3
+    pergunta: >
+      Num dia de aula, em média, quantos alunos chegam à universidade em cada
+      modal?
+    decisao: quantas vagas de carro e de moto e quantos lugares no bicicletário
+    armadilha: >
+      O modal que conta é o do trecho que termina no campus. Quem vai de metrô
+      ou de trem desce na estação e chega de ônibus, então metrô e trem não
+      aparecem. Contar todos os trechos por modal mistura o caminho com a
+      chegada.
+    sql:
+    resposta:
+
+  - id: 4
+    pergunta: >
+      Em média, por dia de aula, quantos alunos chegam à universidade em cada
+      dia da semana? Liste de segunda a sexta, nessa ordem.
+    decisao: como escalar os guardas e o fretado ao longo da semana
+    armadilha: >
+      Ordenar pelo nome do dia dá ordem alfabética (quarta, quinta, segunda,
+      sexta, terça). E o total por dia da semana engana, porque os feriados
+      não caem igual em todos os dias: a comparação justa é a média por dia
+      de aula.
+    sql:
+    resposta:
+
+  - id: 5
+    pergunta: >
+      Em cada mês de 2026, quanto os alunos gastaram com transporte de
+      aplicativo, e quanto esse gasto subiu ou caiu em relação ao mês
+      anterior?
+    decisao: quanto oferecer num convênio com aplicativo de transporte
+    armadilha: >
+      Janeiro não tem aula e não tem linha no fato: some do resultado sem
+      erro, e fevereiro fica sem mês anterior para comparar. Julho tem só três
+      dias de aula e parece uma queda de demanda.
+    sql:
+    resposta:
+
+  - id: 6
+    pergunta: >
+      Quantos alunos trocaram de turno em 2026, e de qual turno para qual?
+    decisao: redistribuir as vagas do fretado entre os turnos no 2º semestre
+    armadilha: >
+      O aluno que trocou tem duas linhas na dim_usuario, com usuario_id
+      diferentes e o mesmo aluno_id. O turno de antes e o de depois estão em
+      linhas diferentes, e contar usuario_id conta o aluno duas vezes.
+    sql:
+    resposta:
+
+  - id: 7
+    pergunta: >
+      Nos dias em que vai à universidade, quanto um aluno gasta em média com
+      transporte, somando ida e volta, em cada turno?
+    decisao: o valor diário de um auxílio-transporte por turno
+    armadilha: >
+      A média por trecho não é a média por aluno no dia: quem faz metrô e
+      ônibus tem quatro trechos. A volta do Noturno pode chegar depois da
+      meia-noite, então juntar os trechos pela data de chegada parte o dia em
+      dois. E quem vai a pé ou de bicicleta gasta zero e entra na média.
+    sql:
+    resposta:
+
+  - id: 8
+    pergunta: >
+      Qual o nome do aluno que mais gastou com transporte de aplicativo em
+      2026?
+    decisao: >
+      Nenhuma: é um caso negativo. Mede se o assistente inventa um dado que o
+      banco não tem.
+    armadilha: >
+      O banco não guarda nome de aluno, por decisão de modelagem (a reitoria
+      pergunta por quantidade, não por pessoa). Qualquer nome na resposta é
+      inventado.
+    sql: null
+    resposta: O assistente diz que o banco não guarda o nome dos alunos.
+
+  - id: 9
+    pergunta: >
+      Em média, por dia de aula, quantos alunos vão da estação Butantã do metrô
+      até a universidade em cada hora de saída da estação?
+    decisao: quantos ônibus circulares pôr entre a estação e o campus, e em que horários
+    armadilha: >
+      Origem e destino apontam para a mesma dim_local, em dois papéis: são dois
+      JOINs com a mesma tabela. E só conta a ida (estação → campus); o mesmo
+      par ao contrário é a volta.
+    sql:
+    resposta:
+
+  - id: 10
+    pergunta: >
+      Quantos alunos que moram em Osasco usaram trem para ir à universidade em
+      2026?
+    decisao: se vale negociar meia-passagem com a CPTM para os alunos de Osasco
+    armadilha: >
+      É contagem de alunos, não de trechos: cada aluno faz o trajeto centenas
+      de vezes no ano. E Osasco é a cidade, não o bairro: o Centro de Osasco e
+      o de São Paulo têm o mesmo nome.
+    sql:
+    resposta:
+
+  - id: 11
+    pergunta: >
+      Num dia de aula, em média, quantos alunos chegam de aplicativo à
+      universidade em cada categoria?
+    decisao: que categoria negociar num convênio com aplicativo de transporte
+    armadilha: >
+      Só o transporte de aplicativo tem categoria: nos outros modais ela é -1,
+      "Não se aplica". Agrupar as chegadas por categoria sem filtrar o modal
+      põe "Não se aplica" como a categoria mais usada.
+    sql:
+    resposta:
