@@ -25,13 +25,20 @@ Em construção. Já existem:
   mesmos dados.
 - Carga no Postgres em `src/assistente/carga.py`: `COPY` numa transação
   só, que pode rodar de novo e recarrega do zero.
+- Agente text-to-SQL em `src/assistente/agente.py`: o LLM escreve um
+  `SELECT`, a ferramenta `rodar_sql` (`src/assistente/consulta.py`) roda
+  com o usuário `agent`, que só tem permissão de leitura
+  (`modelo/leitor.sql`), e o resultado volta para o LLM escrever a
+  resposta. Guardrails: usuário read-only, transação read-only, um comando
+  por vez, teto de 5 s por consulta e de 50 linhas por resultado, e limite
+  de 8 chamadas ao LLM por pergunta. Os testes do loop usam um LLM falso.
 
-Ainda não existem: o agente, a API, os evals e o RAG.
+Ainda não existem: a API, os evals e o RAG.
 
 ## Stack
 
 Python 3.14 (fixo em `.python-version`, via uv), Pydantic, pytest,
-FastAPI, Postgres + pgvector, Docker, MCP, Langfuse, GitHub Actions,
+Claude API (Anthropic SDK), FastAPI, Postgres + pgvector, Docker, Langfuse, GitHub Actions,
 GCP (Cloud Run).
 
 ## Comandos
@@ -49,4 +56,14 @@ docker compose -f modelo/docker-compose.yml exec -T database \
 export PGPASSWORD=<senha do compose>
 uv run python -m assistente.carga                            # 7.000 alunos, cerca de 1 min
 uv run python -m assistente.carga --alunos 500 --semente 1   # carga menor
+
+# usuário do agente (só na primeira vez); senhas no .env, ver .env.example
+cp .env.example .env    # preencha AGENTE_SENHA e ANTHROPIC_API_KEY
+set -a && source .env && set +a
+docker compose -f modelo/docker-compose.yml exec -T database \
+  psql -U alfred -d transportes -v ON_ERROR_STOP=1 -v senha="$AGENTE_SENHA" < modelo/leitor.sql
+
+# pergunta ao agente, e os testes que usam o banco
+uv run --env-file .env python -m assistente.agente "quantas chegadas ao campus no ano?"
+uv run --env-file .env pytest
 ```
