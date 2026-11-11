@@ -1,0 +1,15 @@
+# Golden set da busca do RAG.
+#
+# Cada pergunta tem resposta num documento da reitoria, e não no banco.
+# Serve para medir só a busca: o documento certo veio entre os k trechos
+# trazidos (recall@k)?
+#
+# Campos:
+#   id         número da pergunta
+#   pergunta   como a reitoria digita para o assistente
+#   documento  o documento que responde a pergunta
+
+perguntas:
+  - id: 1
+    pergunta:
+    documento:
