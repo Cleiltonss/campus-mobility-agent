@@ -1,15 +1,18 @@
 # Golden set da busca do RAG.
 #
-# Cada pergunta tem resposta num documento da reitoria, e não no banco.
-# Serve para medir só a busca: o documento certo veio entre os k trechos
-# trazidos (recall@k)?
+# Cada pergunta tem resposta em documentos da reitoria, e não no banco.
+# Serve para medir só a busca: algum documento certo veio entre os k
+# trechos trazidos (recall@k)?
 #
 # Campos:
-#   id         número da pergunta
-#   pergunta   como a reitoria digita para o assistente
-#   documento  o documento que responde a pergunta
+#   id          número da pergunta
+#   pergunta    como a reitoria digita para o assistente
+#   documentos  lista dos documentos que respondem a pergunta; conta como
+#               acerto se a busca trouxer um trecho de qualquer um deles
 
 perguntas:
   - id: 1
-    pergunta:
-    documento:
+    pergunta: é possível ficar na frente da universidade pra esperar um fretado ou precisa ir até um ponto de ônibus?
+    documentos: 
+      - regras_fretados
+      - fretados_horarios
