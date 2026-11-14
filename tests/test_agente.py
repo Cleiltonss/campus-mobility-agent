@@ -28,7 +28,7 @@ class ClienteFalso:
     def __init__(self, roteiro):
         self.roteiro = roteiro          # função: número da chamada -> mensagem
         self.chamadas = []
-        self.beta = NS(messages=NS(create=self.create))
+        self.messages = NS(create=self.create)
 
     def create(self, **kwargs):
         # cópia da lista: o agente continua mexendo nela depois da chamada
@@ -93,8 +93,11 @@ def test_erro_do_sql_volta_para_o_llm(monkeypatch):
     assert "does not exist" in resultado["content"]
 
 
-def test_custo_de_uma_chamada():
+def test_custo_de_uma_chamada(monkeypatch):
     # a conta da sessão 34: 2.000 tokens de entrada e 200 de saída no Opus 5.5
+    # (o modelo local custa zero; o teste confere a fórmula com o preço do Opus)
+    monkeypatch.setattr(agente, "PRECO_ENTRADA_USD", 4 / 1_000_000)
+    monkeypatch.setattr(agente, "PRECO_SAIDA_USD", 20 / 1_000_000)
     resposta = agente.Resposta(
         texto="", sqls=[], passos=1, parada="end_turn", tokens_entrada=2000, tokens_saida=200,
     )

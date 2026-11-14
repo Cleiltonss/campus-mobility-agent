@@ -19,13 +19,17 @@ from pydantic import BaseModel
 
 from assistente.consulta import ConsultaRecusada, rodar_sql
 
-MODELO = "claude-opus-5-5"
-PRECO_ENTRADA_USD = 4 / 1_000_000   # por token, Opus 5.5
-PRECO_SAIDA_USD = 20 / 1_000_000
+# O modelo roda no próprio Mac, servido pelo Ollama. O Ollama aceita o formato
+# de chamada da Anthropic: a biblioteca é a mesma, só o endereço muda.
+ENDERECO_LLM = "http://localhost:11434"
+MODELO = "qwen3:8b"
+# modelo local: não há cobrança por token (o custo é tempo e memória do Mac)
+PRECO_ENTRADA_USD = 0
+PRECO_SAIDA_USD = 0
 
-# Limite de passos: quantas chamadas ao LLM uma pergunta pode fazer. É a
-# primeira linha contra o loop infinito; a última é o limite de gasto mensal
-# no console do provedor (US$ 55), que não depende deste código.
+# Limite de passos: quantas chamadas ao LLM uma pergunta pode fazer. É a linha
+# contra o loop infinito. Com o modelo local o loop não gasta dinheiro, mas
+# prende o Mac: cada chamada leva segundos.
 MAX_PASSOS = 8
 
 SCHEMA = (Path(__file__).resolve().parents[2] / "modelo" / "schema.sql").read_text()
@@ -118,23 +122,20 @@ def executar_ferramenta(bloco):
 
 
 def responder(pergunta, cliente=None, max_passos=MAX_PASSOS):
-    cliente = cliente or anthropic.Anthropic()
+    # o Ollama não confere a chave, mas a biblioteca exige uma
+    cliente = cliente or anthropic.Anthropic(base_url=ENDERECO_LLM, api_key="ollama")
     mensagens = [{"role": "user", "content": pergunta}]
     sqls = []
     tokens_entrada = tokens_saida = 0
 
     # o contador é o próprio range, fora do corpo: nada dentro da volta o zera
     for passo in range(1, max_passos + 1):
-        resposta = cliente.beta.messages.create(
+        resposta = cliente.messages.create(
             model=MODELO,
             max_tokens=16000,
             system=SISTEMA,
             tools=[FERRAMENTA_SQL],
             messages=mensagens,
-            output_config={"effort": "medium"},
-            # se o modelo recusar, o provedor tenta de novo em outro modelo
-            betas=["server-side-fallback-2026-07-01"],
-            fallbacks="default",
         )
         tokens_entrada += resposta.usage.input_tokens
         tokens_saida += resposta.usage.output_tokens

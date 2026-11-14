@@ -31,14 +31,15 @@ Em construção. Já existem:
   (`modelo/leitor.sql`), e o resultado volta para o LLM escrever a
   resposta. Guardrails: usuário read-only, transação read-only, um comando
   por vez, teto de 5 s por consulta e de 50 linhas por resultado, e limite
-  de 8 chamadas ao LLM por pergunta. Os testes do loop usam um LLM falso.
+  de 8 chamadas ao LLM por pergunta. O LLM é o qwen3:8b, rodando local
+  pelo Ollama (sem custo por token). Os testes do loop usam um LLM falso.
 
 Ainda não existem: a API, os evals e o RAG.
 
 ## Stack
 
 Python 3.14 (fixo em `.python-version`, via uv), Pydantic, pytest,
-Claude API (Anthropic SDK), FastAPI, Postgres + pgvector, Docker, Langfuse, GitHub Actions,
+Ollama (qwen3:8b, via Anthropic SDK), FastAPI, Postgres + pgvector, Docker, Langfuse, GitHub Actions,
 GCP (Cloud Run).
 
 ## Comandos
@@ -58,12 +59,13 @@ uv run python -m assistente.carga                            # 7.000 alunos, cer
 uv run python -m assistente.carga --alunos 500 --semente 1   # carga menor
 
 # usuário do agente (só na primeira vez); senhas no .env, ver .env.example
-cp .env.example .env    # preencha AGENTE_SENHA e ANTHROPIC_API_KEY
+cp .env.example .env    # preencha AGENTE_SENHA
 set -a && source .env && set +a
 docker compose -f modelo/docker-compose.yml exec -T database \
   psql -U alfred -d transportes -v ON_ERROR_STOP=1 -v senha="$AGENTE_SENHA" < modelo/leitor.sql
 
-# pergunta ao agente, e os testes que usam o banco
+# pergunta ao agente (o Ollama precisa estar rodando), e os testes que usam o banco
+ollama pull qwen3:8b    # só na primeira vez, 5,2 GB
 uv run --env-file .env python -m assistente.agente "quantas chegadas ao campus no ano?"
 uv run --env-file .env pytest
 ```
