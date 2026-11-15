@@ -34,7 +34,15 @@ Em construção. Já existem:
   de 8 chamadas ao LLM por pergunta. O LLM é o qwen3:8b, rodando local
   pelo Ollama (sem custo por token). Os testes do loop usam um LLM falso.
 
-Ainda não existem: a API, os evals e o RAG.
+- Documentos da reitoria para o RAG em `documentos/` (sintéticos): o
+  regulamento e o quadro de horários do fretado estudantil, o guia do
+  transporte público até o campus, o guia dos setores do campus e as
+  regras do auxílio-transporte. O golden set da busca, com 10 perguntas e
+  os documentos que respondem cada uma, está em
+  `avaliacao/golden_set_rag.yaml`.
+
+Ainda não existem: a API, os evals e a busca do RAG (ingestão,
+embeddings e pgvector).
 
 ## Stack
 

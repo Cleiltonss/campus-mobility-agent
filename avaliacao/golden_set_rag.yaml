@@ -1,18 +1,74 @@
 # Golden set da busca do RAG.
 #
-# Cada pergunta tem resposta em documentos da reitoria, e não no banco.
-# Serve para medir só a busca: algum documento certo veio entre os k
-# trechos trazidos (recall@k)?
+# Cada pergunta tem resposta em documentos da reitoria (pasta documentos/),
+# e não no banco. Serve para medir só a busca: algum documento certo veio
+# entre os k trechos trazidos (recall@k)?
 #
 # Campos:
 #   id          número da pergunta
-#   pergunta    como a reitoria digita para o assistente
+#   pergunta    como a pergunta chega ao assistente
 #   documentos  lista dos documentos que respondem a pergunta; conta como
 #               acerto se a busca trouxer um trecho de qualquer um deles
+#   armadilha   o que pode levar a busca ao documento errado
 
 perguntas:
   - id: 1
     pergunta: é possível ficar na frente da universidade pra esperar um fretado ou precisa ir até um ponto de ônibus?
-    documentos: 
+    documentos:
       - regras_fretados
       - fretados_horarios
+    armadilha: o rota_onibus também fala de ponto de ônibus em frente ao Portão Principal, mas não diz nada do fretado
+
+  - id: 2
+    pergunta: até que horas sai o último fretado de volta pra Osasco?
+    documentos:
+      - fretados_horarios
+    armadilha: o rota_onibus tem o horário do último circular (23h30), que não é o fretado
+
+  - id: 3
+    pergunta: o aluno precisa pagar alguma coisa pra andar no fretado?
+    documentos:
+      - regras_fretados
+    armadilha: o auxilio_transporte fala de passagem, tarifa e reembolso, e cita o fretado, mas não diz quanto ele custa
+
+  - id: 4
+    pergunta: o fretado funciona nas férias de julho?
+    documentos:
+      - regras_fretados
+    armadilha: o fretados_horarios diz "de segunda a sexta" e não fala de férias
+
+  - id: 5
+    pergunta: posso levar minha bike no fretado?
+    documentos:
+      - regras_fretados
+    armadilha: o documento diz "bicicleta", e a pergunta diz "bike"; uma busca por palavra não acha
+
+  - id: 6
+    pergunta: qual estação de metrô fica mais perto da universidade e quanto tempo leva de lá até o campus?
+    documentos:
+      - rota_onibus
+    armadilha: o campus_curso tem tempos de caminhada dentro do campus, que não respondem
+
+  - id: 7
+    pergunta: de quanto em quanto tempo passa o circular que sai da estação de trem?
+    documentos:
+      - rota_onibus
+    armadilha: o fretados_horarios é cheio de horários de ônibus, mas é do fretado
+
+  - id: 8
+    pergunta: em qual prédio têm aula os alunos de medicina?
+    documentos:
+      - campus_curso
+    armadilha: o documento diz "bloco" e "setor", e a pergunta diz "prédio"
+
+  - id: 9
+    pergunta: o aluno do noturno de engenharia civil pode sair pelo portão das engenharias quando a aula acaba?
+    documentos:
+      - campus_curso
+    armadilha: o regras_fretados e o rota_onibus falam de portão e de saída do campus à noite
+
+  - id: 10
+    pergunta: o auxílio-transporte reembolsa corrida de uber?
+    documentos:
+      - auxilio_transporte
+    armadilha: o documento diz "transporte por aplicativo", e a pergunta diz "uber"
